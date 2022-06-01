@@ -26,6 +26,7 @@ export class MarkerService {
     for(let id in response){
       const lat = response[id].lat;
       const lon = response[id].lon;
+      console.log(lat, lon)
       const marker = L.marker([lat, lon]);
       
       marker.addTo(map);
