@@ -38,7 +38,7 @@ public class FetchVehicle {
 		return vehicles;
 	}
 
-	public VehicleDto updateVehicle(Integer uuid, Integer id,VehicleDto vDto ) {
+	public VehicleDto updateVehicle(String uuid, Integer id,VehicleDto vDto ) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
 
@@ -50,7 +50,7 @@ public class FetchVehicle {
 		return vDto;
 	}
 
-	public VehicleDto addVehicle(Integer uuid, VehicleDto vDto) {
+	public VehicleDto addVehicle(String uuid, VehicleDto vDto) {
 
 			HttpHeaders headers = new HttpHeaders();
 			headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
@@ -59,8 +59,21 @@ public class FetchVehicle {
 			HttpEntity<?> requestBody = new HttpEntity<>(vDto, headers);
 			
 			// Send request with PUT method.
-			restTemplate.put(URL_VEHICLE+"/"+uuid, requestBody, new Object[] {});
+			restTemplate.postForEntity(URL_VEHICLE+"/"+uuid, requestBody, VehicleDto.class );
 			return vDto;
 			
 	}
+	
+	public VehicleDto deleteVehicle(String uuid, Integer id) {
+		
+		VehicleDto vehicle =  getVehicle(id);
+		restTemplate.delete(URL_VEHICLE+"/"+uuid+"/"+id, new Object[] {});
+		return vehicle;
+	}
+
+
+	public void deleteAllVehicle(String uuid) {
+		restTemplate.delete(URL_VEHICLE+"/"+uuid, new Object[] {});
+	}
+
 }

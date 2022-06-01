@@ -17,9 +17,15 @@ public class VehicleRest {
     @Autowired
     VehicleService vService;
 	
+    @RequestMapping(method=RequestMethod.POST,value="/vehicle/{uuid}")
+    public VehicleDto addVehicle(@PathVariable String uuid, @RequestBody VehicleDto vDto) {
+    	return vService.addVehicle(uuid, vDto);
+    	
+    }
+    
     @RequestMapping(method=RequestMethod.PUT,value="/vehicle/{uuid}/{id}")
     public VehicleDto updateVehicle(@PathVariable String uuid,@PathVariable String id, @RequestBody VehicleDto vDto) {
-		return vService.updateVehicle(Integer.valueOf(uuid), Integer.valueOf(id), vDto);
+		return vService.updateVehicle(uuid, Integer.valueOf(id), vDto);
         
     }
     
@@ -35,9 +41,16 @@ public class VehicleRest {
         
     }
     
-    @RequestMapping(method=RequestMethod.POST,value="/vehicle/{uuid}")
-    public VehicleDto addVehicle(@PathVariable String uuid, @RequestBody VehicleDto vDto) {
-		return vService.addVehicle(Integer.valueOf(uuid), vDto);
+    
+    @RequestMapping(method=RequestMethod.DELETE,value="/vehicle/{uuid}/{id}")
+    public VehicleDto addVehicle(@PathVariable String uuid,@PathVariable String id) {
+		return vService.deleteVehicle(uuid,Integer.valueOf(id));
+        
+    }
+    
+    @RequestMapping(method=RequestMethod.DELETE,value="/vehicle/{uuid}")
+    public void addVehicle(@PathVariable String uuid) {
+		 vService.deleteAllVehicle(uuid);
         
     }
 }
