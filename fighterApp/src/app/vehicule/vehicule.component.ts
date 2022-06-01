@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-vehicule',
@@ -7,9 +8,66 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VehiculeComponent implements OnInit {
 
-  constructor() { }
+  AddVehicle!: FormGroup;
+  Fire : any = ["CAR","FIRE_ENGINE","PUMPER_TRUCK","WATER_TENDER","TURNTABLE_LADDER_TRUCK","TRUCK"];
+  Liquid : any = ["ALL","WATER","WATER_WITH_ADDITIVES","CARBON_DIOXIDE","POWDER"];
+  Facility : any = [];
+  
+  constructor(private formBuilder: FormBuilder,) {}
 
   ngOnInit(): void {
+    this.initForm();
+    let facilityUrl = "http://vps.cpe-sn.fr:8081/facility/80";
+    let context = {
+      method: 'GET'
+    };
+   fetch(facilityUrl, context)
+   .then(response => response.json())
+    .then(response => this.callback(response))
   }
 
+  onSubmit(): void {
+      console.log(this.AddVehicle.value);
+      this.addVehicle(this.AddVehicle.value);
+  }
+
+  initForm() {
+    this.AddVehicle = this.formBuilder.group({
+      vehicleType : [''],
+      liquidType : [''],
+      facility : [''],
+    });
+  }
+
+  callback(response : any){
+    this.Facility.push({name : response.name, id : response.id, lon : response.lon, lat : response.lat});
+  }
+
+  addVehicle(vehicle : any){
+    let data = {
+      "lon": vehicle.facility.lon,
+      "lat": vehicle.facility.lat,
+      "type": vehicle.vehicleType,
+      "liquidType": vehicle.liquidType,
+      "liquidQuantity": 0.0,
+      "fuel": 0.0,
+      "crewMember": 0,
+      "facilityRefID": vehicle.facility.id
+    }
+
+    const vehicleUrl = "http://vps.cpe-sn.fr:8081/vehicle/bd4dd8f2-c28d-46ba-a342-9d9b99259a67";
+    let context = {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    fetch(vehicleUrl, context)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      });
+
+  }
 }
