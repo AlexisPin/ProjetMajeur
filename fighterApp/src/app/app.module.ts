@@ -9,10 +9,12 @@ import { AppComponent } from './app.component';
 import { MapComponent } from './map/map.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { VehiculeComponent } from './vehicule/vehicule.component';
+import { ViewMapComponent } from './view-map/view-map.component';
+import { MapFilterComponent } from './map-filter/map-filter.component';
 
 
 const appRoutes : Routes = [
-  {path : 'map', component : MapComponent},
+  {path : 'map', component : ViewMapComponent},
   {path : '', component : MapComponent}
 ]
 @NgModule({
@@ -20,7 +22,9 @@ const appRoutes : Routes = [
     AppComponent,
     MapComponent,
     NavbarComponent,
-    VehiculeComponent
+    VehiculeComponent,
+    ViewMapComponent,
+    MapFilterComponent
   ],
   imports: [
     BrowserModule,
