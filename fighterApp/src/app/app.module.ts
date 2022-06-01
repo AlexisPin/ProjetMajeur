@@ -16,6 +16,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 const appRoutes : Routes = [
   {path : 'map', component : ViewMapComponent},
+  {path : 'vehicule', component : VehiculeComponent},
   {path : '', component : ViewMapComponent}
 ]
 @NgModule({
