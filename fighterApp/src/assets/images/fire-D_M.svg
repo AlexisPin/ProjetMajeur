@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Généré par Microsoft Visio, SVG Export fire-D_M.svg Page 1 -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events"
+		xmlns:v="http://schemas.microsoft.com/visio/2003/SVGExtensions/" width="6.46666in" height="7.81985in"
+		viewBox="0 0 465.6 563.03" xml:space="preserve" color-interpolation-filters="sRGB" class="st4">
+	<v:documentProperties v:langID="1036" v:metric="true" v:viewMarkup="false">
+		<v:userDefs>
+			<v:ud v:nameU="Ifc__CustomPropsLevel" v:val="VT0(0):26"/>
+		</v:userDefs>
+	</v:documentProperties>
+
+	<style type="text/css">
+	<![CDATA[
+		.st1 {fill:none;stroke:none;stroke-linecap:butt;stroke-width:6.11999}
+		.st2 {fill:#000000;stroke:none;stroke-linecap:butt;stroke-width:6.11999}
+		.st3 {fill:#6699ff;stroke:none;stroke-linecap:butt;stroke-width:6.11999}
+		.st4 {fill:none;fill-rule:evenodd;font-size:12px;overflow:visible;stroke-linecap:square;stroke-miterlimit:3}
+	]]>
+	</style>
+
+	<g v:mID="0" v:index="1" v:groupContext="foregroundPage">
+		<title>Page 1</title>
+		<v:pageProperties v:drawingScale="39.3701" v:pageScale="0.787402" v:drawingUnits="6" v:shadowOffsetX="9"
+				v:shadowOffsetY="-9"/>
+		<g id="group10-1" transform="translate(1.63709E-13,-6.11999)" v:mID="10" v:groupContext="group">
+			<title>Feuille.10</title>
+			<g id="group11-2" v:mID="11" v:groupContext="group">
+				<title>Page 1</title>
+				<g id="group12-3" v:mID="12" v:groupContext="group">
+					<title>Feuille.11</title>
+					<g id="group13-4" v:mID="13" v:groupContext="group">
+						<title>Feuille.2</title>
+						<g id="shape14-5" v:mID="14" v:groupContext="shape" transform="translate(94.8293,-211.715)">
+							<title>Feuille.3</title>
+							<path d="M140.29 285.1 C139.85 285.09 139.43 285.06 138.99 285.06 C62.35 285.06 0 347.41 0 424.05 C0
+										 500.69 62.35 563.03 138.99 563.03 C139.43 563.03 139.85 563.01 140.29 563 C216.33 562.29
+										 277.98 500.25 277.98 424.05 C277.98 347.85 216.33 285.81 140.29 285.1 Z" class="st1"/>
+						</g>
+						<g id="shape15-7" v:mID="15" v:groupContext="shape">
+							<title>Feuille.4</title>
+							<path d="M248.7 12.24 L235.12 12.24 L221.19 12.24 C102.43 18.26 0 143.91 36.17 260.96 C55.72 316.72 85.15
+										 367.05 118.58 414.87 C130.36 431.71 142.64 448.23 155.15 464.59 C166.19 479.01 177.43 493.3
+										 188.67 507.49 C203.34 526.03 218.04 544.49 232.36 563.03 L235.12 563.03 L238.39 563.03 C252.52
+										 544.25 267.13 525.63 281.76 506.97 C293 492.69 304.22 478.38 315.27 463.93 C327.72 447.71
+										 339.93 431.34 351.66 414.65 C386.58 365.01 417.22 312.68 436.34 254.06 C465.6 137.89 364.92
+										 18.26 248.7 12.24 ZM235.12 351.29 C234.68 351.3 234.26 351.32 233.81 351.32 C157.18 351.32
+										 94.83 288.98 94.83 212.34 C94.83 135.7 157.18 73.35 233.81 73.35 C234.26 73.35 234.68 73.38
+										 235.12 73.39 C311.16 74.09 372.81 136.15 372.81 212.35 C372.81 288.54 311.16 350.59 235.12
+										 351.29 Z" class="st2"/>
+						</g>
+					</g>
+					<g id="group16-9" transform="translate(136.479,-241.597)" v:mID="16" v:groupContext="group">
+						<title>Feuille.7</title>
+						<g id="group17-10" v:mID="17" v:groupContext="group">
+							<title>Page 1</title>
+							<g id="shape18-11" v:mID="18" v:groupContext="shape">
+								<title>Feuille.2</title>
+								<path d="M74.88 560.57 C62.81 553.43 54.19 540.86 53.7 526.09 C52.96 498.5 72.18 484.95 83.5 466.48
+											 C99.76 439.88 95.33 423.37 95.33 423.37 C95.33 423.37 108.88 431 116.75 459.33 C119.22
+											 467.71 119.71 476.08 118.98 483.96 C117.74 503.92 109.12 521.9 109.12 521.9 C109.12
+											 521.9 124.15 518.69 128.33 491.36 C135.23 498.5 141.64 508.84 142.37 519.68 C143.61
+											 538.4 132.52 555.64 115.77 563.03 C144.84 556.38 165.53 531.75 172.67 513.77 C181.78
+											 491.11 179.32 470.91 177.85 453.42 C175.88 429.52 184.25 411.79 184.25 411.79 C184.25
+											 411.79 168.24 416.47 156.42 435.93 C150.99 444.8 148.78 457.85 148.78 457.85 C148.78
+											 457.85 150.01 446.28 142.37 425.09 C134.74 404.4 127.84 397.01 123.66 381.74 C118.23
+											 361.3 130.3 341.34 130.3 341.34 C130.3 341.34 82.52 350.21 60.84 391.84 C41.63 428.79
+											 49.51 450.96 49.51 450.96 C49.51 450.96 41.38 443.32 37.19 432.73 C33.01 422.14 33.99
+											 412.53 33.99 412.53 C33.99 412.53 0 449.97 16.5 497.02 C27.59 530.03 49.02 551.71 74.88
+											 560.57 Z" class="st3"/>
+							</g>
+						</g>
+					</g>
+				</g>
+			</g>
+		</g>
+	</g>
+</svg>

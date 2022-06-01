@@ -1,0 +1,22 @@
+<div class="col-xs-12">
+  <ul class="list-group">
+    <li class="list-group-item">
+      <div
+        class="list-group-item"
+        *ngFor="let vehicule of vehicules; let i = index"
+      >
+        <p class="list-group-item-text m-1">
+          Véhicule : {{ vehicule.type }} {{ vehicule.id }} Nombre de personne à
+          bord : {{ vehicule.crewMember }} Fuel restant :
+          {{ vehicule.fuel }} Type de liquide :
+          {{ vehicule.liquidType }} Liquide restant :
+          {{ vehicule.liquidQuantity }}
+        </p>
+        <button class="btn btn-primary m-1" (click)="onEdit()">Editer</button>
+        <button class="btn btn-danger m-1" (click)="onDelete(vehicule)">
+          Supprimer
+        </button>
+      </div>
+    </li>
+  </ul>
+</div>

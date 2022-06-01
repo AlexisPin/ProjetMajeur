@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Généré par Microsoft Visio, SVG Export v.svg Page 1 -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events"
+		xmlns:v="http://schemas.microsoft.com/visio/2003/SVGExtensions/" width="6.46666in" height="7.81985in"
+		viewBox="0 0 465.6 563.03" xml:space="preserve" color-interpolation-filters="sRGB" class="st4">
+	<v:documentProperties v:langID="1036" v:metric="true" v:viewMarkup="false">
+		<v:userDefs>
+			<v:ud v:nameU="Ifc__CustomPropsLevel" v:val="VT0(0):26"/>
+		</v:userDefs>
+	</v:documentProperties>
+
+	<style type="text/css">
+	<![CDATA[
+		.st1 {fill:none;stroke:none;stroke-linecap:butt;stroke-width:6.11999}
+		.st2 {fill:#d8d8d8;stroke:none;stroke-linecap:butt;stroke-width:6.11999}
+		.st3 {fill:#d8d8d8;stroke:#bfbfbf;stroke-linecap:butt;stroke-width:6.11999}
+		.st4 {fill:none;fill-rule:evenodd;font-size:12px;overflow:visible;stroke-linecap:square;stroke-miterlimit:3}
+	]]>
+	</style>
+
+	<g v:mID="0" v:index="1" v:groupContext="foregroundPage">
+		<title>Page 1</title>
+		<v:pageProperties v:drawingScale="39.3701" v:pageScale="0.787402" v:drawingUnits="6" v:shadowOffsetX="9"
+				v:shadowOffsetY="-9"/>
+		<g id="shape578-1" v:mID="578" v:groupContext="shape" transform="translate(94.8293,-217.835)">
+			<title>Feuille.578</title>
+			<path d="M140.29 285.1 C139.85 285.09 139.43 285.06 138.99 285.06 C62.35 285.06 0 347.41 0 424.05 C0 500.69 62.35 563.03
+						 138.99 563.03 C139.43 563.03 139.85 563.01 140.29 563 C216.33 562.29 277.98 500.25 277.98 424.05 C277.98
+						 347.85 216.33 285.81 140.29 285.1 Z" class="st1"/>
+		</g>
+		<g id="shape579-3" v:mID="579" v:groupContext="shape" transform="translate(-2.86491E-13,-6.11999)">
+			<title>Feuille.579</title>
+			<path d="M248.7 12.24 L235.12 12.24 L221.19 12.24 C102.43 18.26 0 143.91 36.17 260.96 C55.72 316.72 85.15 367.05 118.58
+						 414.87 C130.36 431.71 142.64 448.23 155.15 464.59 C166.19 479.01 177.43 493.3 188.67 507.49 C203.34 526.03
+						 218.04 544.49 232.36 563.03 L235.12 563.03 L238.39 563.03 C252.52 544.25 267.13 525.63 281.76 506.97 C293
+						 492.69 304.22 478.38 315.27 463.93 C327.72 447.71 339.93 431.34 351.66 414.65 C386.58 365.01 417.22 312.68
+						 436.34 254.06 C465.6 137.89 364.92 18.26 248.7 12.24 ZM235.12 351.29 C234.68 351.3 234.26 351.32 233.81
+						 351.32 C157.18 351.32 94.83 288.98 94.83 212.34 C94.83 135.7 157.18 73.35 233.81 73.35 C234.26 73.35 234.68
+						 73.38 235.12 73.39 C311.16 74.09 372.81 136.15 372.81 212.35 C372.81 288.54 311.16 350.59 235.12 351.29
+						 Z" class="st2"/>
+		</g>
+		<g id="group580-5" transform="translate(109.707,-282.574)" v:mID="580" v:groupContext="group">
+			<title>Feuille.580</title>
+			<g id="shape581-6" v:mID="581" v:groupContext="shape" transform="translate(2.53842,-91.3639)">
+				<title>Feuille.16</title>
+				<path d="M131.97 552.88 L121.82 552.88 L121.82 532.58 L131.97 532.58 L131.97 522.43 L0 522.43 L0 532.58 L10.15 532.58
+							 L10.15 552.88 L0 552.88 L0 563.03 L131.97 563.03 L131.97 552.88 ZM30.46 552.88 L20.3 552.88 L20.3 532.58
+							 L30.46 532.58 L30.46 552.88 ZM50.76 552.88 L40.61 552.88 L40.61 532.58 L50.76 532.58 L50.76 552.88 ZM71.06
+							 552.88 L60.91 552.88 L60.91 532.58 L71.06 532.58 L71.06 552.88 ZM91.37 552.88 L81.21 552.88 L81.21 532.58
+							 L91.37 532.58 L91.37 552.88 ZM111.67 552.88 L101.52 552.88 L101.52 532.58 L111.67 532.58 L111.67 552.88
+							 Z" class="st3"/>
+			</g>
+			<g id="shape582-8" v:mID="582" v:groupContext="shape" transform="translate(22.8431,-1.13687E-13)">
+				<title>Feuille.17</title>
+				<path d="M25.38 512.28 C11.36 512.28 0 523.64 0 537.66 C0 551.67 11.36 563.03 25.38 563.03 C39.4 563.03 50.76 551.67
+							 50.76 537.66 C50.76 523.64 39.4 512.28 25.38 512.28 ZM25.38 549.08 C19.08 549.08 13.96 543.96 13.96
+							 537.66 C13.96 531.36 19.08 526.24 25.38 526.24 C31.68 526.24 36.8 531.36 36.8 537.66 C36.8 543.96 31.68
+							 549.08 25.38 549.08 Z" class="st3"/>
+			</g>
+			<g id="shape583-10" v:mID="583" v:groupContext="shape" transform="translate(175.121,-1.13687E-13)">
+				<title>Feuille.18</title>
+				<path d="M25.38 512.28 C11.36 512.28 0 523.64 0 537.66 C0 551.67 11.36 563.03 25.38 563.03 C39.4 563.03 50.76 551.67
+							 50.76 537.66 C50.76 523.64 39.4 512.28 25.38 512.28 ZM25.38 549.08 C19.08 549.08 13.96 543.96 13.96
+							 537.66 C13.96 531.36 19.08 526.24 25.38 526.24 C31.68 526.24 36.8 531.36 36.8 537.66 C36.8 543.96 31.68
+							 549.08 25.38 549.08 Z" class="st3"/>
+			</g>
+			<g id="shape584-12" v:mID="584" v:groupContext="shape" transform="translate(0,-20.2992)">
+				<title>Feuille.19</title>
+				<path d="M236.03 451.36 L215.73 451.36 L215.73 431.06 L195.42 431.06 L195.42 451.36 L159.89 451.36 C151.48 451.36
+							 144.67 458.18 144.67 466.59 L144.67 522.42 L144.67 542.73 L134.51 542.73 L134.51 522.42 L134.51 502.12
+							 L2.54 502.12 L2.54 522.42 L17.77 522.42 C2.97 522.42 0 563.03 0 563.03 L13.1 563.03 C12.86 561.37 12.69
+							 559.68 12.69 557.96 C12.69 538.34 28.6 522.42 48.22 522.42 C67.84 522.42 83.75 538.34 83.75 557.96 C83.75
+							 559.68 83.59 561.37 83.35 563.03 L165.37 563.03 C165.13 561.37 164.97 559.68 164.97 557.96 C164.97 538.34
+							 180.88 522.42 200.5 522.42 C220.12 522.42 236.03 538.34 236.03 557.96 C236.03 559.68 235.87 561.37 235.63
+							 563.03 L246.18 563.03 L246.18 522.42 L236.03 451.36 ZM175.12 481.82 L154.82 481.82 L154.82 461.51 L175.12
+							 461.51 L175.12 481.82 ZM185.27 502.12 L185.27 461.51 L195.42 461.51 L215.73 461.51 L225.88 461.51 L230.95
+							 502.12 L185.27 502.12 Z" class="st3"/>
+			</g>
+		</g>
+	</g>
+</svg>

@@ -13,13 +13,15 @@ import { ViewMapComponent } from './view-map/view-map.component';
 import { MapFilterComponent } from './map-filter/map-filter.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FacilityMarkerService } from './services/facility-marker.service';
+import { VehiculeViewComponent } from './vehicule-view/vehicule-view.component';
 
-
-const appRoutes : Routes = [
-  {path : 'map', component : ViewMapComponent},
-  {path : 'vehicule', component : VehiculeComponent},
-  {path : '', component : ViewMapComponent}
-]
+const appRoutes: Routes = [
+  { path: 'map', component: ViewMapComponent },
+  { path: 'vehicule', component: VehiculeComponent },
+  { path: 'vehicules', component: VehiculeViewComponent },
+  { path: '', component: ViewMapComponent },
+  { path: '**', redirectTo: '/map' },
+];
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,16 +29,16 @@ const appRoutes : Routes = [
     NavbarComponent,
     VehiculeComponent,
     ViewMapComponent,
-    MapFilterComponent
+    MapFilterComponent,
+    VehiculeViewComponent,
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
-  providers: [MarkerService,
-  FacilityMarkerService],
-  bootstrap: [AppComponent]
+  providers: [MarkerService, FacilityMarkerService],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
