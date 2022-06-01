@@ -1,0 +1,43 @@
+package com.sp.rest;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.project.model.dto.VehicleDto;
+import com.sp.service.VehicleService;
+
+
+@RestController
+public class VehicleRest {
+    @Autowired
+    VehicleService vService;
+	
+    @RequestMapping(method=RequestMethod.PUT,value="/vehicle/{uuid}/{id}")
+    public VehicleDto updateVehicle(@PathVariable String uuid,@PathVariable String id, @RequestBody VehicleDto vDto) {
+		return vService.updateVehicle(Integer.valueOf(uuid), Integer.valueOf(id), vDto);
+        
+    }
+    
+    @RequestMapping(method=RequestMethod.GET,value="/vehicle")
+    public VehicleDto[] getVehicles() {
+		return vService.getVehicles();
+        
+    }
+    
+    @RequestMapping(method=RequestMethod.GET,value="/vehicle/{id}")
+    public VehicleDto getVehicle(@PathVariable String id) {
+		return vService.getVehicle(Integer.valueOf(id));
+        
+    }
+    
+    @RequestMapping(method=RequestMethod.POST,value="/vehicle/{uuid}")
+    public VehicleDto addVehicle(@PathVariable String uuid, @RequestBody VehicleDto vDto) {
+		return vService.addVehicle(Integer.valueOf(uuid), vDto);
+        
+    }
+}
