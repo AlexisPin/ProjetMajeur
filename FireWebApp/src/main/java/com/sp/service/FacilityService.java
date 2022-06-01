@@ -1,5 +1,8 @@
 package com.sp.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.project.model.dto.FacilityDto;
@@ -20,5 +23,14 @@ public class FacilityService {
 		return facility;
 	}
 	
-	
+	public List<Integer> getOwnFacilities() {
+		FacilityDto[]  facilities = getFacilities();
+		List<Integer>  ownFacilities = new ArrayList<Integer>();
+		for(FacilityDto facility : facilities) {
+			if(facility.getName().substring(3, 4).equals("2")) {	
+				ownFacilities.add(facility.getId());
+			}
+		}
+		return ownFacilities;
+	}
 }

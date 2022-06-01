@@ -2,6 +2,7 @@ package com.sp.service;
 
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.model.dto.VehicleDto;
@@ -10,6 +11,10 @@ import com.sp.rest.FetchVehicle;
 @Service
 public class VehicleService {
 
+	
+	@Autowired
+	FacilityService fService;
+	
     private FetchVehicle fetch = new FetchVehicle();
 	
 	public VehicleDto[] getVehicles() {
@@ -20,14 +25,13 @@ public class VehicleService {
 		VehicleDto[] vehicles = getVehicles();
 		ArrayList<VehicleDto> ownVehicle = new ArrayList<>();
 		for(VehicleDto vehicle : vehicles) {
-			if(vehicle.getFacilityRefID() == 80) {
+			if(fService.getOwnFacilities().contains(vehicle.getFacilityRefID())) {
 				ownVehicle.add(vehicle);
 			}
 		}
 		return ownVehicle;
 	}
-
-
+	
 	public VehicleDto getVehicle(Integer id) {
 		VehicleDto vehicle = fetch.getVehicle(id);
 		return vehicle;

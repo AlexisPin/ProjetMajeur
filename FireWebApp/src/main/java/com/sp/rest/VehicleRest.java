@@ -1,6 +1,8 @@
 package com.sp.rest;
 
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +34,12 @@ public class VehicleRest {
     @RequestMapping(method=RequestMethod.GET,value="/vehicle")
     public VehicleDto[] getVehicles() {
 		return vService.getVehicles();
+        
+    }
+    
+    @RequestMapping(method=RequestMethod.GET,value="/own/vehicle")
+    public ArrayList<VehicleDto> getOwnVehicles() {
+		return vService.getOwnVehicles();
         
     }
     
