@@ -1,0 +1,35 @@
+<div class="container-fluid col-6">
+    <form [formGroup]="AddVehicle" (ngSubmit)="onSubmit()">
+        <div class="form-group" >
+            <label for="exampleFormControlSelect1">Type de vehicule</label>
+            <select 
+            class="form-control" formControlName="vehicleType">
+              <option value="" disabled selected>Choisissez un type de vehicule</option>
+              <option *ngFor="let fire of Fire">
+                {{ fire }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group" >
+            <label for="exampleFormControlSelect1">Type de liquide</label>
+            <select 
+            class="form-control" formControlName="liquidType">
+              <option value="" disabled selected>Choisissez un type de liquide</option>
+              <option *ngFor="let liquid of Liquid">
+                {{ liquid }}
+              </option>
+            </select>
+            </div>
+            <div class="form-group" >
+                <label for="exampleFormControlSelect1">Caserne à affecter</label>
+                <select 
+                class="form-control" formControlName="facility">
+                  <option value="" disabled selected>Caserne</option>
+                  <option *ngFor="let facility of Facility" [ngValue]="facility">
+                    {{ facility.name }}
+                  </option>
+                </select>
+                </div>
+        <button class="btn btn-success" type="submit" [disabled]="AddVehicle.invalid">Ajouter vehicule</button>
+     </form>
+</div>

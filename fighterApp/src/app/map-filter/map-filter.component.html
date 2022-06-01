@@ -1,0 +1,24 @@
+<div class="filter_container">
+    <form [formGroup]="myForm"> 
+    <h2>Fire's intensity</h2>
+    <label for="inputIntensityMin">Min</label>
+        <input type="number" min='1' max='99' id="inputIntensityMin" formControlName="inputIntensityMin">
+        <label for="inputIntensityMax">Max</label>
+        <input type="number" min='2' max='100' id="inputIntensityMax" formControlName="inputIntensityMax">
+        
+        <h2>Fire's range</h2>
+        <label for="inputRangeMin">Min</label>
+        <input type="number" min='1' max='99' id="inputRangeMin" formControlName="inputRangeMin">
+        <label for="inputRangeMax">Max</label>
+        <input type="number" min='2' max='100' id="inputRangeMax" formControlName="inputRangeMax">
+
+        <h2>Fire type</h2>
+        <input type="checkbox" id="fireA" value="A" formControlName="fireA">A<br> 
+        <input type="checkbox" id="fireBg" value="Bg" formControlName="fireBg">B_Gasoline<br> 
+        <input type="checkbox" id="fireBa" value="Ba" formControlName="fireBa">B_Alcohol<br> 
+        <input type="checkbox" id="fireBp" value="Bp" formControlName="fireBp">B_Plastics<br> 
+        <input type="checkbox" id="fireCfg" value="Cf" formControlName="fireCfg">C_Flammable_Gases<br> 
+        <input type="checkbox" id="fireDm" value="Dm" formControlName="fireDm">D_Metals<br> 
+        <input type="checkbox" id="fireEe" value="Ee" formControlName="fireEe">E_Electric<br> 
+    </form>
+</div>
