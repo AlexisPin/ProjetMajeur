@@ -5,6 +5,8 @@ import * as L from 'leaflet';
   providedIn: 'root'
 })
 export class MarkerService {
+  private map:any;
+
   firesAPI: string = 'http://vps.cpe-sn.fr:8081/fire';
   filter = {
       "inputIntensityMin": 1,
@@ -24,6 +26,7 @@ export class MarkerService {
 
   //Pas certains du L.Map (le m en majuscule)
   makeFireMarkers(map: L.Map): void {
+      this.setMap(map);
       let context = {
                       method: 'GET'
                     };
@@ -33,22 +36,30 @@ export class MarkerService {
           .catch(error => err_callback(error));     
   }
 
+  setMap(map: L.Map){
+    this.map = map;
+  }
+
+  getMap(){
+    return this.map;
+  }
+
   setFilter(x:any) {
     this.filter = x;
     console.log(this.filter)
+    var map: L.Map = this.getMap();
   }
 
   }
   function callback(response:any, map: L.Map, filter:any){
+    var fires = L.layerGroup();
+    map.addLayer(fires);
+    
     var fireIcon = L.icon({
       iconUrl: '../assets/fireIcon.png',
       iconSize: [40, 40], // size of the icon
       popupAnchor: [0,-15]
       });
-    
-      const layerFires = L.layerGroup();
-      map.addLayer(layerFires)
-      layerFires.clearLayers()
       
     for(let id in response){
       const lat = response[id].lat;
@@ -61,7 +72,7 @@ export class MarkerService {
         && range <= filter.inputRangeMax && range >= filter.inputRangeMin) {
           //if (filter.$type){
             const marker = L.marker([lat, lon], {icon: fireIcon});
-            marker.addTo(layerFires);
+            marker.addTo(fires);
             marker.bindPopup("<h1>Feu " + response[id].id + "</h1> </br> <h2> Type : </h2>" 
                        + response[id].type + "</br> <h2> Intensity : </h2>"
                        + response[id].intensity + "</br> <h2> Range : </h2>"

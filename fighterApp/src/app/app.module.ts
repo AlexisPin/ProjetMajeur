@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 
-import { MarkerService } from 'src/services/marker.service';
+import { MarkerService } from 'src/app/services/marker.service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';

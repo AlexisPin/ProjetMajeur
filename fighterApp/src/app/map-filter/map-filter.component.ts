@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { MarkerService } from 'src/services/marker.service';
+import { MarkerService } from 'src/app/services/marker.service';
 
 @Component({
   selector: 'app-map-filter',
