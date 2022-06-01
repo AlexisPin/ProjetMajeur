@@ -11,11 +11,12 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { VehiculeComponent } from './vehicule/vehicule.component';
 import { ViewMapComponent } from './view-map/view-map.component';
 import { MapFilterComponent } from './map-filter/map-filter.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 const appRoutes : Routes = [
   {path : 'map', component : ViewMapComponent},
-  {path : '', component : MapComponent}
+  {path : '', component : ViewMapComponent}
 ]
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ const appRoutes : Routes = [
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule
   ],
   providers: [MarkerService],
   bootstrap: [AppComponent]
