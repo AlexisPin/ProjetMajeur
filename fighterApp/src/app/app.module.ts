@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 
-import { MarkerService } from 'src/services/marker.service';
+import { MarkerService } from 'src/app/services/marker.service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,6 +12,7 @@ import { VehiculeComponent } from './vehicule/vehicule.component';
 import { ViewMapComponent } from './view-map/view-map.component';
 import { MapFilterComponent } from './map-filter/map-filter.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FacilityMarkerService } from './services/facility-marker.service';
 
 
 const appRoutes : Routes = [
@@ -34,7 +35,8 @@ const appRoutes : Routes = [
     AppRoutingModule,
     ReactiveFormsModule
   ],
-  providers: [MarkerService],
+  providers: [MarkerService,
+  FacilityMarkerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

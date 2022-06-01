@@ -1,4 +1,4 @@
-<div class="container-fluid col-6">
+<div class="container-fluid col-6" *ngIf ="form">
     <form [formGroup]="AddVehicle" (ngSubmit)="onSubmit()">
         <div class="form-group" >
             <label for="exampleFormControlSelect1">Type de vehicule</label>
@@ -33,3 +33,25 @@
         <button class="btn btn-success" type="submit" [disabled]="AddVehicle.invalid">Ajouter vehicule</button>
      </form>
 </div>
+
+<div class="container" *ngIf="!form">
+    <div class="centered-element">
+        <div class="list-group">
+            <button class="list-group-item" *ngFor="let vehicule of vehicules[0]; let i = index"
+            >
+                <h3>
+                    <p class="list-group-item-text">
+                        Véhicule {{ vehicule.type }} {{ vehicule.id}}
+                        Nombre de personne à bord : {{ vehicule.crewMember }} 
+                        Fuel restant : {{ vehicule.fuel }}
+                        Type de liquide :  {{ vehicule.liquidType }}
+                        Liquide restant :  {{ vehicule.liquidQuantity }}
+                    </p>
+                </h3>
+            </button>
+        </div>
+    </div>
+</div>
+
+<button class="btn btn-success" (click)="onForm()" *ngIf="!form">Ajouter un véhicule</button>
+<button class="btn btn-success" (click)="onList()" *ngIf="form">Afficher la liste des véhicule</button>

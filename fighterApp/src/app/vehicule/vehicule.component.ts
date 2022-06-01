@@ -12,11 +12,14 @@ export class VehiculeComponent implements OnInit {
   Fire : any = ["CAR","FIRE_ENGINE","PUMPER_TRUCK","WATER_TENDER","TURNTABLE_LADDER_TRUCK","TRUCK"];
   Liquid : any = ["ALL","WATER","WATER_WITH_ADDITIVES","CARBON_DIOXIDE","POWDER"];
   Facility : any = [];
+  form : boolean = true;
+  vehicules : any = [];
   
   constructor(private formBuilder: FormBuilder,) {}
 
   ngOnInit(): void {
     this.initForm();
+    this.getVehicle();
     let facilityUrl = "http://vps.cpe-sn.fr:8081/facility/80";
     let context = {
       method: 'GET'
@@ -69,5 +72,33 @@ export class VehiculeComponent implements OnInit {
         console.log(data);
       });
 
+  }
+
+  onForm(){
+    this.form = true;
+  }
+
+  onList(){
+    this.form = false;
+  }
+
+  getVehicle(){
+    const vehicleUrl = "http://vps.cpe-sn.fr:8081/vehicle";
+    let context = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    fetch(vehicleUrl, context)
+      .then((response) => response.json())
+      .then((response) => {
+        this.listVehicle(response);
+      });
+  }
+
+  listVehicle(response : any){
+    this.vehicules.push(response);
+    console.log(this.vehicules[0]);
   }
 }

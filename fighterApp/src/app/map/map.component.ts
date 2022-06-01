@@ -1,6 +1,7 @@
 import { Component, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
-import { MarkerService } from 'src/services/marker.service';
+import { MarkerService } from 'src/app/services/marker.service';
+import { FacilityMarkerService } from '../services/facility-marker.service';
 
 @Component({
   selector: 'app-map',
@@ -25,10 +26,12 @@ export class MapComponent implements AfterViewInit {
     tiles.addTo(this.map);
   }
 
-  constructor(private markerService: MarkerService) { }
+  constructor(private markerService: MarkerService,
+    private facilityMarkerService : FacilityMarkerService) { }
 
   ngAfterViewInit(): void {
     this.initMap();
     this.markerService.makeFireMarkers(this.map);
+    this.facilityMarkerService.makeFacilityMarkers(this.map);
   }
 }
