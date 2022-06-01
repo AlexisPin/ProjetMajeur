@@ -23,13 +23,23 @@ export class MarkerService {
 
   }
   function callback(response:any, map: L.Map){
+    var fireIcon = L.icon({
+      iconUrl: '../assets/fireIcon.png',
+      iconSize: [40, 40], // size of the icon
+      popupAnchor: [0,-15]
+      });
+
     for(let id in response){
       const lat = response[id].lat;
       const lon = response[id].lon;
-      console.log(lat, lon)
-      const marker = L.marker([lat, lon]);
-      
+      const marker = L.marker([lat, lon], {icon: fireIcon});
+
       marker.addTo(map);
+      marker.bindPopup("<h1>Feu " + response[id].id + "</h1> </br> <h2> Type : </h2>" 
+                       + response[id].type + "</br> <h2> Intensity : </h2>"
+                       + response[id].intensity + "</br> <h2> Range : </h2>"
+                       + response[id].range,
+                      );
     }
   }
 
