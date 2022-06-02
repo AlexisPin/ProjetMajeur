@@ -4,8 +4,6 @@
   
   .map-frame {
     border: 2px solid black;
-    height: 100%;
-    width: 80%;
   }
   
   #map {
