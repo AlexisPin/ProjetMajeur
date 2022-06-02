@@ -88,7 +88,7 @@ public class TaskService {
 	private void intervention(VehicleDto vehicle) {
 		float liquidQuantity = vehicle.getLiquidQuantity();
 		if(liquidQuantity > 0) {
-			vehicle.setLiquidQuantity(liquidQuantity - vehicle.getType().getLiquidConsumption());
+			vehicle.setLiquidQuantity(Math.nextDown(liquidQuantity - vehicle.getType().getLiquidConsumption()));
 			saveChanges(vehicle);
 		}
 	}
@@ -128,14 +128,26 @@ public class TaskService {
 		double deltaLat =  vlat - dlat;
 		double deltaLon = vlon - dlon;
 		
-		//float maxSpeedMS = (float) (vehicle.getType().getMaxSpeed() / 3.60);
+		float maxSpeedMS = (float) (vehicle.getType().getMaxSpeed() / 3.60);
 	
-		double latTick = deltaLat /10;
-		double lonTick = deltaLon / 10;
-		
-		if(vehicle.getId().equals(255)) {
-			//System.out.println(GisTools.computeDistance2(new Coord(vlon,vlat), new Coord(vlon-latTick,vlat-lonTick)));
+		double coeff = 10;
+		double latTick = deltaLat /coeff;
+		double lonTick = deltaLon / coeff;
+		int deltaError = 1;
+		int travelledDistance = GisTools.computeDistance2(new Coord(vlon,vlat),new Coord(vlon-lonTick,vlat-latTick));
+
+		while(travelledDistance < Math.round(maxSpeedMS)-deltaError || travelledDistance > Math.round(maxSpeedMS)+deltaError) {
+			int deltaDistance =  travelledDistance - Math.round(maxSpeedMS);
+			if(deltaDistance < 0) {
+				coeff -=0.1;
+			}else {
+				coeff +=0.1;
+			}
+			latTick = deltaLat / coeff;
+			lonTick = deltaLon / coeff;
+			travelledDistance = GisTools.computeDistance2(new Coord(vlon,vlat),new Coord(vlon-lonTick,vlat-latTick));
 		}
+		
 		
 		if( distance > 100) {
 			vehicle.setLat(vlat-latTick);
