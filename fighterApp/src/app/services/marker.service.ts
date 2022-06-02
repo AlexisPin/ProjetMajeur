@@ -1,3 +1,4 @@
+import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import * as L from 'leaflet';
 
@@ -6,6 +7,7 @@ import * as L from 'leaflet';
 })
 export class MarkerService {
   private map: any;
+
   firesAPI: string = 'http://vps.cpe-sn.fr:8081/fire';
   filter = {
     inputIntensityMin: 1,
@@ -26,6 +28,7 @@ export class MarkerService {
   //Pas certains du L.Map (le m en majuscule)
   makeFireMarkers(map: L.Map): void {
     this.setMap(map);
+
     let context = {
       method: 'GET',
     };
@@ -42,6 +45,7 @@ export class MarkerService {
   getMap() {
     return this.map;
   }
+
 
   setFilter(x: any) {
     this.filter = x;
