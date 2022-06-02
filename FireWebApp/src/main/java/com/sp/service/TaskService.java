@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -40,19 +39,25 @@ public class TaskService {
 		FireDto[] fires = fService.getFires();
 	    if(fires.length !=0) {
 	    	int distance = 1000000000;
+	    	double efficiency = 0;
 	    	if(!vehicles.isEmpty()) {		
 	    		for(VehicleDto vehicle : vehicles) {
 	    			FireDto interFire = new FireDto();
 	    			VehicleDto interVehicle = new VehicleDto();
 	    			Coord vCoord = new Coord(vehicle.getLon(),vehicle.getLat());
 	    			for(FireDto fire : fires) {
+	    				double newEfficiency = vehicle.getLiquidType().getEfficiency(fire.getType());
 	    				if(!onWorkFire.contains(fire.getId()) && !onWorkVehicle.contains(vehicle.getId())) {
 	    					Coord fCoord = new Coord(fire.getLon(),fire.getLat());    					
 	    					int newDistance = GisTools.computeDistance2(vCoord, fCoord);
-	    					if(distance > newDistance) {
-	    						distance = newDistance;
-	    						interFire = fire;
-	    						interVehicle = vehicle;
+	    					//TO-DO check efficiency of vehicle on this fire 
+	    					if(efficiency <= newEfficiency) {
+	    						efficiency = newEfficiency;
+		    					if(distance > newDistance) {
+		    						distance = newDistance;
+		    						interFire = fire;
+		    						interVehicle = vehicle;
+		    					}
 	    					}
 	    				}
 	    			}
@@ -123,10 +128,10 @@ public class TaskService {
 		double deltaLat =  vlat - dlat;
 		double deltaLon = vlon - dlon;
 		
-		float maxSpeedMS = (float) (vehicle.getType().getMaxSpeed() / 3.60);
+		//float maxSpeedMS = (float) (vehicle.getType().getMaxSpeed() / 3.60);
 	
-		double latTick = deltaLat /1000;
-		double lonTick = deltaLon / 1000;
+		double latTick = deltaLat /10;
+		double lonTick = deltaLon / 10;
 		
 		if(vehicle.getId().equals(255)) {
 			//System.out.println(GisTools.computeDistance2(new Coord(vlon,vlat), new Coord(vlon-latTick,vlat-lonTick)));
