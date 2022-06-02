@@ -24,8 +24,8 @@ function callback(response: any, map: L.Map) {
     let facilityIcon = L.icon({
       iconUrl:
         response[id].name.substring(3, 4) == 2
-          ? '../assets/images/owncaserne.svg'
-          : '../assets/images/caserne.svg',
+          ? '../assets/images/owncaserne.png'
+          : '../assets/images/caserne.png',
       iconSize: [40, 40], // size of the icon
       popupAnchor: [0, -15],
     });

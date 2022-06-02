@@ -101,7 +101,7 @@ function err_callback(error: any) {
 function displayIcon(type: string) {
   const imageUrl = type.substring(0, 3);
 
-  var icon = `./assets/images/fire-${imageUrl}.svg`;
+  var icon = `./assets/images/fire-${imageUrl}.png`;
   var fireIcon = L.icon({
     iconUrl: icon,
     iconSize: [40, 40], // size of the icon
