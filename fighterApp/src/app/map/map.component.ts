@@ -2,6 +2,7 @@ import { Component, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
 import { MarkerService } from 'src/app/services/marker.service';
 import { FacilityMarkerService } from '../services/facility-marker.service';
+import { TruckMarkerService } from '../services/truck-marker.service';
 
 @Component({
   selector: 'app-map',
@@ -33,12 +34,14 @@ export class MapComponent implements AfterViewInit {
 
   constructor(
     private markerService: MarkerService,
-    private facilityMarkerService: FacilityMarkerService
+    private facilityMarkerService: FacilityMarkerService,
+    private truckMarkerService: TruckMarkerService
   ) {}
 
   ngAfterViewInit(): void {
     this.initMap();
     this.markerService.makeFireMarkers(this.map);
     this.facilityMarkerService.makeFacilityMarkers(this.map);
+    this.truckMarkerService.makeTruckMarkers(this.map)
   }
 }
