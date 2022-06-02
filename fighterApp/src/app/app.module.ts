@@ -15,6 +15,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FacilityMarkerService } from './services/facility-marker.service';
 import { VehiculeViewComponent } from './vehicule-view/vehicule-view.component';
 import { TruckMarkerService } from './services/truck-marker.service';
+import { TruckFilterComponent } from './truck-filter/truck-filter.component';
 
 const appRoutes: Routes = [
   { path: 'map', component: ViewMapComponent },
@@ -32,6 +33,7 @@ const appRoutes: Routes = [
     ViewMapComponent,
     MapFilterComponent,
     VehiculeViewComponent,
+    TruckFilterComponent,
   ],
   imports: [
     BrowserModule,

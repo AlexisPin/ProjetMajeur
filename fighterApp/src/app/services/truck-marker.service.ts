@@ -7,6 +7,24 @@ import * as L from 'leaflet';
 export class TruckMarkerService {
   facilityAPI: string = 'http://vps.cpe-sn.fr:8081/vehicle';
   marker_layer : any = L.layerGroup();
+  private map: any;
+
+  filter = {
+      CAR : true,
+      FIRE_ENGINE : true,
+      PUMPER_TRUCK : true,
+      WATER_TENDER : true,
+      TURNTABLE_LADDER_TRUCK : true,
+      TRUCK : true,
+      ALL : true,
+      WATER : true,
+      WATER_WITH_ADDITIVES : true,
+      CARBON_DIOXIDE : true,
+      POWDER : true,
+  };
+
+
+
   constructor() {}
 
   makeTruckMarkers(map: L.Map): void {
@@ -15,7 +33,7 @@ export class TruckMarkerService {
     };
     fetch(this.facilityAPI, context)
       .then((response) => response.json())
-      .then((response) => this.callback(response, map))
+      .then((response) => this.callback(response, map, this.filter))
       .catch((error) => this.err_callback(error));
   }
 
@@ -44,15 +62,25 @@ export class TruckMarkerService {
       }
     }
   }
+
+  getMap() {
+    return this.map;
+  }
   
-  
-  callback(response: any, map: L.Map) {
+  setFilter(x: any) {
+    this.filter = x;
+    console.log(this.filter);
+    var map: L.Map = this.getMap();
+    this.makeTruckMarkers(map);
+  }
+
+  callback(response: any, map: L.Map, filter : any) {
     var markers = new Array();
     var i = 0;
     if (map.hasLayer(this.marker_layer)) {
       this.marker_layer.clearLayers();
   }
-    for (let id in response) {
+    for (let id in response) {      
       let facilityIcon = L.icon({
         iconUrl:'../assets/images/vehicule.png',
         iconSize: [40, 40], // size of the icon
@@ -60,19 +88,23 @@ export class TruckMarkerService {
       });
       const lat = response[id].lat;
       const lon = response[id].lon;
-      markers[i] = L.marker([lat, lon], { icon: facilityIcon });
-      this.marker_layer.addLayer(markers[i]);
-      markers[i].bindPopup(
-        `<h2>
-          ${response[id].type} ${response[id].id}
-          </h2>
-          <h5> LiquidType : ${response[id].liquidType}</h5>
-          <h5> Qty : ${response[id].liquidQuantity}</h5>
-          <h5> Fuel : ${response[id].fuel}</h5>
-          <h5> CrewMember : ${response[id].crewMember}</h5>
-          <h5> FaciltyID : ${response[id].facilityRefID}</h5>`
-      );
-      i++;
+      const type = response[id].type;
+      const liqtype = response[id].liquidType
+      if (filter[type] && filter[liqtype]){
+        markers[i] = L.marker([lat, lon], { icon: facilityIcon });
+        this.marker_layer.addLayer(markers[i]);
+        markers[i].bindPopup(
+          `<h2>
+            ${response[id].type} ${response[id].id}
+            </h2>
+            <h5> LiquidType : ${response[id].liquidType}</h5>
+            <h5> Qty : ${response[id].liquidQuantity}</h5>
+            <h5> Fuel : ${response[id].fuel}</h5>
+            <h5> CrewMember : ${response[id].crewMember}</h5>
+            <h5> FaciltyID : ${response[id].facilityRefID}</h5>`
+        );
+        i++;
+      }
     }
     this.marker_layer.addTo(map);
     markers.splice(0);
