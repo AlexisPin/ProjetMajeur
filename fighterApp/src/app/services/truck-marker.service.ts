@@ -24,7 +24,7 @@ function callback(response: any, map: L.Map) {
   for (let id in response) {
     let facilityIcon = L.icon({
       iconUrl:'../assets/images/vehicule.png',
-      iconSize: [40, 40], // size of the icon
+      iconSize: [30, 30], // size of the icon
       popupAnchor: [0, -15],
     });
     const lat = response[id].lat;
