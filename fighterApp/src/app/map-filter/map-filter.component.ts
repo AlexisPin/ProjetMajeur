@@ -21,13 +21,13 @@ export class MapFilterComponent implements OnInit  {
       inputIntensityMax: new FormControl(100),
       inputRangeMin:     new FormControl(1),
       inputRangeMax:     new FormControl(100),
-      fireA:             new FormControl(true),
-      fireBg:            new FormControl(true),
-      fireBa:            new FormControl(true),
-      fireBp:            new FormControl(true),
-      fireCfg:           new FormControl(true),
-      fireDm:            new FormControl(true),
-      fireEe:            new FormControl(true)
+      A:             new FormControl(true),
+      B_Gasoline:            new FormControl(true),
+      B_Alcohol:            new FormControl(true),
+      B_Plastics:            new FormControl(true),
+      C_Flammable_Gases:           new FormControl(true),
+      D_Metals:            new FormControl(true),
+      E_Electric:            new FormControl(true)
     })
 
     this.myForm.valueChanges.subscribe(x => {
