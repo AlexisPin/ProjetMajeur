@@ -91,7 +91,7 @@ public class TaskService {
 	private void backToFacility(VehicleDto vehicle,Coord initialVehCoord) {
 		FacilityDto facility =  faService.getFacility(vehicle.getFacilityRefID());
 		Coord facilityCoord = new Coord(facility.getLon(),facility.getLat());
-		deplacement(vehicle,initialVehCoord, facilityCoord,false);
+		deplacement(vehicle, facilityCoord,false);
 	}
 	
 	
@@ -102,7 +102,7 @@ public class TaskService {
 			if(liquidQuantity <= 0 || fuelQuantity <= 0) {
 				backToFacility(vehicle,initialVehCoord);
 			} else {
-				deplacement(vehicle,initialVehCoord, fireCoord,true);
+				deplacement(vehicle, fireCoord,true);
 			}
 	}
 	
@@ -111,19 +111,26 @@ public class TaskService {
 	}
 
 	
-	private void deplacement(VehicleDto vehicle,Coord initialVehCoord, Coord coordFinal, Boolean intervention) {
-		if(vehicle.getId().equals(255)) {
-			System.out.println(initialVehCoord);
-		}
+	private void deplacement(VehicleDto vehicle, Coord coordFinal, Boolean intervention) {
+		
 		double vlat = vehicle.getLat();
 		double vlon = vehicle.getLon();
 		double dlat = coordFinal.getLat();
 		double dlon = coordFinal.getLon();
+
 		double distance = GisTools.computeDistance2(new Coord(vlon,vlat),new Coord(dlon,dlat));
-		double deltaLat = initialVehCoord.getLat() - dlat;
-		double deltaLon = initialVehCoord.getLon() - dlon;
-		double latTick = deltaLat / 100;
-		double lonTick = deltaLon / 100;
+		
+		double deltaLat =  vlat - dlat;
+		double deltaLon = vlon - dlon;
+		
+		float maxSpeedMS = (float) (vehicle.getType().getMaxSpeed() / 3.60);
+	
+		double latTick = deltaLat /1000;
+		double lonTick = deltaLon / 1000;
+		
+		if(vehicle.getId().equals(255)) {
+			//System.out.println(GisTools.computeDistance2(new Coord(vlon,vlat), new Coord(vlon-latTick,vlat-lonTick)));
+		}
 		
 		if( distance > 100) {
 			vehicle.setLat(vlat-latTick);
@@ -134,7 +141,8 @@ public class TaskService {
 		else {
 			if(intervention) {
 				intervention(vehicle);
-			}else {
+			}
+			else {
 				vehicle.setLiquidQuantity(vehicle.getType().getLiquidCapacity());
 				vehicle.setFuel(vehicle.getType().getFuelCapacity());
 			}
