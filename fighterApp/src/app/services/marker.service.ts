@@ -1,3 +1,4 @@
+import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import * as L from 'leaflet';
 
@@ -6,6 +7,7 @@ import * as L from 'leaflet';
 })
 export class MarkerService {
   private map: any;
+
   firesAPI: string = 'http://vps.cpe-sn.fr:8081/fire';
   filter = {
     inputIntensityMin: 1,
@@ -26,6 +28,7 @@ export class MarkerService {
   //Pas certains du L.Map (le m en majuscule)
   makeFireMarkers(map: L.Map): void {
     this.setMap(map);
+
     let context = {
       method: 'GET',
     };
@@ -43,6 +46,7 @@ export class MarkerService {
     return this.map;
   }
 
+
   setFilter(x: any) {
     this.filter = x;
     console.log(this.filter);
@@ -50,8 +54,7 @@ export class MarkerService {
   }
 }
 function callback(response: any, map: L.Map, filter: any) {
-  var fires = L.layerGroup();
-  map.addLayer(fires);
+ 
   for (let id in response) {
     const lat = response[id].lat;
     const lon = response[id].lon;
@@ -65,11 +68,13 @@ function callback(response: any, map: L.Map, filter: any) {
       range <= filter.inputRangeMax &&
       range >= filter.inputRangeMin
     ) {
-      //if (filter.$type){
+      //if (filter.type){
       const marker = L.marker([lat, lon], {
         icon: displayIcon(response[id].type),
       });
-      marker.addTo(fires);
+
+      marker.addTo(map);
+
       var myPopup = L.DomUtil.create('div', 'info-popup');
       myPopup.innerHTML = `<h2>FIRE ${response[id].id}  </h2> 
       <h5>Fire Type : ${response[id].type} </h5>
@@ -77,12 +82,13 @@ function callback(response: any, map: L.Map, filter: any) {
       <h5>Range : ${response[id].range} </h5>
       <button type="button" class="btn btn-outline-danger">Delete</button>`;
       marker.bindPopup(myPopup);
-
+      
       myPopup.lastElementChild?.addEventListener('click', function () {
         deleteMarket(marker);
       });
     }
   }
+
 }
 function deleteMarket(marker: any) {
   marker.remove();

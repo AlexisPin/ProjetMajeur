@@ -30,17 +30,11 @@ export class MapFilterComponent implements OnInit  {
       fireEe:            new FormControl(true)
     })
 
+    //When one value changes on the fire form
     this.myForm.valueChanges.subscribe(x => {
-      console.log('form changed')
+      //console.log('form changed')
       //console.log(x)
       this.markerService.setFilter(x);
     });
   }
-
-  onChanges(): void {
-    this.myForm.valueChanges.subscribe(val => {
-      this.formattedMessage = `je suis ${val}`
-    });
-  }
-
 }
