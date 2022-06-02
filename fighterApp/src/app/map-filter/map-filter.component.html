@@ -1,91 +1,122 @@
-<div class="container-fluid px-1 px-sm-4 py-5 mx-auto">
-  <div class="row d-flex justify-content-center">
-    <div class="col-md-10 col-lg-9 col-xl-8">
-      <div class="card border-0">
-        <div class="card-header bg-white">
-          <form [formGroup]="myForm">
-            <h2>Fire's intensity</h2>
-            <label for="inputIntensityMin">Min</label>
-            <input
-              type="number"
-              min="1"
-              max="99"
-              id="inputIntensityMin"
-              formControlName="inputIntensityMin"
-            />
-            <label for="inputIntensityMax">Max</label>
-            <input
-              type="number"
-              min="2"
-              max="100"
-              id="inputIntensityMax"
-              formControlName="inputIntensityMax"
-            />
+<div class="card my-3 align-items-center">
+  <div class="card-header w-100 align-items-center">Fire Filter</div>
+  <div class="card-body">
+              <form [formGroup]="myForm">
+                <h2>Intensity</h2>
+                <label for="inputIntensityMin"><i class="bi bi-chevron-bar-down"></i></label>
+                <input
+                  type="number"
+                  min="1"
+                  max="99"
+                  id="inputIntensityMin"
+                  formControlName="inputIntensityMin"
+                />
 
-            <h2>Fire's range</h2>
-            <label for="inputRangeMin">Min</label>
-            <input
-              type="number"
-              min="1"
-              max="99"
-              id="inputRangeMin"
-              formControlName="inputRangeMin"
-            />
-            <label for="inputRangeMax">Max</label>
-            <input
-              type="number"
-              min="2"
-              max="100"
-              id="inputRangeMax"
-              formControlName="inputRangeMax"
-            />
+                <label for="inputIntensityMax"><i class="bi bi-chevron-bar-up"></i></label>
+                <input
+                  type="number"
+                  min="2"
+                  max="100"
+                  id="inputIntensityMax"
+                  formControlName="inputIntensityMax"
+                />
+    
+                <h2>Range</h2>
+                <label for="inputRangeMin"><i class="bi bi-chevron-bar-down"></i></label>
+                <input
+                  type="number"
+                  min="1"
+                  max="99"
+                  id="inputRangeMin"
+                  formControlName="inputRangeMin"
+                />
+                <label for="inputRangeMax"><i class="bi bi-chevron-bar-up"></i></label>
+                <input
+                  type="number"
+                  min="2"
+                  max="100"
+                  id="inputRangeMax"
+                  formControlName="inputRangeMax"
+                />
+    
+                <h2>Type</h2>
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="fireA"
+                    value="A"
+                    formControlName="A"
+                  />
+                  <label class="form-check-label" for="flexSwitchCheckDefault">A</label>
+                </div>
+                  
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="fireBg"
+                    value="Bg"
+                    formControlName="B_Gasoline"
+                    />
+                    <label class="form-check-label" for="flexSwitchCheckDefault">B_Gasoline</label>
+                  </div>
 
-            <h2>Fire type</h2>
-            <input
-              type="checkbox"
-              id="fireA"
-              value="A"
-              formControlName="A"
-            />A<br />
-            <input
-              type="checkbox"
-              id="fireBg"
-              value="Bg"
-              formControlName="B_Gasoline"
-            />B_Gasoline<br />
-            <input
-              type="checkbox"
-              id="fireBa"
-              value="Ba"
-              formControlName="B_Alcohol"
-            />B_Alcohol<br />
-            <input
-              type="checkbox"
-              id="fireBp"
-              value="Bp"
-              formControlName="B_Plastics"
-            />B_Plastics<br />
-            <input
-              type="checkbox"
-              id="fireCfg"
-              value="Cf"
-              formControlName="C_Flammable_Gases"
-            />C_Flammable_Gases<br />
-            <input
-              type="checkbox"
-              id="fireDm"
-              value="Dm"
-              formControlName="D_Metals"
-            />D_Metals<br />
-            <input
-              type="checkbox"
-              id="fireEe"
-              value="Ee"
-              formControlName="E_Electric"
-            />E_Electric<br />
-          </form>
-        </div>
-      </div>
-    </div>
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="fireBa"
+                    value="Ba"
+                    formControlName="B_Alcohol"
+                  />
+                  <label class="form-check-label" for="flexSwitchCheckDefault">B_Alcohol</label>
+                </div>
+
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="fireBp"
+                    value="Bp"
+                    formControlName="B_Plastics"
+                  />
+                  <label class="form-check-label" for="flexSwitchCheckDefault">B_Plastics</label>
+                </div>
+
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="fireCfg"
+                    value="Cf"
+                    formControlName="C_Flammable_Gases"
+                  />
+                  <label class="form-check-label" for="flexSwitchCheckDefault">C_Flammable_Gases</label>
+                </div>
+
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="fireDm"
+                    value="Dm"
+                    formControlName="D_Metals"
+                  />
+                  <label class="form-check-label" for="flexSwitchCheckDefault">D_Metals</label>
+                </div>
+
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="fireEe"
+                    value="Ee"
+                    formControlName="E_Electric"
+                  />
+                  <label class="form-check-label" for="flexSwitchCheckDefault">E_Electric</label>
+                </div>
+
+              </form>
   </div>
 </div>

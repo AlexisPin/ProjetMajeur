@@ -1,6 +1,1 @@
-/* You can add global styles to this file, and also import other style files */
-.custom .leaflet-popup-tip,
-.custom .leaflet-popup-content-wrapper {
-    background: #e93434;
-    color: #ffffff;
-}
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css");
