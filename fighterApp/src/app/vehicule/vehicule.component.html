@@ -1,48 +1,62 @@
 <div class="container-fluid col-6">
-  <form [formGroup]="AddVehicle" (ngSubmit)="onSubmit()">
-    <div class="form-group m-4">
-      <label for="vehicleType">Type de vehicule</label>
-      <select
-        id="vehicleType"
-        class="form-control"
-        formControlName="vehicleType"
+  <div class="card m-4">
+  <div class="card-header">
+    Ajout d'un véhicule
+  </div>
+  <div class="card-body">
+    <form [formGroup]="AddVehicle" (ngSubmit)="onSubmit()">
+      <div class="form-group m-4">
+        <label for="vehicleType">Type de vehicule</label>
+        <select
+          id="vehicleType"
+          class="form-control"
+          formControlName="vehicleType"
+        >
+          <option value="" disabled selected>
+            Choisissez un type de vehicule
+          </option>
+          <option *ngFor="let fire of Fire">
+            {{ fire }}
+          </option>
+        </select>
+      </div>
+      <div class="form-group m-4">
+        <label for="liquidType">Type de liquide</label>
+        <select id="liquidType" class="form-control" formControlName="liquidType">
+          <option value="" disabled selected>
+            Choisissez un type de liquide
+          </option>
+          <option *ngFor="let liquid of Liquid">
+            {{ liquid }}
+          </option>
+        </select>
+      </div>
+      <div class="form-group m-4">
+        <label for="facility">Caserne à affecter</label>
+        <select id="facility" class="form-control" formControlName="facility">
+          <option value="" disabled selected>Caserne</option>
+          <option *ngFor="let facility of Facility" [ngValue]="facility">
+            {{ facility.name }}
+          </option>
+        </select>
+      </div>
+      <button
+        *ngIf="AddVehicle.invalid"
+        class="btn btn-secondary m-4"
+        type="submit"
+        [disabled]="true"
       >
-        <option value="" disabled selected>
-          Choisissez un type de vehicule
-        </option>
-        <option *ngFor="let fire of Fire">
-          {{ fire }}
-        </option>
-      </select>
-    </div>
-    <div class="form-group m-4">
-      <label for="liquidType">Type de liquide</label>
-      <select id="liquidType" class="form-control" formControlName="liquidType">
-        <option value="" disabled selected>
-          Choisissez un type de liquide
-        </option>
-        <option *ngFor="let liquid of Liquid">
-          {{ liquid }}
-        </option>
-      </select>
-    </div>
-    <div class="form-group m-4">
-      <label for="facility">Caserne à affecter</label>
-      <select id="facility" class="form-control" formControlName="facility">
-        <option value="" disabled selected>Caserne</option>
-        <option *ngFor="let facility of Facility" [ngValue]="facility">
-          {{ facility.name }}
-        </option>
-      </select>
-    </div>
-    <button
-      class="btn btn-primary m-4"
-      type="submit"
-      [disabled]="AddVehicle.invalid"
-    >
-      Ajouter vehicule
-    </button>
-  </form>
-</div>
+      <i class="bi bi-clipboard"></i> Ajouter vehicule
+      </button>
 
-<button type="button" routerLink="/vehicules" class="btn btn-primary">List of vehicles</button>
+      <button
+        *ngIf="AddVehicle.valid"
+        class="btn btn-primary m-4"
+        type="submit"
+      >
+      <i class="bi bi-clipboard-plus"></i> Ajouter vehicule
+      </button>
+    </form>
+  </div>
+</div>
+</div>

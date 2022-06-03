@@ -4,39 +4,40 @@
         class="card col-6 col-sm-4 col-md-3 p-2"
         *ngFor="let vehicule of vehicules; let i = index"
       >
-      <div class="card-header">
-        <i class="bi bi-truck"></i> : {{ vehicule.type }} {{ vehicule.id }}
-      </div>
-      <div class="card-body">
-        <p class="card-text">
-          <i class="bi bi-person-fill"></i> : {{ vehicule.crewMember }} 
-          <br>
-          Fuel restant :
-          {{ vehicule.fuel }} 
-          <i class="bi bi-reception-0" *ngIf="vehicule.fuel < 10"></i>
-          <i class="bi bi-reception-1" *ngIf="vehicule.fuel < 30 && vehicule.fuel > 10"></i>
-          <i class="bi bi-reception-2" *ngIf="vehicule.fuel < 60 && vehicule.fuel > 30"></i>
-          <i class="bi bi-reception-3" *ngIf="vehicule.fuel < 80 && vehicule.fuel > 60"></i>
-          <i class="bi bi-reception-4" *ngIf="vehicule.fuel > 80"></i>
-          
-          <br>
-          Type de liquide :
-          {{ vehicule.liquidType }} 
-          <br>
-          Liquide restant :
-          
-          {{ vehicule.liquidQuantity }}
-          <i class="bi bi-reception-0" *ngIf="vehicule.liquidQuantity < 10"></i>
-          <i class="bi bi-reception-1" *ngIf="vehicule.liquidQuantity < 30 && vehicule.liquidQuantity > 9"></i>
-          <i class="bi bi-reception-2" *ngIf="vehicule.liquidQuantity < 60 && vehicule.liquidQuantity > 29"></i>
-          <i class="bi bi-reception-3" *ngIf="vehicule.liquidQuantity < 80 && vehicule.liquidQuantity > 59"></i>
-          <i class="bi bi-reception-4" *ngIf="vehicule.liquidQuantity > 80"></i>
-        </p>
-      </div>  
+        <div class="card-header">
+          <i class="bi bi-truck"></i> : {{ vehicule.type }} {{ vehicule.id }}
+        </div>
+        <div class="card-body">
+          <p class="card-text">
+            <i class="bi bi-person-fill"></i> : {{ vehicule.crewMember }} 
+            <br>
+            Fuel restant :
+            {{ vehicule.fuel }} 
+            <i class="bi bi-reception-0" *ngIf="vehicule.fuel < 10"></i>
+            <i class="bi bi-reception-1" *ngIf="vehicule.fuel < 30 && vehicule.fuel > 10"></i>
+            <i class="bi bi-reception-2" *ngIf="vehicule.fuel < 60 && vehicule.fuel > 30"></i>
+            <i class="bi bi-reception-3" *ngIf="vehicule.fuel < 80 && vehicule.fuel > 60"></i>
+            <i class="bi bi-reception-4" *ngIf="vehicule.fuel > 80"></i>
+            
+            <br>
+            Type de liquide :
+            {{ vehicule.liquidType }} 
+            <br>
+            Liquide restant :
+            
+            {{ vehicule.liquidQuantity }}
+            <i class="bi bi-reception-0" *ngIf="vehicule.liquidQuantity < 10"></i>
+            <i class="bi bi-reception-1" *ngIf="vehicule.liquidQuantity < 30 && vehicule.liquidQuantity > 9"></i>
+            <i class="bi bi-reception-2" *ngIf="vehicule.liquidQuantity < 60 && vehicule.liquidQuantity > 29"></i>
+            <i class="bi bi-reception-3" *ngIf="vehicule.liquidQuantity < 80 && vehicule.liquidQuantity > 59"></i>
+            <i class="bi bi-reception-4" *ngIf="vehicule.liquidQuantity > 80"></i>
+          </p>
+        </div>  
 
-        
-        <button class="btn btn-primary" (click)="onEdit()">Editer</button>
-        <button class="btn btn-danger" (click)="onDelete(vehicule)">Supprimer</button>
+        <div class="card-footer" *ngIf="vehicule.name != 2">
+          <button class="btn btn-primary" (click)="onEdit()">Editer</button>
+          <button class="btn btn-danger"  (click)="onDelete(vehicule)">Supprimer</button>
+        </div>
       </div>
     </div>
     </div>
