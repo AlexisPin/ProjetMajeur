@@ -90,10 +90,10 @@ export class TruckMarkerService {
 
   callback(response: any, map: L.Map, filter : any) {
     var i = 0;
-
-    for (let id in response) {      
+    
+    for (let id in response) {   
       let facilityIcon = L.icon({
-        iconUrl:'../assets/images/vehicule.png',
+        iconUrl: `../assets/images/our_${response[id].type.toLowerCase()}.png`,
         iconSize: [40, 40], // size of the icon
         popupAnchor: [0, -15],
       });
