@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -44,7 +43,6 @@ public class EmergencyManager {
 		ArrayList<VehicleDto> vehicles = vService.getOwnVehicles();
 		FireDto[] fires = fService.getFires();
 	    if(fires.length !=0) {
-	    	System.out.println(fires.length);
 	    	double distance = 1000000000;
 	    	double efficiency = 0;
 	    	if(!vehicles.isEmpty()) {		
@@ -83,8 +81,6 @@ public class EmergencyManager {
 	    		triggerEvent();
 
 	    }
-	} else {
-		System.out.println("Pas de feu !");
 	}
 }
 	
@@ -152,7 +148,8 @@ public class EmergencyManager {
 		
 		 while(travelledDistance < Math.round(maxSpeedMS)-deltaError ||travelledDistance > Math.round(maxSpeedMS)+deltaError) { 
 		      int deltaDistance =travelledDistance - Math.round(maxSpeedMS); 
-		      if(deltaDistance < 0) { coeff-=0.1; 
+		      if(deltaDistance < 0) { 
+		    	  coeff-=0.1; 
 		      }
 		      else { 
 		    	  coeff +=0.1; 
