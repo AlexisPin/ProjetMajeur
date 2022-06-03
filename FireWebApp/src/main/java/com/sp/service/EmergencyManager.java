@@ -124,7 +124,7 @@ public class EmergencyManager {
 	}
 	
 	private void saveChanges(VehicleDto vehicle) {
-    	//vService.updateVehicle("bd4dd8f2-c28d-46ba-a342-9d9b99259a67", vehicle.getId(), vehicle);
+    	vService.updateVehicle("bd4dd8f2-c28d-46ba-a342-9d9b99259a67", vehicle.getId(), vehicle);
 	}
 
 	
