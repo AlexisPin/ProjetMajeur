@@ -1,0 +1,13 @@
+com\sp\rest\FetchVehicle.class
+com\sp\service\VehicleService.class
+com\sp\service\FacilityService.class
+com\sp\service\VehicleFireService.class
+com\sp\rest\VehicleRest.class
+com\sp\service\FireService.class
+com\sp\rest\FetchFacility.class
+com\sp\rest\FacilityRest.class
+com\sp\rest\FireRest.class
+com\sp\rest\FetchFire.class
+com\sp\rest\VehicleFireRest.class
+com\sp\FireWebApp.class
+com\sp\service\EmergencyManager.class

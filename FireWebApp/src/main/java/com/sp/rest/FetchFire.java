@@ -1,5 +1,8 @@
 package com.sp.rest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -41,6 +44,19 @@ public class FetchFire {
 		 
 		Integer distance = result.getBody();
 		return distance;
+	}
+
+	public List<Integer> getFireId() {
+		// Send request with GET method and default Headers.
+		ResponseEntity<FireDto[] > result = restTemplate.getForEntity(URL_FIRES, FireDto[] .class);
+		
+		FireDto[] fires = result.getBody();
+		List<Integer> firesId = new ArrayList<Integer>();
+		for(FireDto fire : fires) {
+			firesId.add(fire.getId());
+		}
+		
+		return firesId;
 	}
 	
 	

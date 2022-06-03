@@ -32,6 +32,17 @@ public class VehicleService {
 		return ownVehicle;
 	}
 	
+	public ArrayList<VehicleDto> getOpponentsVehicles() {
+		VehicleDto[] vehicles = getVehicles();
+		ArrayList<VehicleDto> opponentVehicle = new ArrayList<>();
+		for(VehicleDto vehicle : vehicles) {
+			if(!fService.getOwnFacilities().contains(vehicle.getFacilityRefID())) {
+				opponentVehicle.add(vehicle);
+			}
+		}
+		return opponentVehicle;
+	}
+	
 	public VehicleDto getVehicle(Integer id) {
 		VehicleDto vehicle = fetch.getVehicle(id);
 		return vehicle;

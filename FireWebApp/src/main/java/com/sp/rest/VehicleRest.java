@@ -43,6 +43,12 @@ public class VehicleRest {
         
     }
     
+    @RequestMapping(method=RequestMethod.GET,value="/opponent/vehicle")
+    public ArrayList<VehicleDto> getOpponentsVehicles() {
+		return vService.getOpponentsVehicles();
+        
+    }
+    
     @RequestMapping(method=RequestMethod.GET,value="/vehicle/{id}")
     public VehicleDto getVehicle(@PathVariable String id) {
 		return vService.getVehicle(Integer.valueOf(id));
