@@ -7,9 +7,6 @@ import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.project.model.dto.FireDto;
-import com.sp.model.Route;
-import com.sp.rest.FetchFire;
 import com.sp.rest.FetchRoute;
 
 
