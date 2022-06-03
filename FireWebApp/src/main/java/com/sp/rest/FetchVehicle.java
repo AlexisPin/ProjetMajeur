@@ -46,7 +46,7 @@ public class FetchVehicle {
 		HttpEntity<?> requestBody = new HttpEntity<>(vDto, headers);
 		
 		// Send request with PUT method.
-		restTemplate.put(URL_VEHICLE+"/"+uuid+"/"+id, requestBody, new Object[] {});
+		restTemplate.postForEntity(URL_VEHICLE+"/"+uuid+"/", requestBody, VehicleDto.class);
 		return vDto;
 	}
 

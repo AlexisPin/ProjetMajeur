@@ -22,6 +22,5 @@ public class VehicleFireRest {
     public Map<Integer, VehicleDto>  getVehiclesFiresCoord() {
     	return vfService.getVehiclesFiresCoord();
     }
-    
-
 }
+
