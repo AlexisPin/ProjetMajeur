@@ -29,6 +29,7 @@ function callback(response: any, map: L.Map) {
       iconSize: [40, 40], // size of the icon
       popupAnchor: [0, -15],
     });
+
     const lat = response[id].lat;
     const lon = response[id].lon;
     const marker = L.marker([lat, lon], { icon: facilityIcon });
