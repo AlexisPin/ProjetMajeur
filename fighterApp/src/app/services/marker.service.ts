@@ -9,6 +9,7 @@ export class MarkerService {
   private map: any;
   marker_layer : any = L.layerGroup();
   firesAPI: string = 'http://vps.cpe-sn.fr:8081/fire';
+
   filter = {
     inputIntensityMin: 1,
     inputIntensityMax: 100,
@@ -44,7 +45,7 @@ export class MarkerService {
     };
     fetch(this.firesAPI, context)
       .then((response) => response.json())
-      .then((response) => this.updateCallback(response, map, this.filter))
+      .then((response) => this.updateCallback(response, map))
       .catch((error) => this.err_callback(error));
   }
 
@@ -59,7 +60,6 @@ export class MarkerService {
 
   setFilter(x: any) {
     this.filter = x;
-    console.log(this.filter);
     var map: L.Map = this.getMap();
     this.makeFireMarkers(map);
   }
@@ -101,7 +101,7 @@ export class MarkerService {
     markers.splice(0);
   }
 
-  updateCallback(response: any, map: L.Map, filter: any){
+  updateCallback(response: any, map: L.Map){
     if (map.hasLayer(this.marker_layer)) {
       const markers = this.marker_layer.getLayers();
       if (markers.length != response.length){

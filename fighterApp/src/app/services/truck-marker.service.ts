@@ -23,11 +23,13 @@ export class TruckMarkerService {
       POWDER : true,
   };
 
-
+  idMatch : any = [];
+  markers : any = [];
 
   constructor() {}
 
   makeTruckMarkers(map: L.Map): void {
+    this.setMap(map);
     let context = {
       method: 'GET',
     };
@@ -49,18 +51,23 @@ export class TruckMarkerService {
 
   updateCallback(response: any, map: L.Map){
     if (map.hasLayer(this.marker_layer)) {
-      const markers = this.marker_layer.getLayers();
-      if (markers.length != response.length){
-        this.makeTruckMarkers(map);
-      }
       for(let id in response){
         const lat = response[id].lat;
         const lon = response[id].lon;
-        var newLatLng = new L.LatLng(lat, lon);
-        var marker = markers[id];
-        marker.setLatLng(newLatLng);     
+        const truckId = response[id].id;
+        var marker = this.markers[truckId];
+        var markerLat = marker['_latlng'].lat;
+        var markerLon = marker['_latlng'].lng;
+        if (lat != markerLat && lon != markerLon){
+          var newLatLng = new L.LatLng(lat, lon);
+          marker.setLatLng(newLatLng);  
+        }   
       }
     }
+  }
+
+  setMap(map: L.Map) {
+    this.map = map;
   }
 
   getMap() {
@@ -71,29 +78,35 @@ export class TruckMarkerService {
     this.filter = x;
     console.log(this.filter);
     var map: L.Map = this.getMap();
-    this.makeTruckMarkers(map);
+    this.removeLayer(map);
+    
+  }
+
+  removeLayer(map : any){
+    if (map.hasLayer(this.marker_layer)) {
+      this.marker_layer.clearLayers();
+   }
+   this.makeTruckMarkers(map);
   }
 
   callback(response: any, map: L.Map, filter : any) {
-    var markers = new Array();
     var i = 0;
-    if (map.hasLayer(this.marker_layer)) {
-      this.marker_layer.clearLayers();
-  }
+
     for (let id in response) {      
       let facilityIcon = L.icon({
         iconUrl:'../assets/images/vehicule.png',
         iconSize: [40, 40], // size of the icon
         popupAnchor: [0, -15],
       });
+      const truckId = response[id].id;
       const lat = response[id].lat;
       const lon = response[id].lon;
       const type = response[id].type;
-      const liqtype = response[id].liquidType
+      const liqtype = response[id].liquidType;
+      this.markers[truckId] = L.marker([lat, lon], { icon: facilityIcon });
       if (filter[type] && filter[liqtype]){
-        markers[i] = L.marker([lat, lon], { icon: facilityIcon });
-        this.marker_layer.addLayer(markers[i]);
-        markers[i].bindPopup(
+        this.marker_layer.addLayer(this.markers[truckId]);
+        this.markers[truckId].bindPopup(
           `<h2>
             ${response[id].type} ${response[id].id}
             </h2>
@@ -103,11 +116,9 @@ export class TruckMarkerService {
             <h5> CrewMember : ${response[id].crewMember}</h5>
             <h5> FaciltyID : ${response[id].facilityRefID}</h5>`
         );
-        i++;
       }
     }
     this.marker_layer.addTo(map);
-    markers.splice(0);
   }
   
   
