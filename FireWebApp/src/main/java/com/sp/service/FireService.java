@@ -1,5 +1,7 @@
 package com.sp.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.project.model.dto.FireDto;
@@ -21,5 +23,9 @@ public class FireService {
 		return fire;
 	}
 	
-	
+	public List<Integer> getFiresId() {
+		List<Integer>  fires = fetch.getFireId();
+		
+		return fires;
+	}
 }
