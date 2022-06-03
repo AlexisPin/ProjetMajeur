@@ -24,6 +24,8 @@ export class MarkerService {
     E_Electric: true,
   };
 
+  markers : any = [];
+
   constructor() {}
 
   //Pas certains du L.Map (le m en majuscule)
@@ -64,17 +66,18 @@ export class MarkerService {
     this.makeFireMarkers(map);
   }
   callback(response: any, map: L.Map, filter: any) {
-    var markers = new Array();
     var i = 0;
     if (map.hasLayer(this.marker_layer)) {
       this.marker_layer.clearLayers();
   }
     for (let id in response) {
+      const fireId = response[id].id;
       const lat = response[id].lat;
       const lon = response[id].lon;
       const intensity = response[id].intensity;
       const range = response[id].range;
       const type = response[id].type;
+      this.markers[fireId] = L.marker([lat, lon])
       if (
         intensity <= filter.inputIntensityMax &&
         intensity >= filter.inputIntensityMin &&
@@ -82,23 +85,23 @@ export class MarkerService {
         range >= filter.inputRangeMin
       ) {
        if (filter[type]){
-        markers[i] = L.marker([lat, lon], {
+        this.markers[fireId] = L.marker([lat, lon], {
           icon: this.displayIcon(response[id].type),
         });
-        this.marker_layer.addLayer(markers[i]);
+        this.marker_layer.addLayer(this.markers[fireId]);
+
         var myPopup = L.DomUtil.create('div', 'info-popup');
         myPopup.innerHTML = `<h2>FIRE ${response[id].id}  </h2> 
         <h5>Fire Type : ${response[id].type} </h5>
         <h5>Intensity : ${response[id].intensity} </h5>
         <h5>Range : ${response[id].range} </h5>`;
-        markers[i].bindPopup(myPopup);
+        this.markers[fireId].bindPopup(myPopup);
        }
         
       }
       i++;
     }
     this.marker_layer.addTo(map);
-    markers.splice(0);
   }
 
   updateCallback(response: any, map: L.Map){
@@ -107,6 +110,38 @@ export class MarkerService {
       if (markers.length != response.length){
         this.makeFireMarkers(map);
       }  
+      else {
+        this.setMap(map);
+
+        let context = {
+          method: 'GET',
+        };
+        fetch(this.firesAPI, context)
+          .then((response) => response.json())
+          .then((response) => this.updatePopUp(response, map))
+          .catch((error) => this.err_callback(error));
+      }
+    }
+  }
+
+  updatePopUp(response:any, map: L.Map){
+    for (let id in response) {
+      const fireId = response[id].id;
+      const lat = response[id].lat;
+      const lon = response[id].lon;
+      const intensity = response[id].intensity;
+      const range = response[id].range;
+      const type = response[id].type;
+      var marker = this.markers[fireId];
+      var markerLat = marker['_latlng'].lat;
+      var markerLon = marker['_latlng'].lng;
+
+      var myPopup = L.DomUtil.create('div', 'info-popup');
+        myPopup.innerHTML = `<h2>FIRE ${response[id].id}  </h2> 
+        <h5>Fire Type : ${response[id].type} </h5>
+        <h5>Intensity : ${response[id].intensity} </h5>
+        <h5>Range : ${response[id].range} </h5>`;
+        this.markers[fireId].setPopupContent(myPopup);
     }
   }
   

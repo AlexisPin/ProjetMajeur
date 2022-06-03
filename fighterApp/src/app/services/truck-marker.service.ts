@@ -23,7 +23,6 @@ export class TruckMarkerService {
       POWDER : true,
   };
 
-  idMatch : any = [];
   markers : any = [];
 
   constructor() {}
