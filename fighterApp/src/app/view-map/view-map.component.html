@@ -6,8 +6,23 @@
         </div>
         
         <div class="col-md-4 col-sm-4">
-            <app-map-filter></app-map-filter>
-            <app-truck-filter></app-truck-filter>
+            <div class="card my-3">
+                <div class="card-header">
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                      <button class="btn btn-secondary" *ngIf="this.filter!=0" (click)="showFilterFire()">Fire</button> 
+                      <button class="btn btn-secondary" disabled *ngIf="this.filter==0">Fire</button>                   
+                      <button class="btn btn-secondary" *ngIf="this.filter!=1" (click)="showFilterVehicle()">Vehicle</button>
+                      <button class="btn btn-secondary" disabled *ngIf="this.filter==1">Vehicle</button>
+                    </div>
+                </div>
+                <div class="card-body">             
+                   <div class="tab-content">
+                        <app-map-filter *ngIf="this.filter == 0" ></app-map-filter> 
+                        <app-truck-filter *ngIf="this.filter == 1" ></app-truck-filter>
+                   </div>
+                </div>
+            </div>           
         </div>
+
     </div>
 </div>

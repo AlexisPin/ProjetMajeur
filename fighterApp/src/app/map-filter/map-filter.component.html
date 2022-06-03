@@ -1,127 +1,123 @@
-<div class="card my-3 align-items-center">
-  <div class="card-header w-100 align-items-center">Fire Filter</div>
-  <div class="card-body">
-              <form [formGroup]="myForm">
-                <h2>Intensity</h2>
-                <label for="inputIntensityMin"><i class="bi bi-chevron-bar-down"></i></label>
-                <input
-                  type="number"
-                  min="0"
-                  max="99"
-                  step="10"
-                  id="inputIntensityMin"
-                  formControlName="inputIntensityMin"
-                />
 
-                <input
-                type="number"
-                min="2"
-                max="100"
-                step="10"
-                id="inputIntensityMax"
-                formControlName="inputIntensityMax"
-                />
-                <label for="inputIntensityMax"><i class="bi bi-chevron-bar-up"></i></label>
-    
-                <h2>Range</h2>
-                <label for="inputRangeMin"><i class="bi bi-chevron-bar-down"></i></label>
-                <input
-                  type="number"
-                  min="0"
-                  max="99"
-                  step="10"
-                  id="inputRangeMin"
-                  formControlName="inputRangeMin"
-                />
-                
-                <input
-                  type="number"
-                  min="2"
-                  max="100"
-                  step="10"
-                  id="inputRangeMax"
-                  formControlName="inputRangeMax"
-                />
-                <label for="inputRangeMax"><i class="bi bi-chevron-bar-up"></i></label>
-    
-                <h2>Type</h2>
-                <div class="form-check form-switch">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="fireA"
-                    value="A"
-                    formControlName="A"
-                  />
-                  <label class="form-check-label" for="flexSwitchCheckDefault"><img src="../assets/images/fire-A.png" style="height: 20px;">A</label>
-                </div>
-                  
-                <div class="form-check form-switch">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="fireBg"
-                    value="Bg"
-                    formControlName="B_Gasoline"
-                    />
-                    <label class="form-check-label" for="flexSwitchCheckDefault"><img src="../assets/images/fire-B_G.png" style="height: 20px;">B_Gasoline</label>
-                  </div>
+<form [formGroup]="myForm">
+  <h2>Intensity</h2>
+  <label for="inputIntensityMin"><i class="bi bi-chevron-bar-down"></i></label>
+  <input
+    type="number"
+    min="0"
+    max="99"
+    step="10"
+    id="inputIntensityMin"
+    formControlName="inputIntensityMin"
+  />
 
-                <div class="form-check form-switch">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="fireBa"
-                    value="Ba"
-                    formControlName="B_Alcohol"
-                  />
-                  <label class="form-check-label" for="flexSwitchCheckDefault"><img src="../assets/images/fire-B_A.png" style="height: 20px;">B_Alcohol</label>
-                </div>
+  <input
+  type="number"
+  min="2"
+  max="100"
+  step="10"
+  id="inputIntensityMax"
+  formControlName="inputIntensityMax"
+  />
+  <label for="inputIntensityMax"><i class="bi bi-chevron-bar-up"></i></label>
 
-                <div class="form-check form-switch">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="fireBp"
-                    value="Bp"
-                    formControlName="B_Plastics"
-                  />
-                  <label class="form-check-label" for="flexSwitchCheckDefault"><img src="../assets/images/fire-B_P.png" style="height: 20px;">B_Plastics</label>
-                </div>
+  <h2>Range</h2>
+  <label for="inputRangeMin"><i class="bi bi-chevron-bar-down"></i></label>
+  <input
+    type="number"
+    min="0"
+    max="99"
+    step="10"
+    id="inputRangeMin"
+    formControlName="inputRangeMin"
+  />
+  
+  <input
+    type="number"
+    min="2"
+    max="100"
+    step="10"
+    id="inputRangeMax"
+    formControlName="inputRangeMax"
+  />
+  <label for="inputRangeMax"><i class="bi bi-chevron-bar-up"></i></label>
 
-                <div class="form-check form-switch">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="fireCfg"
-                    value="Cf"
-                    formControlName="C_Flammable_Gases"
-                  />
-                  <label class="form-check-label" for="flexSwitchCheckDefault"><img src="../assets/images/fire-C_F.png" style="height: 20px;">C_Flammable_Gases</label>
-                </div>
-
-                <div class="form-check form-switch">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="fireDm"
-                    value="Dm"
-                    formControlName="D_Metals"
-                  />
-                  <label class="form-check-label" for="flexSwitchCheckDefault"><img src="../assets/images/fire-D_M.png" style="height: 20px;">D_Metals</label>
-                </div>
-
-                <div class="form-check form-switch">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="fireEe"
-                    value="Ee"
-                    formControlName="E_Electric"
-                  />
-                  <label class="form-check-label" for="flexSwitchCheckDefault"><img src="../assets/images/fire-E_E.png" style="height: 20px;">E_Electric</label>
-                </div>
-
-              </form>
+  <h2>Type</h2>
+  <div class="form-check form-switch">
+    <input
+      class="form-check-input"
+      type="checkbox"
+      id="fireA"
+      value="A"
+      formControlName="A"
+    />
+    <label class="form-check-label" for="flexSwitchCheckDefault"><img src="../assets/images/fire-A.png" style="height: 20px;">A</label>
   </div>
-</div>
+    
+  <div class="form-check form-switch">
+    <input
+      class="form-check-input"
+      type="checkbox"
+      id="fireBg"
+      value="Bg"
+      formControlName="B_Gasoline"
+      />
+      <label class="form-check-label" for="flexSwitchCheckDefault"><img src="../assets/images/fire-B_G.png" style="height: 20px;">B_Gasoline</label>
+    </div>
+
+  <div class="form-check form-switch">
+    <input
+      class="form-check-input"
+      type="checkbox"
+      id="fireBa"
+      value="Ba"
+      formControlName="B_Alcohol"
+    />
+    <label class="form-check-label" for="flexSwitchCheckDefault"><img src="../assets/images/fire-B_A.png" style="height: 20px;">B_Alcohol</label>
+  </div>
+
+  <div class="form-check form-switch">
+    <input
+      class="form-check-input"
+      type="checkbox"
+      id="fireBp"
+      value="Bp"
+      formControlName="B_Plastics"
+    />
+    <label class="form-check-label" for="flexSwitchCheckDefault"><img src="../assets/images/fire-B_P.png" style="height: 20px;">B_Plastics</label>
+  </div>
+
+  <div class="form-check form-switch">
+    <input
+      class="form-check-input"
+      type="checkbox"
+      id="fireCfg"
+      value="Cf"
+      formControlName="C_Flammable_Gases"
+    />
+    <label class="form-check-label" for="flexSwitchCheckDefault"><img src="../assets/images/fire-C_F.png" style="height: 20px;">C_Flammable_Gases</label>
+  </div>
+
+  <div class="form-check form-switch">
+    <input
+      class="form-check-input"
+      type="checkbox"
+      id="fireDm"
+      value="Dm"
+      formControlName="D_Metals"
+    />
+    <label class="form-check-label" for="flexSwitchCheckDefault"><img src="../assets/images/fire-D_M.png" style="height: 20px;">D_Metals</label>
+  </div>
+
+  <div class="form-check form-switch">
+    <input
+      class="form-check-input"
+      type="checkbox"
+      id="fireEe"
+      value="Ee"
+      formControlName="E_Electric"
+    />
+    <label class="form-check-label" for="flexSwitchCheckDefault"><img src="../assets/images/fire-E_E.png" style="height: 20px;">E_Electric</label>
+  </div>
+
+</form>
