@@ -77,51 +77,55 @@ export class MarkerService {
       const intensity = response[id].intensity;
       const range = response[id].range;
       const type = response[id].type;
-      this.markers[fireId] = L.marker([lat, lon])
       if (
         intensity <= filter.inputIntensityMax &&
         intensity >= filter.inputIntensityMin &&
         range <= filter.inputRangeMax &&
         range >= filter.inputRangeMin
       ) {
-       if (filter[type]){
-        this.markers[fireId] = L.marker([lat, lon], {
-          icon: this.displayIcon(response[id].type),
-        });
-        this.marker_layer.addLayer(this.markers[fireId]);
-
-        var myPopup = L.DomUtil.create('div', 'info-popup');
-        myPopup.innerHTML = `<h2>FIRE ${response[id].id}  </h2> 
-        <h5>Fire Type : ${response[id].type} </h5>
-        <h5>Intensity : ${response[id].intensity} </h5>
-        <h5>Range : ${response[id].range} </h5>`;
-        this.markers[fireId].bindPopup(myPopup);
-       }
-        
+       if (filter[type]){}
+          this.createSingleMarker(response[id]);
       }
-      i++;
     }
-    this.marker_layer.addTo(map);
+  }
+
+
+  createSingleMarker(fire : any ){
+    this.markers[fire.id] = L.marker([fire.lat, fire.lon], {
+      icon: this.displayIcon(fire.type),
+    });
+    this.marker_layer.addLayer(this.markers[fire.id]);
+
+    var myPopup = L.DomUtil.create('div', 'info-popup');
+    myPopup.innerHTML = `<h2>FIRE ${fire.id}  </h2> 
+    <h5>Fire Type : ${fire.type} </h5>
+    <h5>Intensity : ${fire.intensity} </h5>
+    <h5>Range : ${fire.range} </h5>`;
+    this.markers[fire.id].bindPopup(myPopup);
+    this.marker_layer.addTo(this.map);
+  }
+
+  removeSingleMarker(id : any){
+    this.map.removeLayer(this.markers[id])
+    this.markers.splice(id,1);
   }
 
   updateCallback(response: any, map: L.Map){
     if (map.hasLayer(this.marker_layer)) {
-      const markers = this.marker_layer.getLayers();
-      if (markers.length != response.length){
-        this.makeFireMarkers(map);
-      }  
-      else {
-        this.setMap(map);
-
-        let context = {
-          method: 'GET',
-        };
-        fetch(this.firesAPI, context)
-          .then((response) => response.json())
-          .then((response) => this.updatePopUp(response, map))
-          .catch((error) => this.err_callback(error));
+      //regarder si l'id des feux dans la réponse est dans la liste marker si c'est pas le cas on le rajoute 
+      for(let id in response){
+        //if()
       }
-    }
+      
+      this.setMap(map);
+      let context = {
+        method: 'GET',
+      };
+      fetch(this.firesAPI, context)
+        .then((response) => response.json())
+        .then((response) => this.updatePopUp(response, map))
+        .catch((error) => this.err_callback(error));
+      }
   }
 
   updatePopUp(response:any, map: L.Map){

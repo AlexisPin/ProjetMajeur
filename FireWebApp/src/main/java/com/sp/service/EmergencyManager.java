@@ -29,10 +29,14 @@ public class EmergencyManager {
 	@Autowired
 	FacilityService faService;
 	
+	@Autowired
+	RouteService rService;
+	
 	private ArrayList<Integer> onWorkFire = new ArrayList<Integer>();
 	private ArrayList<Integer> onWorkVehicle = new ArrayList<Integer>();
 	private Map<Integer,VehicleDto > vehicleFireMap = new HashMap<Integer,VehicleDto>();
 	
+
 	
 	public Map<Integer, VehicleDto> getVehicleFireMap() {
 		return vehicleFireMap;
@@ -54,7 +58,7 @@ public class EmergencyManager {
 	    				double newEfficiency = vehicle.getLiquidType().getEfficiency(fire.getType());
 	    				if(!onWorkFire.contains(fire.getId()) && !onWorkVehicle.contains(vehicle.getId())) {
 	    					Coord fCoord = new Coord(fire.getLon(),fire.getLat());
-	    					double newDistance = calculDistance(vehicle, fCoord);
+	    					double newDistance = calculDistance(vehicle, fCoord.getLat(),fCoord.getLon());
 	    					if(efficiency <= newEfficiency) {
 	    						efficiency = newEfficiency;
 		    					if(distance > newDistance) {
@@ -109,32 +113,79 @@ public class EmergencyManager {
 	private void backToFacility(VehicleDto vehicle) {
 		FacilityDto facility =  faService.getFacility(vehicle.getFacilityRefID());
 		Coord facilityCoord = new Coord(facility.getLon(),facility.getLat());
-		deplacement(vehicle, facilityCoord,false);
+		route(vehicle, facilityCoord,false);
 	}
 	
 	
 	private void checkVehiculeStatus(VehicleDto vehicle,Coord fireCoord) {
 			float liquidQuantity = vehicle.getLiquidQuantity();
-			double distance = calculDistance(vehicle, fireCoord);
-
+			double distance = calculDistance(vehicle, fireCoord.getLat(),fireCoord.getLon());	
 			if(liquidQuantity <= 0 || !checkFuelQuantity(vehicle, distance*2)) {
 				backToFacility(vehicle);
 			} else {
-				deplacement(vehicle, fireCoord,true);
+				route(vehicle, fireCoord,true);
 			}
 	}
 	
 	private void saveChanges(VehicleDto vehicle) {
     	vService.updateVehicle("1e9f18a6-4096-4369-ad25-9b3c8451fe27", vehicle.getId(), vehicle);
 	}
+	
+	private void route(VehicleDto vehicle, Coord coordFinal, Boolean intervention) {
+		int vehicleId = vehicle.getId();
+		ArrayList<ArrayList<Double>> route;
+		
+		
+		ArrayList<Double>lineEnd = null;
+		boolean lastLine;
+		lastLine = false;
+		
+		
+		if (!vService.getWorkingVehicle(vehicleId)) {
+			double latStart = vehicle.getLat();
+			double lonStart = vehicle.getLon();
+			double latEnd = coordFinal.getLat();
+			double lonEnd = coordFinal.getLon();
+			
+			vService.setWorkingVehicle(vehicleId, true);
+			vService.setVehicleOnLine(vehicleId, true);
+			rService.putRoute(vehicleId, lonStart, latStart, lonEnd, latEnd);
+			route = rService.getRoute(vehicleId);
+			lineEnd = route.remove(0);
+			lineEnd = route.get(0);
+			rService.setRoute(vehicleId, route);
+			if (route.isEmpty()) {
+				vService.setWorkingVehicle(vehicleId, false);
+				rService.deleteRoute(vehicleId);
+			}
+			
+		}
+		else {
+			if(!vService.getVehicleOnLine(vehicleId)) {
+				route = rService.getRoute(vehicleId);
+				lineEnd = route.get(0);
+				rService.setRoute(vehicleId, route);
+				if (route.isEmpty()) {
+					vService.setWorkingVehicle(vehicleId, false);
+					rService.deleteRoute(vehicleId);
+					lastLine = true;
+				}
+			}
+			
+		}
+		deplacement(vehicle,lineEnd,true,lastLine);
+		
+		
+	}
 
-	private void deplacement(VehicleDto vehicle, Coord coordFinal, Boolean intervention) {
+	private void deplacement(VehicleDto vehicle,ArrayList<Double> lineEnd, Boolean intervention, Boolean lastLine) {
 		double vlat = vehicle.getLat();
 		double vlon = vehicle.getLon();
-		double dlat = coordFinal.getLat();
-		double dlon = coordFinal.getLon();
-
-		double distance = calculDistance(vehicle, coordFinal);
+		double dlat = lineEnd.get(0);
+		double dlon = lineEnd.get(1);
+		
+		
+		double distance = calculDistance(vehicle, dlat,dlon);
 		
 		double deltaLat =  vlat - dlat;
 		double deltaLon = vlon - dlon;
@@ -160,22 +211,38 @@ public class EmergencyManager {
 		      lonTick = deltaLon / coeff; 
 		      travelledDistance = GisTools.computeDistance2(new Coord(vlon,vlat),new Coord(vlon-lonTick,vlat-latTick)); 
 		 }
-		 
-		if( distance > 100) {
-			vehicle.setLat(vlat-latTick);
-			vehicle.setLon(vlon-lonTick);
-			vehicle.setFuel(vehicle.getFuel() - (travelledDistance*vehicle.getType().getFuelConsumption())/1000F);
-			saveChanges(vehicle);
-		}
-		else {
-			if(intervention) {
-				intervention(vehicle);
+		
+		if (lastLine) {
+			if( distance > 100) {
+				vehicle.setLat(vlat-latTick);
+				vehicle.setLon(vlon-lonTick);
+				vehicle.setFuel(vehicle.getFuel() - (travelledDistance*vehicle.getType().getFuelConsumption())/1000F);
+				saveChanges(vehicle);
 			}
 			else {
-				vehicle.setLiquidQuantity(vehicle.getType().getLiquidCapacity());
-				vehicle.setFuel(vehicle.getType().getFuelCapacity());
+				if(intervention) {
+					intervention(vehicle);
+				}
+				else {
+					vehicle.setLiquidQuantity(vehicle.getType().getLiquidCapacity());
+					vehicle.setFuel(vehicle.getType().getFuelCapacity());
+				}
 			}
 		}
+		else {
+			if( distance > 10) {
+				vehicle.setLat(vlat-latTick);
+				vehicle.setLon(vlon-lonTick);
+				vehicle.setFuel(vehicle.getFuel() - (travelledDistance*vehicle.getType().getFuelConsumption())/1000F);
+				saveChanges(vehicle);
+			}
+			else {
+				vehicle.setLat(dlat);
+				vehicle.setLon(dlon);
+				vService.setVehicleOnLine(vehicle.getId(), false);
+			}
+		}
+	
 	}
 	
 	private boolean checkFuelQuantity(VehicleDto vehicle, double distanceTotal) {
@@ -188,11 +255,11 @@ public class EmergencyManager {
 		return ret;	
 	}
 	
-	private double calculDistance(VehicleDto vehicle, Coord destCoord) {
+	private double calculDistance(VehicleDto vehicle, double lon, double lat) {
 		
 		double vlat = vehicle.getLat();
 		double vlon = vehicle.getLon();
-		double distance = GisTools.computeDistance2(new Coord(vlon,vlat),destCoord);
+		double distance = GisTools.computeDistance2(new Coord(vlon,vlat),new Coord(lon,lat));
 		return distance;
 		
 	}

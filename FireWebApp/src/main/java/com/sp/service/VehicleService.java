@@ -1,6 +1,8 @@
 package com.sp.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,10 @@ public class VehicleService {
 	
     private FetchVehicle fetch = new FetchVehicle();
 	
+    Map<Integer,Boolean> workingVehicle = new HashMap<Integer,Boolean>();
+    
+    Map<Integer,Boolean> vehicleOnLine = new HashMap<Integer,Boolean>();
+    
 	public VehicleDto[] getVehicles() {
 		VehicleDto[] vehicles = fetch.getVehicles();
 		return vehicles;
@@ -65,4 +71,40 @@ public class VehicleService {
 	public void deleteAllVehicle(String uuid) {
 		fetch.deleteAllVehicle(uuid);
 	}
+	
+	public Map<Integer,Boolean> initWorkingVehicle(){
+		ArrayList<VehicleDto> ownVehicles = getOwnVehicles();
+		for (VehicleDto vehicle : ownVehicles) {
+			workingVehicle.putIfAbsent(vehicle.getId(), false);
+		}
+		return workingVehicle;
+	}
+	
+	public Boolean getWorkingVehicle(int vehicleId) {
+		Map<Integer,Boolean> workingVehicle = initWorkingVehicle();
+		return workingVehicle.get(vehicleId);
+	}
+	
+	public void setWorkingVehicle(int vehicleId,boolean working) {
+		workingVehicle.replace(vehicleId, working);
+	}
+	
+	public Map<Integer,Boolean> initVehicleOnLine(){
+		ArrayList<VehicleDto> ownVehicles = getOwnVehicles();
+		for (VehicleDto vehicle : ownVehicles) {
+			vehicleOnLine.putIfAbsent(vehicle.getId(), false);
+		}
+		return vehicleOnLine;
+	}
+	
+	
+	public void setVehicleOnLine(int vehicleId, boolean line) {
+		vehicleOnLine.replace(vehicleId, line);
+	}
+	
+	public Boolean getVehicleOnLine(int vehicleId) {
+		Map<Integer,Boolean> vehicleOnLine = initVehicleOnLine();
+		return vehicleOnLine.get(vehicleId);
+	}
+	 
 }
