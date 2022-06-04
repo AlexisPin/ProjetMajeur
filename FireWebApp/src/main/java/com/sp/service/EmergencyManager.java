@@ -200,7 +200,7 @@ public class EmergencyManager {
 		int travelledDistance = GisTools.computeDistance2(new Coord(vlon,vlat),new Coord(vlon-lonTick,vlat-latTick));
 
 		
-		 while(travelledDistance < Math.round(maxSpeedMS)-deltaError ||travelledDistance > Math.round(maxSpeedMS)+deltaError) { 
+		 while(travelledDistance < Math.round(maxSpeedMS)-deltaError || travelledDistance > Math.round(maxSpeedMS)+deltaError) { 
 		      int deltaDistance =travelledDistance - Math.round(maxSpeedMS); 
 		      if(deltaDistance < 0) { coeff-=0.1; 
 		      }
