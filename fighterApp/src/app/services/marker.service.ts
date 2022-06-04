@@ -1,6 +1,7 @@
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import * as L from 'leaflet';
+import { range } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -92,7 +93,7 @@ export class MarkerService {
 
   createSingleMarker(fire : any ){
     this.markers[fire.id] = L.marker([fire.lat, fire.lon], {
-      icon: this.displayIcon(fire.type),
+      icon: this.displayIcon(fire.type,fire.range),
     });
     this.marker_layer.addLayer(this.markers[fire.id]);
 
@@ -106,16 +107,34 @@ export class MarkerService {
   }
 
   removeSingleMarker(id : any){
+    console.log(this.markers[id]);
     this.map.removeLayer(this.markers[id])
     this.markers.splice(id,1);
+    console.log("feu " + id +" supprimé");
   }
 
   updateCallback(response: any, map: L.Map){
     if (map.hasLayer(this.marker_layer)) {
+      let fireListId =[];
       //regarder si l'id des feux dans la réponse est dans la liste marker si c'est pas le cas on le rajoute 
       for(let id in response){
-        //if()
+        let fireId = response[id].id;
+        fireListId.push(fireId);
+        if(this.markers[fireId] == undefined){
+          this.createSingleMarker(response[id]);
+        } 
+
       }
+      for(let i = 0; i<this.markers.length;i++){
+        if(this.markers[i] != undefined){
+          if(fireListId.indexOf(i) == -1){
+            this.removeSingleMarker(i);
+        }
+      }
+      }
+
+      
+      
       
       this.setMap(map);
       let context = {
@@ -146,6 +165,8 @@ export class MarkerService {
         <h5>Intensity : ${response[id].intensity} </h5>
         <h5>Range : ${response[id].range} </h5>`;
         this.markers[fireId].setPopupContent(myPopup);
+        var opacity = response[id].intensity/3;
+        this.markers[fireId].setOpacity();
     }
   }
   
@@ -153,13 +174,14 @@ export class MarkerService {
     console.log(error);
   }
   
-  displayIcon(type: string) {
+  displayIcon(type: string,range: number) {
     const imageUrl = type.substring(0, 3);
-  
+    var size = 50*range/3;
+    
     var icon = `./assets/images/fire-${imageUrl}.png`;
     var fireIcon = L.icon({
       iconUrl: icon,
-      iconSize: [40, 40], // size of the icon
+      iconSize: [size, size], // size of the icon
       popupAnchor: [0, -15],
     });
   
