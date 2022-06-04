@@ -84,8 +84,10 @@ export class MarkerService {
         range <= filter.inputRangeMax &&
         range >= filter.inputRangeMin
       ) {
-       if (filter[type]){}
-          this.createSingleMarker(response[id]);
+       if (filter[type]){
+        this.createSingleMarker(response[id]);
+       }
+          
       }
     }
   }
@@ -176,7 +178,7 @@ export class MarkerService {
   
   displayIcon(type: string,range: number) {
     const imageUrl = type.substring(0, 3);
-    var size = 50*range/3;
+    var size = 10 + 40*range/3;
     
     var icon = `./assets/images/fire-${imageUrl}.png`;
     var fireIcon = L.icon({

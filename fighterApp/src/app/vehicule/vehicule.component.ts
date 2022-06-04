@@ -43,7 +43,7 @@ export class VehiculeComponent implements OnInit {
     });
     this.vehiculeService.emitVehiculeSubject();
 
-    let facilityUrl = 'http://vps.cpe-sn.fr:8081/facility/80';
+    let facilityUrl = 'http://vps.cpe-sn.fr:8081/facility';
     let context = {
       method: 'GET',
     };
@@ -66,12 +66,17 @@ export class VehiculeComponent implements OnInit {
   }
 
   callback(response: any) {
-    this.Facility.push({
-      name: response.name,
-      id: response.id,
-      lon: response.lon,
-      lat: response.lat,
-    });
+    for (let truckId in response){
+      if(response[truckId].name.indexOf("Cas2") != -1 ){
+        this.Facility.push({
+          name: response[truckId].name,
+          id: response[truckId].id,
+          lon: response[truckId].lon,
+          lat: response[truckId].lat,
+        });
+      }
+    }
+   
   }
 
   addVehicle(vehicle: any) {
