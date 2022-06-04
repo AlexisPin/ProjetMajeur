@@ -32,6 +32,11 @@ public class EmergencyManager {
 	@Autowired
 	RouteService rService;
 	
+	
+	DisplayRunnable dRunnable;
+	private Thread displayThread;
+	
+	
 	private ArrayList<Integer> onWorkFire = new ArrayList<Integer>();
 	private ArrayList<Integer> onWorkVehicle = new ArrayList<Integer>();
 	private Map<Integer,VehicleDto > vehicleFireMap = new HashMap<Integer,VehicleDto>();
@@ -47,7 +52,6 @@ public class EmergencyManager {
 		ArrayList<VehicleDto> vehicles = vService.getOwnVehicles();
 		FireDto[] fires = fService.getFires();
 	    if(fires.length !=0) {
-	    	System.out.println(fires.length);
 	    	double distance = 1000000000;
 	    	double efficiency = 0;
 	    	if(!vehicles.isEmpty()) {		
@@ -74,7 +78,6 @@ public class EmergencyManager {
     				onWorkVehicle.add(interVehicle.getId());
     				onWorkFire.add(interFire.getId());
     			}
-				vehicle.setCrewMember(vehicle.getType().getVehicleCrewCapacity());
 	    	}			
 	    		for(Integer onWork : onWorkFire) {
     				if(!fService.getFiresId().contains(onWork)) {
@@ -86,9 +89,7 @@ public class EmergencyManager {
 	    		triggerEvent();
 
 	    }
-	} else {
-		System.out.println("Pas de feu !");
-	}
+	} 
 }
 	
 	private void triggerEvent() {
@@ -97,41 +98,44 @@ public class EmergencyManager {
 			final VehicleDto vehicle =  entry.getValue();
 			FireDto fire = fService.getFire(fireId);
 			Coord fireCoord  = new Coord(fire.getLon(), fire.getLat());
-			checkVehiculeStatus(vehicle,fireCoord);
+			//checkVehiculeStatus(vehicle,fireCoord);
+			this.dRunnable=new DisplayRunnable(vehicle, fireCoord,vService,faService,rService);
+			displayThread=new Thread(dRunnable);
+			displayThread.start();
 		}
 	}
 	
 
-	private void intervention(VehicleDto vehicle) {
+	private void intervention(VehicleDto vehicle,VehicleService vService) {
 		float liquidQuantity = vehicle.getLiquidQuantity();
 		if(liquidQuantity > 0) {
 			vehicle.setLiquidQuantity(Math.nextDown(liquidQuantity - vehicle.getType().getLiquidConsumption()));
-			saveChanges(vehicle);
+			saveChanges(vehicle, vService);
 		}
 	}
 	
-	private void backToFacility(VehicleDto vehicle) {
+	private void backToFacility(VehicleDto vehicle,VehicleService vService,FacilityService faService,RouteService rService) {
 		FacilityDto facility =  faService.getFacility(vehicle.getFacilityRefID());
 		Coord facilityCoord = new Coord(facility.getLon(),facility.getLat());
-		route(vehicle, facilityCoord,false);
+		route(vehicle, facilityCoord,false, vService, rService);
 	}
 	
 	
-	private void checkVehiculeStatus(VehicleDto vehicle,Coord fireCoord) {
+	public void checkVehiculeStatus(VehicleDto vehicle,Coord fireCoord,VehicleService vService,FacilityService faService,RouteService rService) {
 			float liquidQuantity = vehicle.getLiquidQuantity();
 			double distance = calculDistance(vehicle, fireCoord.getLat(),fireCoord.getLon());	
-			if(liquidQuantity <= 0 || !checkFuelQuantity(vehicle, distance*2)) {
-				backToFacility(vehicle);
+			if(liquidQuantity <= 0 || !checkFuelQuantity(vehicle, distance*2, vService, faService, rService)) {
+				backToFacility(vehicle, vService, faService, rService);
 			} else {
-				route(vehicle, fireCoord,true);
+				route(vehicle, fireCoord,true, vService, rService);
 			}
 	}
 	
-	private void saveChanges(VehicleDto vehicle) {
+	private void saveChanges(VehicleDto vehicle,VehicleService vService) {
     	vService.updateVehicle("1e9f18a6-4096-4369-ad25-9b3c8451fe27", vehicle.getId(), vehicle);
 	}
 	
-	private void route(VehicleDto vehicle, Coord coordFinal, Boolean intervention) {
+	private void route(VehicleDto vehicle, Coord coordFinal, Boolean intervention,VehicleService vService,RouteService rService) {
 		int vehicleId = vehicle.getId();
 		ArrayList<ArrayList<Double>> route;
 		
@@ -173,12 +177,12 @@ public class EmergencyManager {
 			}
 			
 		}
-		deplacement(vehicle,lineEnd,true,lastLine);
+		deplacement(vehicle,lineEnd,true,lastLine, vService);
 		
 		
 	}
 
-	private void deplacement(VehicleDto vehicle,ArrayList<Double> lineEnd, Boolean intervention, Boolean lastLine) {
+	private void deplacement(VehicleDto vehicle,ArrayList<Double> lineEnd, Boolean intervention, Boolean lastLine,VehicleService vService) {
 		double vlat = vehicle.getLat();
 		double vlon = vehicle.getLon();
 		double dlat = lineEnd.get(0);
@@ -217,11 +221,11 @@ public class EmergencyManager {
 				vehicle.setLat(vlat-latTick);
 				vehicle.setLon(vlon-lonTick);
 				vehicle.setFuel(vehicle.getFuel() - (travelledDistance*vehicle.getType().getFuelConsumption())/1000F);
-				saveChanges(vehicle);
+				saveChanges(vehicle,vService);
 			}
 			else {
 				if(intervention) {
-					intervention(vehicle);
+					intervention(vehicle,vService);
 				}
 				else {
 					vehicle.setLiquidQuantity(vehicle.getType().getLiquidCapacity());
@@ -234,7 +238,7 @@ public class EmergencyManager {
 				vehicle.setLat(vlat-latTick);
 				vehicle.setLon(vlon-lonTick);
 				vehicle.setFuel(vehicle.getFuel() - (travelledDistance*vehicle.getType().getFuelConsumption())/1000F);
-				saveChanges(vehicle);
+				saveChanges(vehicle,vService);
 			}
 			else {
 				vehicle.setLat(dlat);
@@ -245,11 +249,11 @@ public class EmergencyManager {
 	
 	}
 	
-	private boolean checkFuelQuantity(VehicleDto vehicle, double distanceTotal) {
+	private boolean checkFuelQuantity(VehicleDto vehicle, double distanceTotal,VehicleService vService,FacilityService faService,RouteService rService) {
 		float consumptionTotal = (float) ((distanceTotal*vehicle.getType().getFuelConsumption())/1000F);
 		boolean ret = true;
 		if(vehicle.getFuel() < consumptionTotal) {
-			backToFacility(vehicle);
+			backToFacility(vehicle, vService, faService,rService);
 			ret = false;
 		}
 		return ret;	
