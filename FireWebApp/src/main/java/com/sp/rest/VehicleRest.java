@@ -56,6 +56,8 @@ public class VehicleRest {
     }
     
     
+    
+    
     @RequestMapping(method=RequestMethod.DELETE,value="/vehicle/{uuid}/{id}")
     public VehicleDto addVehicle(@PathVariable String uuid,@PathVariable String id) {
 		return vService.deleteVehicle(uuid,Integer.valueOf(id));

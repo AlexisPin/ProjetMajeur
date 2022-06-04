@@ -151,33 +151,63 @@ public class EmergencyManager {
 			double latEnd = coordFinal.getLat();
 			double lonEnd = coordFinal.getLon();
 			
+			
 			vService.setWorkingVehicle(vehicleId, true);
 			vService.setVehicleOnLine(vehicleId, true);
 			rService.putRoute(vehicleId, lonStart, latStart, lonEnd, latEnd);
 			route = rService.getRoute(vehicleId);
+			
+			//System.out.println("véhicule : " + vehicleId + " route : " + route);
+			//System.out.println("coord : " + latStart + " " + lonStart);
+			
 			lineEnd = route.remove(0);
+			//System.out.println("LineEnd premier : " + lineEnd);
+			vehicle.setLat(lineEnd.get(1));
+			vehicle.setLon(lineEnd.get(0));
 			lineEnd = route.get(0);
+			//System.out.println("LineEnd start : " + lineEnd);
 			rService.setRoute(vehicleId, route);
 			if (route.isEmpty()) {
+				//System.out.println(("la route est vide"));
 				vService.setWorkingVehicle(vehicleId, false);
 				rService.deleteRoute(vehicleId);
+				lastLine = true;
 			}
+			deplacement(vehicle,lineEnd,true,lastLine, vService);
 			
 		}
 		else {
 			if(!vService.getVehicleOnLine(vehicleId)) {
 				route = rService.getRoute(vehicleId);
-				lineEnd = route.get(0);
+				
+				//System.out.println("véhicule : " + vehicleId + " route : " + route);
+				lineEnd = route.remove(0);
+				//System.out.println("LineEnd en cours: " + lineEnd);
 				rService.setRoute(vehicleId, route);
 				if (route.isEmpty()) {
 					vService.setWorkingVehicle(vehicleId, false);
 					rService.deleteRoute(vehicleId);
 					lastLine = true;
 				}
+				deplacement(vehicle,lineEnd,true,lastLine, vService);
+			}
+			else {
+				route = rService.getRoute(vehicleId);
+				
+				//System.out.println("véhicule : " + vehicleId + " route : " + route);
+				lineEnd = route.get(0);
+				//System.out.println("LineEnd en cours: " + lineEnd);
+				rService.setRoute(vehicleId, route);
+				if (route.isEmpty()) {
+					vService.setWorkingVehicle(vehicleId, false);
+					rService.deleteRoute(vehicleId);
+					lastLine = true;
+				}
+				deplacement(vehicle,lineEnd,true,lastLine, vService);
 			}
 			
 		}
-		deplacement(vehicle,lineEnd,true,lastLine, vService);
+		
 		
 		
 	}
@@ -185,9 +215,18 @@ public class EmergencyManager {
 	private void deplacement(VehicleDto vehicle,ArrayList<Double> lineEnd, Boolean intervention, Boolean lastLine,VehicleService vService) {
 		double vlat = vehicle.getLat();
 		double vlon = vehicle.getLon();
-		double dlat = lineEnd.get(0);
-		double dlon = lineEnd.get(1);
 		
+		//System.out.println("LA PUTAIN DE LINE END DE MORT : " + lineEnd);
+		
+		
+		double dlat = lineEnd.get(1);
+		double dlon = lineEnd.get(0);		  
+		if (vehicle.getId() == 471) {
+			System.out.println("c'est le camion : " + vehicle.getId());
+			System.out.println("véhicule : "  + vlat + " " + vlon );
+			System.out.println("destination : "  + dlat + " " + dlon );
+		}
+	
 		
 		double distance = calculDistance(vehicle, dlat,dlon);
 		
@@ -213,10 +252,12 @@ public class EmergencyManager {
 		    	  } 
 		      latTick = deltaLat / coeff; 
 		      lonTick = deltaLon / coeff; 
+		      
 		      travelledDistance = GisTools.computeDistance2(new Coord(vlon,vlat),new Coord(vlon-lonTick,vlat-latTick)); 
 		 }
 		
 		if (lastLine) {
+			System.out.println("la distance est de " + distance);
 			if( distance > 100) {
 				vehicle.setLat(vlat-latTick);
 				vehicle.setLon(vlon-lonTick);
@@ -263,7 +304,7 @@ public class EmergencyManager {
 		
 		double vlat = vehicle.getLat();
 		double vlon = vehicle.getLon();
-		double distance = GisTools.computeDistance2(new Coord(vlon,vlat),new Coord(lon,lat));
+		double distance = GisTools.computeDistance2(new Coord(vlon,vlat),new Coord(lat,lon));
 		return distance;
 		
 	}
