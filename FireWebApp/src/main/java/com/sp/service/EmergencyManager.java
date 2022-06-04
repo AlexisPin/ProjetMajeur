@@ -109,7 +109,6 @@ public class EmergencyManager {
 		float liquidQuantity = vehicle.getLiquidQuantity();
 		if(liquidQuantity > 0) {
 			vehicle.setLiquidQuantity(Math.nextDown(liquidQuantity - vehicle.getType().getLiquidConsumption()));
-			//System.out.println("inter : " + vService);
 			saveChanges(vehicle, vService);
 		}
 	}
@@ -118,15 +117,13 @@ public class EmergencyManager {
 		if(faService != null) {
 			FacilityDto facility =  faService.getFacility(vehicle.getFacilityRefID());
 			Coord facilityCoord = new Coord(facility.getLon(),facility.getLat());
-			//System.out.println("back : " + vService);
 			deplacement(vehicle, facilityCoord,false, vService, faService, fService);
 		}
 	}
 	
 	public void checkVehiculeStatus(VehicleDto vehicle,Coord fireCoord,VehicleService vService,FacilityService faService,FireService fService) {
 			float liquidQuantity = vehicle.getLiquidQuantity();
-			double distance = calculDistance(vehicle, fireCoord);
-			//System.out.println("check : " + vService);              
+			double distance = calculDistance(vehicle, fireCoord);         
 			if(liquidQuantity <= 0 || !checkFuelQuantity(vehicle, distance*2, vService, faService, fService)) {
 				backToFacility(vehicle, vService, faService, fService);
 			} else {
@@ -136,7 +133,6 @@ public class EmergencyManager {
 	
 	private void saveChanges(VehicleDto vehicle,VehicleService vService) {
 		if(vService != null) {
-			//System.out.println("pas nul");
 			vService.updateVehicle("1e9f18a6-4096-4369-ad25-9b3c8451fe27", vehicle.getId(), vehicle);
 		}
 	}
@@ -154,7 +150,7 @@ public class EmergencyManager {
 		
 		float maxSpeedMS = (float) (vehicle.getType().getMaxSpeed()*2 / 3.60);
 	
-		double coeff = 5;
+		double coeff = 50;
 		double latTick = deltaLat /coeff;
 		double lonTick = deltaLon / coeff;
 		int deltaError = 1;
@@ -162,7 +158,7 @@ public class EmergencyManager {
 		int travelledDistance = GisTools.computeDistance2(new Coord(vlon,vlat),new Coord(vlon-lonTick,vlat-latTick));
 
 		
-		 /* while(travelledDistance < Math.round(maxSpeedMS)-deltaError||travelledDistance > Math.round(maxSpeedMS)+deltaError) { 
+		 while(travelledDistance < Math.round(maxSpeedMS)-deltaError||travelledDistance > Math.round(maxSpeedMS)+deltaError) { 
 			  int deltaDistance = travelledDistance - Math.round(maxSpeedMS); 
 			  if(deltaDistance < 0) {
 				  	coeff-=0.1; 
@@ -173,8 +169,8 @@ public class EmergencyManager {
 			  latTick = deltaLat / coeff; 
 			  lonTick = deltaLon / coeff; 
 			  travelledDistance = GisTools.computeDistance2(new Coord(vlon,vlat),new Coord(vlon-lonTick,vlat-latTick)); 
-		  }*/
-		 
+		  }
+
 		if( distance > 100) {
 			vehicle.setLat(vlat-latTick);
 			vehicle.setLon(vlon-lonTick);
