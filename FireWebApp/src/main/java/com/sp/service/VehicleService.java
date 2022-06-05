@@ -3,6 +3,7 @@ package com.sp.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,11 @@ public class VehicleService {
     Map<Integer,Boolean> workingVehicle = new HashMap<Integer,Boolean>();
     
     Map<Integer,Boolean> vehicleOnLine = new HashMap<Integer,Boolean>();
+    
+    Map<Integer,Boolean> lastLineMap = new HashMap<Integer,Boolean>();
+	
+    Map<Integer,ArrayList<Double>> lineEndMap = new HashMap<Integer,ArrayList<Double>>();
+    
     
 	public VehicleDto[] getVehicles() {
 		VehicleDto[] vehicles = fetch.getVehicles();
@@ -105,6 +111,46 @@ public class VehicleService {
 	public Boolean getVehicleOnLine(int vehicleId) {
 		Map<Integer,Boolean> vehicleOnLine = initVehicleOnLine();
 		return vehicleOnLine.get(vehicleId);
+	}
+	
+	
+	public Map<Integer,Boolean> initLastLine(){
+		ArrayList<VehicleDto> ownVehicles = getOwnVehicles();
+		for (VehicleDto vehicle : ownVehicles) {
+			lastLineMap.putIfAbsent(vehicle.getId(), false);
+		}
+		return lastLineMap;
+	}
+	
+	
+	public Boolean getLastLine(int vehicleId) {
+		Map<Integer,Boolean> lastLine = initLastLine();
+		return lastLine.get(vehicleId);
+	}
+	
+	public void setLastLine(int vehicleId, boolean lastLine) {
+		lastLineMap.replace(vehicleId, lastLine);
+	}
+	
+	public Map<Integer,ArrayList<Double>> initLineEnd(){
+		ArrayList<VehicleDto> ownVehicles = getOwnVehicles();
+		for (VehicleDto vehicle : ownVehicles) {
+			ArrayList<Double> r = new ArrayList<Double>();
+			r.add(0.0);
+			r.add(0.0);
+			lineEndMap.putIfAbsent(vehicle.getId(),r);
+		}
+		return lineEndMap;
+	}
+	
+	
+	public ArrayList<Double> getLineEnd(int vehicleId) {
+		Map<Integer,ArrayList<Double>> lineEnd = initLineEnd();
+		return lineEnd.get(vehicleId);
+	}
+	
+	public void setLineEnd(int vehicleId, ArrayList<Double> line) {
+		lineEndMap.replace(vehicleId, line);
 	}
 	 
 }

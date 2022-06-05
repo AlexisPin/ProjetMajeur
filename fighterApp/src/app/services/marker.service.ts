@@ -167,8 +167,8 @@ export class MarkerService {
         <h5>Intensity : ${response[id].intensity} </h5>
         <h5>Range : ${response[id].range} </h5>`;
         this.markers[fireId].setPopupContent(myPopup);
-        var opacity = response[id].intensity/3;
-        this.markers[fireId].setOpacity();
+        var opacity = response[id].intensity/50;
+        this.markers[fireId].setOpacity(opacity);
     }
   }
   
@@ -178,7 +178,7 @@ export class MarkerService {
   
   displayIcon(type: string,range: number) {
     const imageUrl = type.substring(0, 3);
-    var size = 10 + 40*range/3;
+    var size = 10 + 40*range/50;
     
     var icon = `./assets/images/fire-${imageUrl}.png`;
     var fireIcon = L.icon({

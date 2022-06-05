@@ -18,6 +18,7 @@ public class RouteService {
 	
 	Map<Integer,ArrayList<ArrayList<Double>>> routeMap = new HashMap<Integer,ArrayList<ArrayList<Double>>>();
 	
+	
 	public ArrayList<ArrayList<Double>> getRoutes(double lon_start, double lat_start, double lon_end, double lat_end) {		
 		ResponseEntity<String> result = fetch.getRoute(lon_start,lat_start,lon_end,lat_end);
 		String route = result.getBody();
@@ -62,6 +63,7 @@ public class RouteService {
 	public void deleteRoute(int vehicleId) {
 		routeMap.remove(vehicleId);
 	}
+	
 	
 	
 }
