@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sp.service.RouteService;
 
-import java.util.ArrayList;
 
 @RestController
 public class RouteRest {

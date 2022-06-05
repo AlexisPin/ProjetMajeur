@@ -173,7 +173,7 @@ public class EmergencyManager {
 				rService.deleteRoute(vehicleId);
 				lastLine = true;
 			}
-			deplacement(vehicle,lineEnd,true,lastLine, vService);
+			deplacement(vehicle,lineEnd,intervention,lastLine, vService);
 			
 		}
 		else {
@@ -189,7 +189,7 @@ public class EmergencyManager {
 					rService.deleteRoute(vehicleId);
 					lastLine = true;
 				}
-				deplacement(vehicle,lineEnd,true,lastLine, vService);
+				deplacement(vehicle,lineEnd,intervention,lastLine, vService);
 			}
 			else {
 				route = rService.getRoute(vehicleId);
@@ -203,7 +203,7 @@ public class EmergencyManager {
 					rService.deleteRoute(vehicleId);
 					lastLine = true;
 				}
-				deplacement(vehicle,lineEnd,true,lastLine, vService);
+				deplacement(vehicle,lineEnd,intervention,lastLine, vService);
 			}
 			
 		}
@@ -269,6 +269,7 @@ public class EmergencyManager {
 					intervention(vehicle,vService);
 				}
 				else {
+					System.out.println("refuel : " + vehicle.getId());
 					vehicle.setLiquidQuantity(vehicle.getType().getLiquidCapacity());
 					vehicle.setFuel(vehicle.getType().getFuelCapacity());
 				}
