@@ -1,5 +1,8 @@
 package com.sp.rest;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,9 +19,9 @@ public class RouteRest {
 	@Autowired
 	RouteService rService;
 	
-	 @RequestMapping(method=RequestMethod.GET,value="/routes/{lonS}/{latS}/{lonE}/{latE}")
-	    public Double  getFires(@PathVariable double lonS,@PathVariable double latS,@PathVariable double lonE,@PathVariable double latE) {
-		 Double  routes  = rService.getDistance(lonS,latS,lonE,latE);
+	 @RequestMapping(method=RequestMethod.GET,value="/routes/{id}")
+	    public ArrayList<ArrayList<Double>>  getRoute(@PathVariable String id) {
+		 ArrayList<ArrayList<Double>>  routes  = rService.getRoute(Integer.valueOf(id));
 			return routes;
 	    }
 }
