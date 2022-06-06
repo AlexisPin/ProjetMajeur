@@ -28,6 +28,8 @@ public class VehicleService {
 	
     Map<Integer,ArrayList<Double>> lineEndMap = new HashMap<Integer,ArrayList<Double>>();
     
+    Map<Integer,Boolean> movingMap = new HashMap<Integer,Boolean>();
+    
     
 	public VehicleDto[] getVehicles() {
 		VehicleDto[] vehicles = fetch.getVehicles();
@@ -152,5 +154,24 @@ public class VehicleService {
 	public void setLineEnd(int vehicleId, ArrayList<Double> line) {
 		lineEndMap.replace(vehicleId, line);
 	}
-	 
+	
+	public Map<Integer,Boolean> initMoving(){
+		ArrayList<VehicleDto> ownVehicles = getOwnVehicles();
+		for (VehicleDto vehicle : ownVehicles) {
+			movingMap.putIfAbsent(vehicle.getId(), false);
+		}
+		return movingMap;
+	}
+	
+	
+	public Boolean getMoving(int vehicleId) {
+		Map<Integer,Boolean> moving = initMoving();
+		return moving.get(vehicleId);
+	}
+	
+	public void setMoving(int vehicleId, boolean lastLine) {
+		movingMap.replace(vehicleId, lastLine);
+	}
+	
+	
 }
