@@ -11,6 +11,8 @@ com\sp\rest\FacilityRest.class
 com\sp\rest\FetchRoute.class
 com\sp\rest\FireRest.class
 com\sp\rest\FetchFire.class
+com\sp\rest\RouteRest.class
 com\sp\rest\VehicleFireRest.class
+com\sp\service\DisplayRunnable.class
 com\sp\FireWebApp.class
 com\sp\service\EmergencyManager.class
