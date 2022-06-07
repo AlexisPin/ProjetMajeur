@@ -6,7 +6,6 @@ import * as L from 'leaflet';
 })
 export class TruckMarkerService {
   vehicleAPI: string = 'http://alexispin.synology.me:9080/vehicle';
-  ourVehicleAPI: string = 'http://alexispin.synology.me:9080/own/vehicle';
   marker_layer : any = L.layerGroup();
   private map: any;
 
@@ -30,14 +29,29 @@ export class TruckMarkerService {
 
   makeTruckMarkers(map: L.Map): void {
     this.setMap(map);
-    let context = {
-      method: 'GET',
-    };
-    fetch(this.vehicleAPI, context)
-      .then((response) => response.json())
-      .then((response) => this.callback(response, map, this.filter))
-      .catch((error) => this.err_callback(error));
+    var vehicle: any;
+    var ourVehicle: any;
+
+    fetch(this.vehicleAPI)
+    .then(function(response) {
+      return response.json()
+    })
+    .then(function(data) {
+      vehicle = data;
+      return fetch('http://alexispin.synology.me:9080/own/vehicle')
+    })
+    .then(function(response){
+      return response.json();
+    })
+    .then((data) =>{
+      ourVehicle = data;
+      this.callback([ourVehicle, vehicle], map, this.filter)
+    })
+    .catch(function(error){
+      console.log('Request Truck Failed : ', error)
+    })
   }
+
 
   updateTruck(map: L.Map): void{
     let context = {
@@ -90,31 +104,46 @@ export class TruckMarkerService {
   }
 
   callback(response: any, map: L.Map, filter : any) {
-    var i = 0;
+    const ourVehicle = response[0];
+    const vehicle = response[1];
     
-    for (let id in response) {   
-      let facilityIcon = L.icon({
-        iconUrl: `../assets/images/our_${response[id].type.toLowerCase()}.png`,
-        iconSize: [40, 40], // size of the icon
-        popupAnchor: [0, -15],
+    const allOurId = ourVehicle.map((d: { id: any; }) => d.id);
+    let facilityIcon;
+
+    for (let id in vehicle) { 
+      
+      if (allOurId.includes(vehicle[id].id)) {
+        facilityIcon = L.icon({
+          iconUrl: `../assets/images/our_${vehicle[id].type.toLowerCase()}.png`,
+          iconSize: [40, 40], // size of the icon
+          popupAnchor: [0, -15]
+        });
+      }
+      else {
+        facilityIcon = L.icon({
+          iconUrl: `../assets/images/oth_${vehicle[id].type.toLowerCase()}.png`,
+          iconSize: [40, 40], // size of the icon
+          popupAnchor: [0, -15]  
       });
-      const truckId = response[id].id;
-      const lat = response[id].lat;
-      const lon = response[id].lon;
-      const type = response[id].type;
-      const liqtype = response[id].liquidType;
+    }
+      
+      const truckId = vehicle[id].id;
+      const lat = vehicle[id].lat;
+      const lon = vehicle[id].lon;
+      const type = vehicle[id].type;
+      const liqtype = vehicle[id].liquidType;
       this.markers[truckId] = L.marker([lat, lon], { icon: facilityIcon });
       if (filter[type] && filter[liqtype]){
         this.marker_layer.addLayer(this.markers[truckId]);
         this.markers[truckId].bindPopup(
           `<h2>
-            ${response[id].type} ${response[id].id}
+            ${vehicle[id].type} ${vehicle[id].id}
             </h2>
-            <h5> LiquidType : ${response[id].liquidType}</h5>
-            <h5> Qty : ${response[id].liquidQuantity}</h5>
-            <h5> Fuel : ${response[id].fuel}</h5>
-            <h5> CrewMember : ${response[id].crewMember}</h5>
-            <h5> FaciltyID : ${response[id].facilityRefID}</h5>`
+            <h5> LiquidType : ${vehicle[id].liquidType}</h5>
+            <h5> Qty : ${vehicle[id].liquidQuantity}</h5>
+            <h5> Fuel : ${vehicle[id].fuel}</h5>
+            <h5> CrewMember : ${vehicle[id].crewMember}</h5>
+            <h5> FaciltyID : ${vehicle[id].facilityRefID}</h5>`
         );
       }
     }
@@ -127,7 +156,3 @@ export class TruckMarkerService {
     console.log(error);
   }
 }
-
-
-
-  
