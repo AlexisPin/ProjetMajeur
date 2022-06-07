@@ -18,6 +18,7 @@ interface Vehicule {
 export class VehicleService {
   vehiculeSubject = new Subject<Vehicule[]>();
 
+  private flagEdit:boolean[] = Array().fill(false);
   private vehicules: Vehicule[] = [];
 
   constructor() {}
@@ -52,24 +53,6 @@ export class VehicleService {
   }
 
   getVehiculeFromServer() {
-    const vehicleUrl = 'http://alexispin.synology.me:9080/vehicle';
-    let context = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-    fetch(vehicleUrl, context)
-      .then((response) => response.json())
-      .then((data) => {
-        (this.vehicules = data), this.emitVehiculeSubject();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-  getOurVehiculeFromServer() {
     const vehicleUrl = 'http://alexispin.synology.me:9080/own/vehicle';
     let context = {
       method: 'GET',
@@ -86,8 +69,6 @@ export class VehicleService {
         console.log(error);
       });
   }
-
-
 
   removeVehicule(vehicule: Vehicule) {
     const vehicleUrl =
@@ -107,5 +88,13 @@ export class VehicleService {
     const indexToRemove = this.vehicules.findIndex((v) => v === vehicule);
     this.vehicules.splice(indexToRemove, 1);
     this.emitVehiculeSubject();
+  }
+
+  updateVehicule(vehicle: Vehicule, id:number) {
+    this.flagEdit[id] = !this.flagEdit[id];
+  }
+
+  getFlagEdit(id:number){
+    return this.flagEdit[id];
   }
 }

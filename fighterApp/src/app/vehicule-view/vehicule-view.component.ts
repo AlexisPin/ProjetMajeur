@@ -25,5 +25,11 @@ export class VehiculeViewComponent implements OnInit {
     this.vehiculeService.removeVehicule(vehicle);
   }
 
-  onEdit() {}
+  onEdit(vehicle: any, id:number) {
+    this.vehiculeService.updateVehicule(vehicle,id)
+  }
+
+  getFlagEdit(id:number){
+    return this.vehiculeService.getFlagEdit(id);
+  }
 }
