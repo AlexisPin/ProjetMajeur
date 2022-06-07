@@ -1,0 +1,39 @@
+<div class="card-body">
+    <p class="card-text">
+        <form [formGroup]="UpdateVehicle" (ngSubmit)="onSubmit()">
+            <select id="vehicleType" class="form-control" formControlName="vehicleType">
+                <option value="" disabled selected>
+                    <i class="bi bi-truck"></i>Véhicule
+                </option>
+                <option *ngFor="let fire of Fire">
+                    {{ fire }}
+                </option>
+            </select>
+            <select id="liquidType" class="form-control" formControlName="liquidType">
+                <option value="" disabled selected>
+                    Liquide
+                </option>
+                <option *ngFor="let liquid of Liquid">
+                  {{ liquid }}
+                </option>
+            </select>
+            <button
+            *ngIf="UpdateVehicle.invalid"
+            class="btn btn-secondary my-3 mx-auto"
+            type="submit"
+            [disabled]="true"
+            >
+            <i class="bi bi-clipboard"></i> Ajouter vehicule
+            </button>
+
+            <button
+                *ngIf="UpdateVehicle.valid"
+                class="btn btn-primary my-3 mx-auto"
+                type="submit"
+            >
+            <i class="bi bi-clipboard-plus"></i> Ajouter vehicule
+            </button>
+            
+        </form>
+</div>
+  
