@@ -16,7 +16,7 @@
               <br>
               Fuel restant :
               <div class="progress">
-                <div class="progress-bar w-25" role="progressbar" aria-valuemin="0" aria-valuemax="100">{{ vehicule.fuel - vehicule.fuel % 1 }}%</div>
+                <div class="progress-bar" style="width: {{vehicule.fuel - vehicule.fuel % 1}}%" role="progressbar" aria-valuemin="0" aria-valuemax="100">{{ vehicule.fuel - vehicule.fuel % 1 }}%</div>
               </div>
               
               <br>
@@ -25,7 +25,7 @@
               <br>
               Liquide restant :
               <div class="progress">
-                <div class="progress-bar w-50" role="progressbar" aria-valuemin="0" aria-valuemax="100">{{ vehicule.liquidQuantity - vehicule.liquidQuantity % 1 }}%</div>
+                <div class="progress-bar" style="width: {{vehicule.liquidQuantity - vehicule.liquidQuantity % 1}}%" role="progressbar" aria-valuemin="0" aria-valuemax="100">{{ vehicule.liquidQuantity - vehicule.liquidQuantity % 1 }}%</div>
               </div>
           </div>
           </div>  
