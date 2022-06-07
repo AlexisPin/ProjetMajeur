@@ -52,7 +52,7 @@ export class VehicleService {
   }
 
   getVehiculeFromServer() {
-    const vehicleUrl = 'http://vps.cpe-sn.fr:8081/vehicle';
+    const vehicleUrl = 'http://alexispin.synology.me:9080/vehicle';
     let context = {
       method: 'GET',
       headers: {
@@ -68,6 +68,26 @@ export class VehicleService {
         console.log(error);
       });
   }
+
+  getOurVehiculeFromServer() {
+    const vehicleUrl = 'http://alexispin.synology.me:9080/own/vehicle';
+    let context = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    fetch(vehicleUrl, context)
+      .then((response) => response.json())
+      .then((data) => {
+        (this.vehicules = data), this.emitVehiculeSubject();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+
 
   removeVehicule(vehicule: Vehicule) {
     const vehicleUrl =
