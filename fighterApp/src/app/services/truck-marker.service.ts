@@ -5,7 +5,8 @@ import * as L from 'leaflet';
   providedIn: 'root'
 })
 export class TruckMarkerService {
-  facilityAPI: string = 'http://vps.cpe-sn.fr:8081/vehicle';
+  vehicleAPI: string = 'http://alexispin.synology.me:9080/vehicle';
+  ourVehicleAPI: string = 'http://alexispin.synology.me:9080/own/vehicle';
   marker_layer : any = L.layerGroup();
   private map: any;
 
@@ -32,7 +33,7 @@ export class TruckMarkerService {
     let context = {
       method: 'GET',
     };
-    fetch(this.facilityAPI, context)
+    fetch(this.vehicleAPI, context)
       .then((response) => response.json())
       .then((response) => this.callback(response, map, this.filter))
       .catch((error) => this.err_callback(error));
@@ -42,7 +43,7 @@ export class TruckMarkerService {
     let context = {
       method: 'GET',
     };
-    fetch(this.facilityAPI, context)
+    fetch(this.vehicleAPI, context)
       .then((response) => response.json())
       .then((response) => this.updateCallback(response, map))
       .catch((error) => this.err_callback(error));

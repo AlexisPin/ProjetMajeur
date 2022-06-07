@@ -9,7 +9,7 @@ import { range } from 'rxjs';
 export class MarkerService {
   private map: any;
   marker_layer : any = L.layerGroup();
-  firesAPI: string = 'http://vps.cpe-sn.fr:8081/fire';
+  firesAPI: string = 'http://alexispin.synology.me:9080/fire';
 
   filter = {
     inputIntensityMin: 1,

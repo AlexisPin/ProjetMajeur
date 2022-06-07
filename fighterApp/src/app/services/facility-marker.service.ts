@@ -5,7 +5,7 @@ import * as L from 'leaflet';
   providedIn: 'root',
 })
 export class FacilityMarkerService {
-  facilityAPI: string = 'http://vps.cpe-sn.fr:8081/facility';
+  facilityAPI: string = 'http://alexispin.synology.me:9080/facility';
 
   constructor() {}
 
