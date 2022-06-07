@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { VehiculeViewComponent } from '../vehicule-view/vehicule-view.component';
 
 interface Vehicule {
   lon: number;
@@ -18,10 +17,19 @@ interface Vehicule {
 })
 export class VehicleService {
   vehiculeSubject = new Subject<Vehicule[]>();
-
+  
   private vehicules: Vehicule[] = [];
+  flagEdit:boolean[] = Array().fill(false);
 
   constructor() {}
+
+  getFlagEdit(id:number){
+    return this.flagEdit[id];
+  }
+
+  setFlagEdit(id:number){
+    this.flagEdit[id] = false;
+  }
 
   emitVehiculeSubject() {
     this.vehiculeSubject.next(this.vehicules.slice());
@@ -90,7 +98,7 @@ export class VehicleService {
     this.emitVehiculeSubject();
   }
 
-  updateVehicule(vehicle: Vehicule, id:number) {
+  updateVehicule(vehicle: Vehicule, id:number): any {
     console.log(vehicle)
     console.log(id)
     
@@ -106,9 +114,10 @@ export class VehicleService {
     fetch(vehicleUrl, context)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        if(data){
+          this.setFlagEdit(id);
+        }
+        console.log(data)
       });
-    
-    
   }
 }

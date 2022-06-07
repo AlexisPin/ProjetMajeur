@@ -10,11 +10,11 @@ import { EditVehiculeComponent } from '../edit-vehicule/edit-vehicule.component'
 })
 export class VehiculeViewComponent implements OnInit {
   
-  constructor(private vehiculeService: VehicleService) {}
+  constructor(public vehiculeService: VehicleService) {}
 
   vehicules: any[] = [];
   vehiculeSubscription!: Subscription;
-  private flagEdit:boolean[] = Array().fill(false);
+  
 
   ngOnInit(): void {
     this.vehiculeService.getVehiculeFromServer();
@@ -29,17 +29,9 @@ export class VehiculeViewComponent implements OnInit {
   }
 
   onEdit(vehicle: any, id:number) {
-    this.flagEdit[id] = !this.flagEdit[id];
+    this.vehiculeService.flagEdit[id] = !this.vehiculeService.flagEdit[id];
     EditVehiculeComponent.setPreviousData(vehicle);
     EditVehiculeComponent.setId(id);
-  }
-
-  getFlagEdit(id:number){
-    return this.flagEdit[id];
-  }
-
-  setFlagEdit(id:number){
-    this.flagEdit[id] = false;
   }
 }
 

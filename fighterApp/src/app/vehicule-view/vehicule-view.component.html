@@ -7,8 +7,9 @@
         <div class="card-header">
           <i class="bi bi-truck"></i> : {{ vehicule.type }} {{ vehicule.id }}
         </div>
-        <app-edit-vehicule *ngIf="getFlagEdit(vehicule.id)"></app-edit-vehicule>
-        <div class="fixe" *ngIf="!getFlagEdit(vehicule.id)">
+        <app-edit-vehicule *ngIf="this.vehiculeService.getFlagEdit(vehicule.id)"></app-edit-vehicule>
+
+        <div class="fixe" *ngIf="!this.vehiculeService.getFlagEdit(vehicule.id)">
           <div class="card-body">
             <p class="card-text">
               <i class="bi bi-person-fill"></i> : {{ vehicule.crewMember }} 
@@ -36,8 +37,9 @@
             </p>
           </div>
           </div>  
-        <div class="card-footer" *ngIf="vehicule.name != 2">
-          <button class="btn btn-primary" (click)="onEdit(vehicule, vehicule.id)">Editer</button>
+        <div class="card-footer">
+          <button class="btn btn-warning" *ngIf="this.vehiculeService.getFlagEdit(vehicule.id)" (click)="this.vehiculeService.setFlagEdit(vehicule.id)">Annuler</button>
+          <button class="btn btn-primary" *ngIf="!this.vehiculeService.getFlagEdit(vehicule.id)" (click)="onEdit(vehicule, vehicule.id)">Editer</button>
           <button class="btn btn-danger"  (click)="onDelete(vehicule)">Supprimer</button>
         </div>
       </div>
