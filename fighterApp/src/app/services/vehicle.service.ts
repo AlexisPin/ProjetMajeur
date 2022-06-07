@@ -36,7 +36,7 @@ export class VehicleService {
     console.log(vehicule);
 
     const vehicleUrl =
-      'http://vps.cpe-sn.fr:8081/vehicle/bd4dd8f2-c28d-46ba-a342-9d9b99259a67';
+      'http://vps.cpe-sn.fr:8081/vehicle/3e84503c-ce82-476b-b702-b380cb6b43d8';
     let context = {
       method: 'POST',
       body: JSON.stringify(vehicule),
@@ -71,7 +71,7 @@ export class VehicleService {
 
   removeVehicule(vehicule: Vehicule) {
     const vehicleUrl =
-      'http://vps.cpe-sn.fr:8081/vehicle/bd4dd8f2-c28d-46ba-a342-9d9b99259a67';
+      'http://vps.cpe-sn.fr:8081/vehicle/3e84503c-ce82-476b-b702-b380cb6b43d8';
     let context = {
       method: 'DELETE',
       headers: {
@@ -89,7 +89,26 @@ export class VehicleService {
     this.emitVehiculeSubject();
   }
 
-  updateVehicule(vehicle: Vehicule) {
-    console.log("je vais te put les nouvelles infos de notre véhicule sur la superbe API")
+  updateVehicule(vehicle: Vehicule, id:number) {
+    console.log(vehicle)
+    console.log(id)
+    
+    /*
+    const vehicleUrl =
+      `http://vps.cpe-sn.fr:8081/vehicle/3e84503c-ce82-476b-b702-b380cb6b43d8/${id}`;
+    let context = {
+      method: 'PUT',
+      body: JSON.stringify(vehicle),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    fetch(vehicleUrl, context)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('data');
+      });
+    */
+    
   }
 }

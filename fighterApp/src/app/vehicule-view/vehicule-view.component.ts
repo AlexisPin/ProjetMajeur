@@ -30,6 +30,7 @@ export class VehiculeViewComponent implements OnInit {
   onEdit(vehicle: any, id:number) {
     this.flagEdit[id] = !this.flagEdit[id];
     EditVehiculeComponent.setPreviousData(vehicle);
+    EditVehiculeComponent.setId(id);
   }
 
   getFlagEdit(id:number){
