@@ -12,6 +12,7 @@ export class VehiculeViewComponent implements OnInit {
 
   vehicules: any[] = [];
   vehiculeSubscription!: Subscription;
+  private flagEdit:boolean[] = Array().fill(false);
 
   ngOnInit(): void {
     this.vehiculeService.getVehiculeFromServer();
@@ -26,10 +27,11 @@ export class VehiculeViewComponent implements OnInit {
   }
 
   onEdit(vehicle: any, id:number) {
-    this.vehiculeService.updateVehicule(vehicle,id)
+    this.flagEdit[id] = !this.flagEdit[id];
   }
 
   getFlagEdit(id:number){
-    return this.vehiculeService.getFlagEdit(id);
+    return this.flagEdit[id];
   }
 }
+

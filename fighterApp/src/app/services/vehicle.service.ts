@@ -18,7 +18,6 @@ interface Vehicule {
 export class VehicleService {
   vehiculeSubject = new Subject<Vehicule[]>();
 
-  private flagEdit:boolean[] = Array().fill(false);
   private vehicules: Vehicule[] = [];
 
   constructor() {}
@@ -91,10 +90,6 @@ export class VehicleService {
   }
 
   updateVehicule(vehicle: Vehicule, id:number) {
-    this.flagEdit[id] = !this.flagEdit[id];
-  }
-
-  getFlagEdit(id:number){
-    return this.flagEdit[id];
+    console.log("je vais te put les nouvelles infos de notre véhicule sur la superbe API")
   }
 }
