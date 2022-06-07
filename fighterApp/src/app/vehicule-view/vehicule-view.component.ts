@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { VehicleService } from '../services/vehicle.service';
 import { Subscription } from 'rxjs';
+import { EditVehiculeComponent } from '../edit-vehicule/edit-vehicule.component';
 
 @Component({
   selector: 'app-vehicule-view',
@@ -8,10 +9,12 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./vehicule-view.component.css'],
 })
 export class VehiculeViewComponent implements OnInit {
-  constructor(private vehiculeService: VehicleService) {}
+  
+  constructor(public vehiculeService: VehicleService) {}
 
   vehicules: any[] = [];
   vehiculeSubscription!: Subscription;
+  
 
   ngOnInit(): void {
     this.vehiculeService.getVehiculeFromServer();
@@ -25,5 +28,10 @@ export class VehiculeViewComponent implements OnInit {
     this.vehiculeService.removeVehicule(vehicle);
   }
 
-  onEdit() {}
+  onEdit(vehicle: any, id:number) {
+    this.vehiculeService.flagEdit[id] = !this.vehiculeService.flagEdit[id];
+    EditVehiculeComponent.setPreviousData(vehicle);
+    EditVehiculeComponent.setId(id);
+  }
 }
+

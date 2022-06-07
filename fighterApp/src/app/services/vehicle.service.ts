@@ -17,10 +17,19 @@ interface Vehicule {
 })
 export class VehicleService {
   vehiculeSubject = new Subject<Vehicule[]>();
-
+  
   private vehicules: Vehicule[] = [];
+  flagEdit:boolean[] = Array().fill(false);
 
   constructor() {}
+
+  getFlagEdit(id:number){
+    return this.flagEdit[id];
+  }
+
+  setFlagEdit(id:number){
+    this.flagEdit[id] = false;
+  }
 
   emitVehiculeSubject() {
     this.vehiculeSubject.next(this.vehicules.slice());
@@ -36,7 +45,7 @@ export class VehicleService {
     console.log(vehicule);
 
     const vehicleUrl =
-      'http://vps.cpe-sn.fr:8081/vehicle/bd4dd8f2-c28d-46ba-a342-9d9b99259a67';
+      'http://vps.cpe-sn.fr:8081/vehicle/3e84503c-ce82-476b-b702-b380cb6b43d8';
     let context = {
       method: 'POST',
       body: JSON.stringify(vehicule),
@@ -52,24 +61,6 @@ export class VehicleService {
   }
 
   getVehiculeFromServer() {
-    const vehicleUrl = 'http://alexispin.synology.me:9080/vehicle';
-    let context = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-    fetch(vehicleUrl, context)
-      .then((response) => response.json())
-      .then((data) => {
-        (this.vehicules = data), this.emitVehiculeSubject();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-  getOurVehiculeFromServer() {
     const vehicleUrl = 'http://alexispin.synology.me:9080/own/vehicle';
     let context = {
       method: 'GET',
@@ -80,18 +71,22 @@ export class VehicleService {
     fetch(vehicleUrl, context)
       .then((response) => response.json())
       .then((data) => {
-        (this.vehicules = data), this.emitVehiculeSubject();
+        data.sort(function(a: { id: string; }, b: { id: string; }) {
+          return parseFloat(a.id) - parseFloat(b.id);
+        });
+        (this.vehicules = data), 
+        console.log(this.vehicules),
+        
+        this.emitVehiculeSubject();
       })
       .catch((error) => {
         console.log(error);
       });
   }
 
-
-
   removeVehicule(vehicule: Vehicule) {
     const vehicleUrl =
-      'http://vps.cpe-sn.fr:8081/vehicle/bd4dd8f2-c28d-46ba-a342-9d9b99259a67';
+      'http://vps.cpe-sn.fr:8081/vehicle/3e84503c-ce82-476b-b702-b380cb6b43d8';
     let context = {
       method: 'DELETE',
       headers: {
@@ -107,5 +102,28 @@ export class VehicleService {
     const indexToRemove = this.vehicules.findIndex((v) => v === vehicule);
     this.vehicules.splice(indexToRemove, 1);
     this.emitVehiculeSubject();
+  }
+
+  updateVehicule(vehicle: Vehicule, id:number): any {
+    console.log(vehicle)
+    console.log(id)
+    
+    const vehicleUrl =
+      `http://vps.cpe-sn.fr:8081/vehicle/3e84503c-ce82-476b-b702-b380cb6b43d8/${id}`;
+    let context = {
+      method: 'PUT',
+      body: JSON.stringify(vehicle),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    fetch(vehicleUrl, context)
+      .then((response) => response.json())
+      .then((data) => {
+        if(data){
+          this.setFlagEdit(id);
+        }
+        console.log(data)
+      });
   }
 }

@@ -16,6 +16,7 @@ import { FacilityMarkerService } from './services/facility-marker.service';
 import { VehiculeViewComponent } from './vehicule-view/vehicule-view.component';
 import { TruckMarkerService } from './services/truck-marker.service';
 import { TruckFilterComponent } from './truck-filter/truck-filter.component';
+import { EditVehiculeComponent } from './edit-vehicule/edit-vehicule.component';
 
 const appRoutes: Routes = [
   { path: 'map', component: ViewMapComponent },
@@ -34,6 +35,7 @@ const appRoutes: Routes = [
     MapFilterComponent,
     VehiculeViewComponent,
     TruckFilterComponent,
+    EditVehiculeComponent,
   ],
   imports: [
     BrowserModule,
