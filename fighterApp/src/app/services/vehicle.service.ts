@@ -71,7 +71,13 @@ export class VehicleService {
     fetch(vehicleUrl, context)
       .then((response) => response.json())
       .then((data) => {
-        (this.vehicules = data), this.emitVehiculeSubject();
+        data.sort(function(a: { id: string; }, b: { id: string; }) {
+          return parseFloat(a.id) - parseFloat(b.id);
+        });
+        (this.vehicules = data), 
+        console.log(this.vehicules),
+        
+        this.emitVehiculeSubject();
       })
       .catch((error) => {
         console.log(error);

@@ -15,26 +15,18 @@
               <i class="bi bi-person-fill"></i> : {{ vehicule.crewMember }} 
               <br>
               Fuel restant :
-              {{ vehicule.fuel }} 
-              <i class="bi bi-reception-0" *ngIf="vehicule.fuel < 10"></i>
-              <i class="bi bi-reception-1" *ngIf="vehicule.fuel < 30 && vehicule.fuel > 10"></i>
-              <i class="bi bi-reception-2" *ngIf="vehicule.fuel < 60 && vehicule.fuel > 30"></i>
-              <i class="bi bi-reception-3" *ngIf="vehicule.fuel < 80 && vehicule.fuel > 60"></i>
-              <i class="bi bi-reception-4" *ngIf="vehicule.fuel > 80"></i>
+              <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{ vehicule.fuel }}%</div>
+              </div>
               
               <br>
               Type de liquide :
               {{ vehicule.liquidType }} 
               <br>
               Liquide restant :
-              
-              {{ vehicule.liquidQuantity }}
-              <i class="bi bi-reception-0" *ngIf="vehicule.liquidQuantity < 10"></i>
-              <i class="bi bi-reception-1" *ngIf="vehicule.liquidQuantity < 30 && vehicule.liquidQuantity > 9"></i>
-              <i class="bi bi-reception-2" *ngIf="vehicule.liquidQuantity < 60 && vehicule.liquidQuantity > 29"></i>
-              <i class="bi bi-reception-3" *ngIf="vehicule.liquidQuantity < 80 && vehicule.liquidQuantity > 59"></i>
-              <i class="bi bi-reception-4" *ngIf="vehicule.liquidQuantity > 80"></i>
-            </p>
+              <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{ vehicule.liquidQuantity }}%</div>
+              </div>
           </div>
           </div>  
         <div class="card-footer">
