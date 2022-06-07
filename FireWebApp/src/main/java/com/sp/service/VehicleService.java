@@ -29,6 +29,8 @@ public class VehicleService {
     
     Map<Integer,Boolean> movingMap = new HashMap<Integer,Boolean>();
     
+    Map<Integer,ArrayList<Double>> vehicleInitCoord = new HashMap<Integer,ArrayList<Double>>();
+    
     
 	public VehicleDto[] getVehicles() {
 		VehicleDto[] vehicles = fetch.getVehicles();
@@ -172,5 +174,5 @@ public class VehicleService {
 		movingMap.replace(vehicleId, lastLine);
 	}
 	
-	
+
 }
