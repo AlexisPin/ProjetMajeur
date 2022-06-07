@@ -17,17 +17,17 @@ interface Vehicule {
 })
 export class VehicleService {
   vehiculeSubject = new Subject<Vehicule[]>();
-  
+
   private vehicules: Vehicule[] = [];
-  flagEdit:boolean[] = Array().fill(false);
+  flagEdit: boolean[] = Array().fill(false);
 
   constructor() {}
 
-  getFlagEdit(id:number){
+  getFlagEdit(id: number) {
     return this.flagEdit[id];
   }
 
-  setFlagEdit(id:number){
+  setFlagEdit(id: number) {
     this.flagEdit[id] = false;
   }
 
@@ -71,13 +71,11 @@ export class VehicleService {
     fetch(vehicleUrl, context)
       .then((response) => response.json())
       .then((data) => {
-        data.sort(function(a: { id: string; }, b: { id: string; }) {
+        data.sort(function (a: { id: string }, b: { id: string }) {
           return parseFloat(a.id) - parseFloat(b.id);
-        });
-        (this.vehicules = data), 
-        console.log(this.vehicules),
-        
-        this.emitVehiculeSubject();
+        }),
+          (this.vehicules = data),
+          this.emitVehiculeSubject();
       })
       .catch((error) => {
         console.log(error);
@@ -104,12 +102,11 @@ export class VehicleService {
     this.emitVehiculeSubject();
   }
 
-  updateVehicule(vehicle: Vehicule, id:number): any {
-    console.log(vehicle)
-    console.log(id)
-    
-    const vehicleUrl =
-      `http://vps.cpe-sn.fr:8081/vehicle/3e84503c-ce82-476b-b702-b380cb6b43d8/${id}`;
+  updateVehicule(vehicle: Vehicule, id: number): any {
+    console.log(vehicle);
+    console.log(id);
+
+    const vehicleUrl = `http://vps.cpe-sn.fr:8081/vehicle/3e84503c-ce82-476b-b702-b380cb6b43d8/${id}`;
     let context = {
       method: 'PUT',
       body: JSON.stringify(vehicle),
@@ -120,10 +117,17 @@ export class VehicleService {
     fetch(vehicleUrl, context)
       .then((response) => response.json())
       .then((data) => {
-        if(data){
+        if (data) {
           this.setFlagEdit(id);
         }
-        console.log(data)
+        console.log(data);
       });
+
+    const indexToUpdate = this.vehicules.findIndex((v) => v === vehicle);
+    this.vehicules[indexToUpdate] = vehicle;
+    console.log(this.vehicules[indexToUpdate]);
+
+    this.emitVehiculeSubject();
+    
   }
 }

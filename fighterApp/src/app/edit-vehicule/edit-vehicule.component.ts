@@ -5,25 +5,23 @@ import { VehicleService } from '../services/vehicle.service';
 @Component({
   selector: 'app-edit-vehicule',
   templateUrl: './edit-vehicule.component.html',
-  styleUrls: ['./edit-vehicule.component.css']
+  styleUrls: ['./edit-vehicule.component.css'],
 })
 export class EditVehiculeComponent implements OnInit {
-
   UpdateVehicle!: FormGroup;
   private static vehicle: any;
-  private static id:number;
-  
+  private static id: number;
+
   constructor(
     private vehiculeService: VehicleService,
-    private formBuilder: FormBuilder) { }
-
-
+    private formBuilder: FormBuilder
+  ) {}
 
   Fire: any = [
     'CAR',
     'FIRE_ENGINE',
     'PUMPER_TRUCK',
-    'WATER_TENDER',
+    'WATER_TENDERS',
     'TURNTABLE_LADDER_TRUCK',
     'TRUCK',
   ];
@@ -46,27 +44,27 @@ export class EditVehiculeComponent implements OnInit {
     });
   }
 
-  static setPreviousData(vehicle:any){
-    this.vehicle = vehicle; 
+  static setPreviousData(vehicle: any) {
+    this.vehicle = vehicle;
   }
 
-  static getPreviousData(){
+  static getPreviousData() {
     return this.vehicle;
   }
 
-  static setId(id:number){
+  static setId(id: number) {
     this.id = id;
   }
 
-  static getId(){
+  static getId() {
     return this.id;
   }
 
-  onSubmit(){
+  onSubmit() {
     this.updateVehicle(this.UpdateVehicle.value);
   }
 
-  updateVehicle(vehicle:any){
+  updateVehicle(vehicle: any) {
     let data = {
       id: EditVehiculeComponent.getId(),
       lon: EditVehiculeComponent.vehicle.lon,
@@ -79,8 +77,6 @@ export class EditVehiculeComponent implements OnInit {
       facilityRefID: EditVehiculeComponent.vehicle.facilityRefID,
     };
 
-    this.vehiculeService.updateVehicule(data, EditVehiculeComponent.getId())
-      
-    }
+    this.vehiculeService.updateVehicule(data, EditVehiculeComponent.getId());
+  }
 }
-

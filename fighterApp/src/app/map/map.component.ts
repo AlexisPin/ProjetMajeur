@@ -16,7 +16,7 @@ export class MapComponent implements AfterViewInit {
     this.map = L.map('map', {
       center: [45.75, 4.85],
       zoom: 11,
-    }).on('click', (e) =>{
+    }).on('click', (e) => {
       this.hideRoute();
     });
 
@@ -26,8 +26,10 @@ export class MapComponent implements AfterViewInit {
         maxZoom: 18,
         minZoom: 3,
         id: 'mapbox/streets-v11',
-        attribution: '© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        accessToken: 'pk.eyJ1IjoiYWRyaWxhcCIsImEiOiJjbDN2Y2N0eGsweWk5M3NueXB0OW50Y29pIn0.J9hlPan0oV4A0KKHgd4CLg'
+        attribution:
+          '© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        accessToken:
+          'pk.eyJ1IjoiYWRyaWxhcCIsImEiOiJjbDN2Y2N0eGsweWk5M3NueXB0OW50Y29pIn0.J9hlPan0oV4A0KKHgd4CLg',
       }
     );
 
@@ -37,7 +39,7 @@ export class MapComponent implements AfterViewInit {
   constructor(
     private markerService: MarkerService,
     private facilityMarkerService: FacilityMarkerService,
-    private truckMarkerService: TruckMarkerService,
+    private truckMarkerService: TruckMarkerService
   ) {}
 
   ngAfterViewInit(): void {
@@ -49,17 +51,16 @@ export class MapComponent implements AfterViewInit {
     this.Update();
   }
 
-  Update() : void{
+  Update(): void {
     this.truckMarkerService.updateTruck(this.map);
     this.markerService.updateFire(this.map);
     this.truckMarkerService.getRoute(this.map);
     setTimeout(() => {
       this.Update();
-  }, 1000);
+    }, 1000);
   }
 
-
-  hideRoute() : void{
+  hideRoute(): void {
     this.truckMarkerService.hideRoute();
   }
 }

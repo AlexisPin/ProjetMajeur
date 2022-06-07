@@ -9,12 +9,10 @@ import { EditVehiculeComponent } from '../edit-vehicule/edit-vehicule.component'
   styleUrls: ['./vehicule-view.component.css'],
 })
 export class VehiculeViewComponent implements OnInit {
-  
   constructor(public vehiculeService: VehicleService) {}
 
   vehicules: any[] = [];
   vehiculeSubscription!: Subscription;
-  
 
   ngOnInit(): void {
     this.vehiculeService.getVehiculeFromServer();
@@ -28,10 +26,13 @@ export class VehiculeViewComponent implements OnInit {
     this.vehiculeService.removeVehicule(vehicle);
   }
 
-  onEdit(vehicle: any, id:number) {
+  onEdit(vehicle: any, id: number) {
     this.vehiculeService.flagEdit[id] = !this.vehiculeService.flagEdit[id];
     EditVehiculeComponent.setPreviousData(vehicle);
     EditVehiculeComponent.setId(id);
   }
-}
 
+  ngOnDestroy(): void {
+    this.vehiculeSubscription.unsubscribe();
+  }
+}
