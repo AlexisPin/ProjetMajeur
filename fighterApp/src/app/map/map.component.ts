@@ -47,7 +47,7 @@ export class MapComponent implements AfterViewInit {
   }
 
   Update() : void{
-    //this.truckMarkerService.updateTruck(this.map);
+    this.truckMarkerService.updateTruck(this.map);
     this.markerService.updateFire(this.map);
     setTimeout(() => {
       this.Update();

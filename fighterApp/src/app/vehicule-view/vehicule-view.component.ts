@@ -12,9 +12,11 @@ export class VehiculeViewComponent implements OnInit {
 
   vehicules: any[] = [];
   vehiculeSubscription!: Subscription;
+  ourVehicules: any[] = [];
 
   ngOnInit(): void {
     this.vehiculeService.getVehiculeFromServer();
+    this.vehiculeService.getOurVehiculeFromServer();
     this.vehiculeSubscription = this.vehiculeService.vehiculeSubject.subscribe({
       next: (vehicules) => (this.vehicules = vehicules),
     });
