@@ -23,7 +23,7 @@ function callback(response: any, map: L.Map) {
   for (let id in response) {
     let facilityIcon = L.icon({
       iconUrl:
-        response[id].name.substring(3, 4) == 2
+        response[id].name.substring(0, 4) == 'Cas2'
           ? '../assets/images/owncaserne.png'
           : '../assets/images/caserne.png',
       iconSize: [40, 40], // size of the icon

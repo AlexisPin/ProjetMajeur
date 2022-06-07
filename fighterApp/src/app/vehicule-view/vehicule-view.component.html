@@ -1,39 +1,87 @@
-<div class= "container-fluid">
-<div class= "row d-inline-flex">
-      <div
-        class="card col-6 col-sm-4 col-md-3 p-2"
-        *ngFor="let vehicule of vehicules; let i = index"
-      >
-        <div class="card-header">
-          <i class="bi bi-truck"></i> : {{ vehicule.type }} {{ vehicule.id }}
-        </div>
-        <app-edit-vehicule *ngIf="this.vehiculeService.getFlagEdit(vehicule.id)"></app-edit-vehicule>
+<div class="container-fluid">
+  <div class="row d-inline-flex">
+    <div
+      class="card col-6 col-sm-4 col-md-3 p-2"
+      *ngFor="let vehicule of vehicules; let i = index"
+    >
+      <div class="card-header">
+        <i class="bi bi-truck"></i> : {{ vehicule.type }} {{ vehicule.id }}
+      </div>
+      <app-edit-vehicule
+        *ngIf="this.vehiculeService.getFlagEdit(vehicule.id)"
+      ></app-edit-vehicule>
 
-        <div class="fixe" *ngIf="!this.vehiculeService.getFlagEdit(vehicule.id)">
-          <div class="card-body">
-            <p class="card-text">
-              <i class="bi bi-person-fill"></i> : {{ vehicule.crewMember }} 
-              <br>
-              Fuel restant :
-              <div class="progress">
-                <div class="progress-bar" style="width: {{vehicule.fuel - vehicule.fuel % 1}}%" role="progressbar" aria-valuemin="0" aria-valuemax="100">{{ vehicule.fuel - vehicule.fuel % 1 }}%</div>
-              </div>
-              
-              <br>
-              Type de liquide :
-              {{ vehicule.liquidType }} 
-              <br>
-              Liquide restant :
-              <div class="progress">
-                <div class="progress-bar" style="width: {{vehicule.liquidQuantity - vehicule.liquidQuantity % 1}}%" role="progressbar" aria-valuemin="0" aria-valuemax="100">{{ vehicule.liquidQuantity - vehicule.liquidQuantity % 1 }}%</div>
-              </div>
+      <div class="fixe" *ngIf="!this.vehiculeService.getFlagEdit(vehicule.id)">
+        <div class="card-body">
+          <p class="card-text">
+            <i class="bi bi-person-fill"></i> : {{ vehicule.crewMember }}
+            <br />
+            Fuel restant :
+          </p>
+
+          <div class="progress">
+            <div
+              [ngClass]="{
+                'progress-bar': true,
+                'bg-success': vehicule.fuel.toFixed(0) > 66,
+                'bg-warning':
+                  vehicule.fuel.toFixed(0) > 33 &&
+                  vehicule.fuel.toFixed(0) <= 66,
+                'bg-danger': vehicule.fuel.toFixed(0) <= 33
+              }"
+              style="width: {{ vehicule.fuel.toFixed(0) }}%"
+              role="progressbar"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            >
+              {{ vehicule.fuel.toFixed(0) }}%
+            </div>
           </div>
-          </div>  
-        <div class="card-footer">
-          <button class="btn btn-warning" *ngIf="this.vehiculeService.getFlagEdit(vehicule.id)" (click)="this.vehiculeService.setFlagEdit(vehicule.id)">Annuler</button>
-          <button class="btn btn-primary" *ngIf="!this.vehiculeService.getFlagEdit(vehicule.id)" (click)="onEdit(vehicule, vehicule.id)">Editer</button>
-          <button class="btn btn-danger"  (click)="onDelete(vehicule)">Supprimer</button>
+
+          <br />
+          Type de liquide :
+          {{ vehicule.liquidType }}
+          <br />
+          Liquide restant :
+          <div class="progress">
+            <div
+              [ngClass]="{
+                'progress-bar': true,
+                'bg-success': vehicule.liquidQuantity.toFixed(0) > 66,
+                'bg-warning':
+                  vehicule.liquidQuantity.toFixed(0) > 33 &&
+                  vehicule.liquidQuantity.toFixed(0) <= 66,
+                'bg-danger': vehicule.liquidQuantity.toFixed(0) <= 33
+              }"
+              style="width: {{ vehicule.liquidQuantity.toFixed(0) }}%"
+              role="progressbar"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            >
+              {{ vehicule.liquidQuantity.toFixed(0) }}%
+            </div>
+          </div>
         </div>
       </div>
+      <div class="card-footer">
+        <button
+          class="btn btn-warning me-2"
+          *ngIf="this.vehiculeService.getFlagEdit(vehicule.id)"
+          (click)="this.vehiculeService.setFlagEdit(vehicule.id)"
+        >
+          Annuler
+        </button>
+        <button
+          class="btn btn-primary me-2"
+          *ngIf="!this.vehiculeService.getFlagEdit(vehicule.id)"
+          (click)="onEdit(vehicule, vehicule.id)"
+        >
+          Editer
+        </button>
+        <button class="btn btn-danger" (click)="onDelete(vehicule)">
+          Supprimer
+        </button>
+      </div>
     </div>
-    </div>
+  </div>
+</div>
