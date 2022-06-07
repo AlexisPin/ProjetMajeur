@@ -1,6 +1,8 @@
 package com.sp.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,14 +65,13 @@ public class EmergencyManager {
 	    				if(!onWorkFire.contains(fire.getId()) && !onWorkVehicle.contains(vehicle.getId())) {
 	    					Coord fCoord = new Coord(fire.getLon(),fire.getLat());
 	    					double newDistance = calculDistance(vehicle, fCoord.getLat(),fCoord.getLon());
-	    					if(efficiency <= newEfficiency) {
 	    						efficiency = newEfficiency;
 		    					if(distance > newDistance) {
 		    						distance = newDistance;
 		    						interFire = fire;
 		    						interVehicle = vehicle;
 		    					}
-	    					}
+
 	    				}
 	    			}
     			if(interFire.getId() != null && interVehicle.getId() != null) {
@@ -82,13 +83,13 @@ public class EmergencyManager {
 	    		for(Integer onWork : onWorkFire) {
     				if(!fService.getFiresId().contains(onWork)) { 					
     					int vehicleId = vehicleFireMap.get(onWork).getId();
-    					//System.out.println("Le véhicule : " + vehicleId + " arrete de bosser"); ad
+
     					vehicleFireMap.remove(onWork);
     					int index = onWorkVehicle.indexOf(vehicleId);
 						onWorkVehicle.remove(index);
 						onWorkFire.remove(onWork);
 						vService.setWorkingVehicle(vehicleId, false);
-						//rService.deleteRoute(vehicleId);
+
 						vService.setLastLine(vehicleId, false);
 						vService.setVehicleOnLine(vehicleId, false);
     				}	
@@ -175,7 +176,9 @@ public class EmergencyManager {
 	}
 	
 	private boolean saveChanges(VehicleDto vehicle,VehicleService vService) {
-    	vService.updateVehicle("1e9f18a6-4096-4369-ad25-9b3c8451fe27", vehicle.getId(), vehicle);
+ 
+    	vService.updateVehicle("1e9f18a6-4096-4369-ad25-9b3c8451fe27", vehicle.getId(), vehicle); 
+ 
     	return true;
 	}
 	
@@ -211,9 +214,14 @@ public class EmergencyManager {
 			vService.setLastLine(vehicleId, false);
 			rService.deleteRoute(vehicleId);
 			
+			  SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
+			    Date date = new Date();  
+			    System.out.println("temps 1 : " +formatter.format(date)); 
 			rService.putRoute(vehicleId, lonStart, latStart, lonEnd, latEnd);
+    	    Date newdate = new Date();  
+    	    System.out.println("temps 2 : " + formatter.format(newdate)); 
 			route = rService.getRoute(vehicleId);
-			//System.out.println("1 vehicle : " + vehicleId + " route : " + route); ad
+			//System.out.println("1 vehicle : " + vehicleId + " route : " + route);
 			
 			lineEnd = route.remove(0);
 			vService.setLineEnd(vehicleId, lineEnd);
@@ -224,7 +232,6 @@ public class EmergencyManager {
 			initCoord.add(lineEnd.get(0));
 			initCoord.add(lineEnd.get(1));
 			if(vService.vehicleInitCoord.get(vehicleId) == null) {
-				System.out.println("put");
 				vService.vehicleInitCoord.put(vehicleId, initCoord);
 			}else {
 				vService.vehicleInitCoord.replace(vehicleId, initCoord);
@@ -248,7 +255,7 @@ public class EmergencyManager {
 			
 			if(!vService.getVehicleOnLine(vehicleId)) {
 				route = rService.getRoute(vehicleId);
-				//System.out.println("2 vehicle : " + vehicleId + " route : " + route); //ad
+				//System.out.println("2 vehicle : " + vehicleId + " route : " + route);
 				//System.out.println("LineEnd en cours: " + lineEnd);
 				if (route.isEmpty()) {
 				//	System.out.println("la route est vide");
@@ -267,7 +274,7 @@ public class EmergencyManager {
 				}
 				else {
 					route = rService.getRoute(vehicleId);
-					//System.out.println("3 vehicle : " + vehicleId + " route : " + route); //ad
+					//System.out.println("3 vehicle : " + vehicleId + " route : " + route);
 					lineEnd = route.get(0);
 					//System.out.println("LineEnd en cours: " + lineEnd);
 					rService.setRoute(vehicleId, route);
@@ -281,12 +288,8 @@ public class EmergencyManager {
 	}
 
 	private void deplacement(VehicleDto vehicle, Boolean intervention,VehicleService vService, RouteService rService) {
-		//double vlat = vehicle.getLat();
-		//double vlon = vehicle.getLon();
 		
-		System.out.println(vService.vehicleInitCoord);
 		ArrayList<Double> initCoord = vService.vehicleInitCoord.get(vehicle.getId());
-		System.out.println(initCoord);
 		double vlat = initCoord.get(1);
 		double vlon = initCoord.get(0);
 		
@@ -301,28 +304,15 @@ public class EmergencyManager {
 		double deltaLat =  vlat - dlat;
 		double deltaLon = vlon - dlon;
 		
-		float maxSpeedMS = (float) (vehicle.getType().getMaxSpeed()*2 / 3.60);
+		float maxSpeedMS = (float) (vehicle.getType().getMaxSpeed()*4F / 3.60);
 	
-		double coeff = 1;
+		
+		int travelledDistance = GisTools.computeDistance2(new Coord(vlon,vlat),new Coord(vlon-deltaLon,vlat-deltaLat));
+		
+		double coeff = travelledDistance/maxSpeedMS;
 		double latTick = deltaLat /coeff;
 		double lonTick = deltaLon / coeff;
-		int deltaError = 2;
-		
-		int travelledDistance = GisTools.computeDistance2(new Coord(vlon,vlat),new Coord(vlon-lonTick,vlat-latTick));
-		System.out.println(travelledDistance);
-		/* while(travelledDistance > Math.round(maxSpeedMS)-deltaError || travelledDistance < Math.round(maxSpeedMS)+deltaError) { 
-		      int deltaDistance =travelledDistance - Math.round(maxSpeedMS); 
-		      if(deltaDistance < 0) { 
-		    	  coeff-=0.1; 
-		      }
-		      else { 
-		    	  coeff +=0.1; 
-		    	  } 
-		      latTick = deltaLat / coeff; 
-		      lonTick = deltaLon / coeff; 
-		      
-		      travelledDistance = GisTools.computeDistance2(new Coord(vlon,vlat),new Coord(vlon-lonTick,vlat-latTick)); 
-		 }*/
+		travelledDistance = GisTools.computeDistance2(new Coord(vlon,vlat),new Coord(vlon-lonTick,vlat-latTick));
 		
 		if (vService.getLastLine(vehicle.getId())) {
 			if( distance > 100) {
@@ -338,7 +328,7 @@ public class EmergencyManager {
 			else {
 				
 				if(intervention) {
-					System.out.println("Le véhicule : " + vehicle.getId() + " est sur un feu"); 
+					//System.out.println("Le véhicule : " + vehicle.getId() + " est sur un feu"); 
 					intervention(vehicle,vService,rService);
 				}
 				else {
@@ -365,12 +355,12 @@ public class EmergencyManager {
 				vehicle.setLon(vlon-lonTick);
 				vehicle.setFuel(vehicle.getFuel() - (travelledDistance*vehicle.getType().getFuelConsumption())/1000F);
 				
-				if(!intervention) {
+				/*if(!intervention) {
 					System.out.println("Le véhicule : " + vehicle.getId() + " se dirige vers la caserne");
 				}
 				else {
 					System.out.println("Le véhicule : " + vehicle.getId() + " se dirige vers un feu");
-				}
+				}*/
 				timer = false;
 				while(!timer) {
 					timer = saveChanges(vehicle,vService);
