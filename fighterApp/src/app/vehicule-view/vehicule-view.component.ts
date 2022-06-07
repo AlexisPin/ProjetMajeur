@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { VehicleService } from '../services/vehicle.service';
 import { Subscription } from 'rxjs';
+import { EditVehiculeComponent } from '../edit-vehicule/edit-vehicule.component';
 
 @Component({
   selector: 'app-vehicule-view',
@@ -28,6 +29,7 @@ export class VehiculeViewComponent implements OnInit {
 
   onEdit(vehicle: any, id:number) {
     this.flagEdit[id] = !this.flagEdit[id];
+    EditVehiculeComponent.setPreviousData(vehicle);
   }
 
   getFlagEdit(id:number){
