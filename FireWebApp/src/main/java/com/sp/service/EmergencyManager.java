@@ -19,6 +19,8 @@ import com.project.model.dto.FireDto;
 import com.project.model.dto.VehicleDto;
 import com.project.tools.GisTools;
 
+import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
+
 @EnableAsync
 @Component
 public class EmergencyManager {
@@ -65,30 +67,32 @@ public class EmergencyManager {
 	    	double efficiency = 0;
 	    	if(!vehicles.isEmpty()) {		
 	    		for(VehicleDto vehicle : vehicles) {
-	    			FireDto interFire = new FireDto();
-	    			VehicleDto interVehicle = new VehicleDto();
-	    			for(FireDto fire : fires) {
-	    				double newEfficiency = vehicle.getLiquidType().getEfficiency(fire.getType());
-	    				if(!onWorkFire.contains(fire.getId()) && !onWorkVehicle.contains(vehicle.getId())) {
-	    					Coord fCoord = new Coord(fire.getLon(),fire.getLat());
-	    					double newDistance = calculDistance(vehicle, fCoord.getLat(),fCoord.getLon());
-	    					if((distance > newDistance-deltaDistance ||  distance > newDistance) && efficiency < newEfficiency) {
+	    			if(vehicle.getId() == 470) {
+	    				
+	    				FireDto interFire = new FireDto();
+	    				VehicleDto interVehicle = new VehicleDto();
+	    				for(FireDto fire : fires) {
+	    					double newEfficiency = vehicle.getLiquidType().getEfficiency(fire.getType());
+	    					if(!onWorkFire.contains(fire.getId()) && !onWorkVehicle.contains(vehicle.getId())) {
+	    						Coord fCoord = new Coord(fire.getLon(),fire.getLat());
+	    						double newDistance = calculDistance(vehicle,fCoord.getLon(), fCoord.getLat());
+	    						if(distance > newDistance || (distance > newDistance-1000 && efficiency < newEfficiency)) {
 	    							efficiency = newEfficiency;
-		    						distance = newDistance;
-		    						interFire = fire;
-		    						interVehicle = vehicle;
-		    					}
+	    							distance = newDistance;
+	    							interFire = fire;
+	    							interVehicle = vehicle;
+	    						}
+	    					}
+	    				}
+	    				if(interFire.getId() != null && interVehicle.getId() != null) {
+	    					vehicleFireMap.put(interFire.getId(),interVehicle);
+	    					onWorkVehicle.add(interVehicle.getId());
+	    					onWorkFire.add(interFire.getId());
+	    				}
+	    				if((vehicle.getFuel() < 0 || vehicle.getLiquidQuantity() <0 ) &&  !onWorkVehicle.contains(vehicle.getId())) {
+	    					backToFacility(vehicle, vService, faService, rService);
 	    				}
 	    			}
-    			if(interFire.getId() != null && interVehicle.getId() != null) {
-    				vehicleFireMap.put(interFire.getId(),interVehicle);
-    				onWorkVehicle.add(interVehicle.getId());
-    				onWorkFire.add(interFire.getId());
-    			}
-    			if((vehicle.getFuel() < 0 || vehicle.getLiquidQuantity() <0 ) &&  !onWorkVehicle.contains(vehicle.getId())) {
-    				backToFacility(vehicle, vService, faService, rService);
-    			}
-
 	    	}			
 	    		for(Integer onWork : onWorkFire) {
     				if(!fService.getFiresId().contains(onWork)) { 					
@@ -117,6 +121,7 @@ public class EmergencyManager {
 			FireDto fire = fService.getFire(fireId);
 			Coord fireCoord  = new Coord(fire.getLon(), fire.getLat());
 			//checkVehiculeStatus(vehicle,fireCoord);
+			System.out.println("Le vehicule : " + vehicle.getId() + " est sur le feu : " + fireId);
 			if(!vService.getMoving(vehicle.getId())) {
 				this.dRunnable=new DisplayRunnable(vehicle, fireCoord,vService,faService,rService);
 				displayThread=new Thread(dRunnable);
@@ -131,10 +136,9 @@ public class EmergencyManager {
 		float liquidQuantity = vehicle.getLiquidQuantity();
 		boolean timer = false;
 		if(liquidQuantity > 0) {
-			vehicle.setLiquidQuantity(Math.nextDown(liquidQuantity - vehicle.getType().getLiquidConsumption()));
-			//vehicle.setLiquidQuantity(Math.nextDown(liquidQuantity - 2));
+			vehicle.setLiquidQuantity(Math.nextDown(liquidQuantity - 5));
 			if(vehicle.getLiquidQuantity() <= 0) {
-				//System.out.println("vehicle : " + vehicle.getId() + " plus de liquide" ); //ad
+				System.out.println("vehicle : " + vehicle.getId() + " plus de liquide" );
 				vService.setWorkingVehicle(vehicle.getId(), false);
 			}
 			timer = false;
@@ -149,7 +153,7 @@ public class EmergencyManager {
 		FacilityDto facility =  faService.getFacility(vehicle.getFacilityRefID());
 		Coord facilityCoord = new Coord(facility.getLon(),facility.getLat());
 		
-		/*vehicle.setLat(45.77036991);
+	/*vehicle.setLat(45.77036991);
 		vehicle.setLon(4.88580151);
 		saveChanges(vehicle,vService);*/
 		
@@ -306,6 +310,9 @@ public class EmergencyManager {
 		boolean timer = false;
 		
 		double distance = calculDistance(vehicle, dlon,dlat);
+		if(distance == 0) {
+			System.out.println("distance = 0");
+		}
 		double latTick = 0;
 		double lonTick = 0;
 
@@ -319,19 +326,21 @@ public class EmergencyManager {
 		lonTick = deltaLon / coeff;
 		travelledDistance = GisTools.computeDistance2(new Coord(vlon,vlat),new Coord(vlon-lonTick,vlat-latTick));
 		
-		System.out.println(travelledDistance);
-		System.out.println(distance);
 		if(travelledDistance > distance) {
-			latTick = dlat;
-			lonTick = dlat;
-			System.out.println("trop grand");
+			latTick = vlat-dlat;
+			lonTick = vlon-dlon;
+			travelledDistance = GisTools.computeDistance2(new Coord(vlon,vlat),new Coord(vlon-lonTick,vlat-latTick));
+			System.out.println("travelled trop grand");
+			System.out.println(distance);
 		}
+		
 		if (vService.getLastLine(vehicle.getId())) {
+			System.out.println("last");
 			
 			if( distance > 100) {
 				vehicle.setLat(vlat-latTick);
 				vehicle.setLon(vlon-lonTick);
-				vehicle.setFuel(vehicle.getFuel() - (travelledDistance*vehicle.getType().getFuelConsumption())/1000F);
+				vehicle.setFuel(vehicle.getFuel() - (travelledDistance*5)/100000F);
 				timer = false;
 				while(!timer) {
 					timer = saveChanges(vehicle,vService);
@@ -339,7 +348,6 @@ public class EmergencyManager {
 				vService.setMoving(vehicle.getId(), false);
 			}
 			else {
-				
 				if(intervention) {
 					System.out.println("Le véhicule : " + vehicle.getId() + " est sur un feu"); 
 					intervention(vehicle,vService,rService);
@@ -362,11 +370,11 @@ public class EmergencyManager {
 			}
 		}
 		else {
-			
 			if( distance > 100) {
+			    System.out.println("pas fini distance > 100");
 				vehicle.setLat(vlat-latTick);
 				vehicle.setLon(vlon-lonTick);
-				vehicle.setFuel(vehicle.getFuel() - (travelledDistance*vehicle.getType().getFuelConsumption())/1000F);
+				vehicle.setFuel(vehicle.getFuel() - (travelledDistance*5)/100000F);
 				if(!intervention) {
 					System.out.println("Le véhicule : " + vehicle.getId() + " se dirige vers la caserne");
 				}
@@ -386,19 +394,12 @@ public class EmergencyManager {
 				ArrayList<Double> newInitCoord = new ArrayList<Double>();
 				newInitCoord.add(dlon);
 				newInitCoord.add(dlat);
-				/*if(vehicleInitCoord.get(vehicle.getId()).equals(null)) {
-					
-					vehicleInitCoord.put(vehicle.getId(), newInitCoord);
-				}else {
-					vehicleInitCoord.replace(vehicle.getId(), newInitCoord);
-				}*/
 				vService.vehicleInitCoord.replace(vehicle.getId(), newInitCoord);
 				vService.setVehicleOnLine(vehicle.getId(), false);
 				timer = false;
 				while(!timer) {
 					timer = saveChanges(vehicle,vService);
 				}
-			
 				vService.setMoving(vehicle.getId(), false);
 			}
 		}
