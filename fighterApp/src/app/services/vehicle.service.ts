@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { VehiculeViewComponent } from '../vehicule-view/vehicule-view.component';
 
 interface Vehicule {
   lon: number;
@@ -93,7 +94,6 @@ export class VehicleService {
     console.log(vehicle)
     console.log(id)
     
-    /*
     const vehicleUrl =
       `http://vps.cpe-sn.fr:8081/vehicle/3e84503c-ce82-476b-b702-b380cb6b43d8/${id}`;
     let context = {
@@ -106,9 +106,9 @@ export class VehicleService {
     fetch(vehicleUrl, context)
       .then((response) => response.json())
       .then((data) => {
-        console.log('data');
+        console.log(data);
       });
-    */
+    
     
   }
 }
