@@ -1,13 +1,22 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import * as L from 'leaflet';
+
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class TruckMarkerService {
   vehicleAPI: string = 'http://alexispin.synology.me:9080/vehicle';
   marker_layer : any = L.layerGroup();
   private map: any;
+ 
+  routeAPI : string = "http://localhost:8080/routes";
+
+  polylines : any =[];
+
+  routeControl : any = [];
+
 
   filter = {
       CAR : true,
@@ -25,7 +34,7 @@ export class TruckMarkerService {
 
   markers : any = [];
 
-  constructor() {}
+  constructor() { }
 
   makeTruckMarkers(map: L.Map): void {
     this.setMap(map);
@@ -132,7 +141,9 @@ export class TruckMarkerService {
       const lon = vehicle[id].lon;
       const type = vehicle[id].type;
       const liqtype = vehicle[id].liquidType;
-      this.markers[truckId] = L.marker([lat, lon], { icon: facilityIcon });
+      this.markers[truckId] = L.marker([lat, lon], { icon: facilityIcon }).on('click', (e) =>{
+        this.showRoute(truckId);
+      });
       if (filter[type] && filter[liqtype]){
         this.marker_layer.addLayer(this.markers[truckId]);
         this.markers[truckId].bindPopup(
@@ -150,7 +161,50 @@ export class TruckMarkerService {
     this.marker_layer.addTo(map);
   }
   
+  getRoute(map :any){
+    this.setMap(map);
+    let context = {
+      method: 'GET',
+    };
+    fetch(this.routeAPI, context)
+      .then((response) => response.json())
+      .then((response) => this.Route(response))
+      .catch((error) => this.err_callback(error));
+  }
+
+
+  Route(response : any){
+    var waypoint = [];
+    for(let id in response){  
+      for(let i=0; i<response[id].length;i++){
+        if(response[id][i].length != 0){
+          waypoint.push(L.latLng(response[id][i][1],response[id][i][0]));
+        } 
+    }
+    //console.log(waypoint);
+    this.polylines[id] = waypoint;
+    waypoint = [];
+}
+
+}
+
+showRoute(truckId : any) {
+  /*
+  for(let id in this.polylines){
+    if(this.map.hasLayer(this.polylines[id])){
+      this.map.removeLayer(this.polylines[id]);
+    }
+  }
+*/
+  if(this.polylines[truckId] != undefined){
+    if(this.polylines[truckId] == []){
+      var polyline = L.polyline(this.polylines[truckId], {color: 'red'}).addTo(this.map);
+      this.map.fitBounds(polyline.getBounds());
+    }
   
+  }
+
+}
   
   err_callback(error: any) {
     console.log(error);

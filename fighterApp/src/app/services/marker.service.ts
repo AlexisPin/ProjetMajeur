@@ -109,10 +109,9 @@ export class MarkerService {
   }
 
   removeSingleMarker(id : any){
-    console.log(this.markers[id]);
+    //console.log(this.markers[id]);
     this.map.removeLayer(this.markers[id])
     this.markers.splice(id,1);
-    console.log("feu " + id +" supprimé");
   }
 
   updateCallback(response: any, map: L.Map){
@@ -134,20 +133,11 @@ export class MarkerService {
         }
       }
       }
-
-      
-      
-      
+       
       this.setMap(map);
-      let context = {
-        method: 'GET',
-      };
-      fetch(this.firesAPI, context)
-        .then((response) => response.json())
-        .then((response) => this.updatePopUp(response, map))
-        .catch((error) => this.err_callback(error));
-      }
+      this.updatePopUp(response,map);
   }
+}
 
   updatePopUp(response:any, map: L.Map){
     for (let id in response) {
@@ -169,6 +159,7 @@ export class MarkerService {
         this.markers[fireId].setPopupContent(myPopup);
         var opacity = response[id].intensity/50;
         this.markers[fireId].setOpacity(opacity);
+        this.setMap(map);
     }
   }
   

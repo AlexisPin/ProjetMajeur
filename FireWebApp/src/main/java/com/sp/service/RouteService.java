@@ -65,5 +65,8 @@ public class RouteService {
 	}
 	
 	
+	public Map<Integer, ArrayList<ArrayList<Double>>> getAllRoute() {
+		return this.routeMap;
+	}
 	
 }

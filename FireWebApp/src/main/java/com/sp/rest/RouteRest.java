@@ -24,4 +24,11 @@ public class RouteRest {
 		 ArrayList<ArrayList<Double>>  routes  = rService.getRoute(Integer.valueOf(id));
 			return routes;
 	    }
+	 @RequestMapping(method=RequestMethod.GET,value="/routes")
+	    public Map<Integer,ArrayList<ArrayList<Double>>>  getAllRoute() {
+		 Map<Integer,ArrayList<ArrayList<Double>>>  routes  = rService.getAllRoute();
+			return routes;
+	    }
+	 
+	 
 }

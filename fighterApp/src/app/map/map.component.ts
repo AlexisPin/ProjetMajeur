@@ -35,20 +35,22 @@ export class MapComponent implements AfterViewInit {
   constructor(
     private markerService: MarkerService,
     private facilityMarkerService: FacilityMarkerService,
-    private truckMarkerService: TruckMarkerService
+    private truckMarkerService: TruckMarkerService,
   ) {}
 
   ngAfterViewInit(): void {
     this.initMap();
     this.markerService.makeFireMarkers(this.map);
     this.facilityMarkerService.makeFacilityMarkers(this.map);
-    this.truckMarkerService.makeTruckMarkers(this.map)
+    this.truckMarkerService.makeTruckMarkers(this.map);
+    this.truckMarkerService.getRoute(this.map);
     this.Update();
   }
 
   Update() : void{
     this.truckMarkerService.updateTruck(this.map);
     this.markerService.updateFire(this.map);
+    this.truckMarkerService.getRoute(this.map);
     setTimeout(() => {
       this.Update();
   }, 1000);

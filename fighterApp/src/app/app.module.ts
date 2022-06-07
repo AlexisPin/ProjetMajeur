@@ -41,7 +41,7 @@ const appRoutes: Routes = [
     AppRoutingModule,
     ReactiveFormsModule,
   ],
-  providers: [MarkerService, FacilityMarkerService, TruckMarkerService],
+  providers: [MarkerService, FacilityMarkerService, TruckMarkerService,],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

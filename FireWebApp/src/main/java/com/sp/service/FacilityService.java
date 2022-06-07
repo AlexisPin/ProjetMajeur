@@ -27,7 +27,7 @@ public class FacilityService {
 		FacilityDto[]  facilities = getFacilities();
 		List<Integer>  ownFacilities = new ArrayList<Integer>();
 		for(FacilityDto facility : facilities) {
-			if(facility.getName().substring(3, 4).equals("2")) {	
+			if(facility.getName().indexOf("Cas2") != -1) {	
 				ownFacilities.add(facility.getId());
 			}
 		}

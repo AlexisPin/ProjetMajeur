@@ -184,7 +184,7 @@ public class EmergencyManager {
 	
 	private boolean saveChanges(VehicleDto vehicle,VehicleService vService) {
  
-    	vService.updateVehicle("1e9f18a6-4096-4369-ad25-9b3c8451fe27", vehicle.getId(), vehicle); 
+    	vService.updateVehicle("3e84503c-ce82-476b-b702-b380cb6b43d8", vehicle.getId(), vehicle); 
     	return true;
 	}
 	
@@ -261,7 +261,7 @@ public class EmergencyManager {
 			
 			if(!vService.getVehicleOnLine(vehicleId)) {
 				route = rService.getRoute(vehicleId);
-				//System.out.println("2 vehicle : " + vehicleId + " route : " + route);
+				System.out.println("2 vehicle : " + vehicleId + " route : " + route);
 				//System.out.println("LineEnd en cours: " + lineEnd);
 				if (route.isEmpty()) {
 				//	System.out.println("la route est vide");
@@ -284,7 +284,7 @@ public class EmergencyManager {
 				}
 				else {
 					route = rService.getRoute(vehicleId);
-					//System.out.println("3 vehicle : " + vehicleId + " route : " + route);
+					System.out.println("3 vehicle : " + vehicleId + " route : " + route);
 					lineEnd = route.get(0);
 					//System.out.println("LineEnd en cours: " + lineEnd);
 					rService.setRoute(vehicleId, route);
@@ -327,7 +327,7 @@ public class EmergencyManager {
 		double deltaLat =  vlat - dlat;
 		double deltaLon = vlon - dlon;
 		int travelledDistance = 100000000;
-		float maxSpeedMS = (float) (vehicle.getType().getMaxSpeed()*8F / 3.60);
+		float maxSpeedMS = (float) (vehicle.getType().getMaxSpeed()*8F/ 3.60);
 	
 		if(distance>travelledDistance) {
 			travelledDistance = GisTools.computeDistance2(new Coord(ilon,ilat),new Coord(ilon-deltaLon,ilat-deltaLat));
@@ -338,7 +338,7 @@ public class EmergencyManager {
 		}
 		else {
 			travelledDistance = GisTools.computeDistance2(new Coord(ilon,ilat),new Coord(ilon-deltaLon,ilat-deltaLat));
-			double coeff = 4;
+			double coeff = travelledDistance/2;
 			latTick = deltaLat /coeff;
 			lonTick = deltaLon / coeff;
 			travelledDistance = GisTools.computeDistance2(new Coord(ilon,ilat),new Coord(ilon-lonTick,ilat-latTick));
