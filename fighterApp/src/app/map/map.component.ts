@@ -16,6 +16,8 @@ export class MapComponent implements AfterViewInit {
     this.map = L.map('map', {
       center: [45.75, 4.85],
       zoom: 11,
+    }).on('click', (e) =>{
+      this.hideRoute();
     });
 
     const tiles = L.tileLayer(
@@ -54,5 +56,10 @@ export class MapComponent implements AfterViewInit {
     setTimeout(() => {
       this.Update();
   }, 1000);
+  }
+
+
+  hideRoute() : void{
+    this.truckMarkerService.hideRoute();
   }
 }

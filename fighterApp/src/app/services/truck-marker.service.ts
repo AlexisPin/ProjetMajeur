@@ -14,9 +14,15 @@ export class TruckMarkerService {
   routeAPI : string = "http://localhost:8080/routes";
 
   polylines : any =[];
-
+  polyline : any = []
+;
   routeControl : any = [];
 
+  private show : boolean = false;
+
+  private route : any = [];
+
+  private idRouteShown : number = 0;
 
   filter = {
       CAR : true,
@@ -175,35 +181,55 @@ export class TruckMarkerService {
 
   Route(response : any){
     var waypoint = [];
-    for(let id in response){  
+    if(this.polylines[this.idRouteShown] != undefined){
+      console.log(this.polylines[this.idRouteShown]);
+      if(this.map.hasLayer(this.polyline)){ 
+        console.log("la")
+        this.map.removeLayer(this.polyline);
+      }
+    }
+    for(let id in response){ 
+      if(this.polylines[id] != undefined){
+       
+      }
       for(let i=0; i<response[id].length;i++){
         if(response[id][i].length != 0){
           waypoint.push(L.latLng(response[id][i][1],response[id][i][0]));
         } 
     }
-    //console.log(waypoint);
     this.polylines[id] = waypoint;
     waypoint = [];
+  }
+    //console.log(waypoint);
+      if(this.idRouteShown != 0){
+        if(this.polylines[this.idRouteShown] != undefined){
+          if(this.polylines[this.idRouteShown].length != 0 ){
+            this.route = this.polylines[this.idRouteShown];
+      this.polyline = L.polyline(this.route, {color: 'red'}).addTo(this.map);
+      this.map.fitBounds(this.polyline.getBounds());
+  }
+}
+}   
+   
 }
 
-}
+
 
 showRoute(truckId : any) {
-  /*
-  for(let id in this.polylines){
-    if(this.map.hasLayer(this.polylines[id])){
-      this.map.removeLayer(this.polylines[id]);
-    }
-  }
-*/
-  if(this.polylines[truckId] != undefined){
-    if(this.polylines[truckId] == []){
-      var polyline = L.polyline(this.polylines[truckId], {color: 'red'}).addTo(this.map);
-      this.map.fitBounds(polyline.getBounds());
-    }
-  
-  }
+    if(this.map.hasLayer(this.polyline)){
+      this.map.removeLayer(this.polyline);
+    
+}
 
+  this.idRouteShown = truckId;
+    }
+
+
+hideRoute(){
+  if(this.map.hasLayer(this.polyline)){
+    this.map.removeLayer(this.polyline);
+    this.idRouteShown = 0;
+}
 }
   
   err_callback(error: any) {
