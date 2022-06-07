@@ -1,6 +1,8 @@
 package com.sp.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -90,7 +92,6 @@ public class VehicleService {
 	}
 	
 	public Boolean getWorkingVehicle(int vehicleId) {
-		Map<Integer,Boolean> workingVehicle = initWorkingVehicle();
 		return workingVehicle.get(vehicleId);
 	}
 	
@@ -112,7 +113,6 @@ public class VehicleService {
 	}
 	
 	public Boolean getVehicleOnLine(int vehicleId) {
-		Map<Integer,Boolean> vehicleOnLine = initVehicleOnLine();
 		return vehicleOnLine.get(vehicleId);
 	}
 	
@@ -127,8 +127,7 @@ public class VehicleService {
 	
 	
 	public Boolean getLastLine(int vehicleId) {
-		Map<Integer,Boolean> lastLine = initLastLine();
-		return lastLine.get(vehicleId);
+		return lastLineMap.get(vehicleId);
 	}
 	
 	public void setLastLine(int vehicleId, boolean lastLine) {
@@ -148,8 +147,7 @@ public class VehicleService {
 	
 	
 	public ArrayList<Double> getLineEnd(int vehicleId) {
-		Map<Integer,ArrayList<Double>> lineEnd = initLineEnd();
-		return lineEnd.get(vehicleId);
+		return lineEndMap.get(vehicleId);
 	}
 	
 	public void setLineEnd(int vehicleId, ArrayList<Double> line) {
@@ -166,13 +164,18 @@ public class VehicleService {
 	
 	
 	public Boolean getMoving(int vehicleId) {
-		Map<Integer,Boolean> moving = initMoving();
-		return moving.get(vehicleId);
+		return movingMap.get(vehicleId);
 	}
 	
 	public void setMoving(int vehicleId, boolean lastLine) {
 		movingMap.replace(vehicleId, lastLine);
 	}
 	
-
+	public void initMap() {
+		initWorkingVehicle();
+		initLineEnd();
+		initMoving();
+		initVehicleOnLine();
+		initLastLine();
+	}
 }
