@@ -124,10 +124,12 @@ public class EmergencyManager {
 			FireDto fire = fService.getFire(fireId);
 			Coord fireCoord  = new Coord(fire.getLon(), fire.getLat());
 			//checkVehiculeStatus(vehicle,fireCoord);
+			if(!vService.getMoving(vehicle.getId())) {
+				this.dRunnable=new DisplayRunnable(vehicle, fireCoord,vService,faService,rService);
+				displayThread=new Thread(dRunnable);
+				displayThread.start();
+			}
 			
-			this.dRunnable=new DisplayRunnable(vehicle, fireCoord,vService,faService,rService);
-			displayThread=new Thread(dRunnable);
-			displayThread.start();
 		}
 	}
 	
@@ -164,7 +166,6 @@ public class EmergencyManager {
 	
 	public void checkVehiculeStatus(VehicleDto vehicle,Coord fireCoord,VehicleService vService,FacilityService faService,RouteService rService) {
 			//backToFacility(vehicle, vService, faService, rService);
-			if(!vService.getMoving(vehicle.getId())) {
 				float liquidQuantity = vehicle.getLiquidQuantity();
 				double distance = calculDistance(vehicle, fireCoord.getLat(),fireCoord.getLon());
 				//System.out.println("vehicle : " + vehicle.getId() + " liquide : " + vehicle.getLiquidQuantity()); //ad
@@ -176,7 +177,7 @@ public class EmergencyManager {
 					route(vehicle, fireCoord,true, vService, rService);
 					
 				}
-			}
+			
 			
 			
 	}
