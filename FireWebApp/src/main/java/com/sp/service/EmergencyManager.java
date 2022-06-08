@@ -88,7 +88,7 @@ public class EmergencyManager {
 	    					onWorkFire.add(interFire.getId());
 	    				}
 	    				if((vehicle.getFuel() < 0 || vehicle.getLiquidQuantity() <0 ) &&  !onWorkVehicle.contains(vehicle.getId())) {
-	    					backToFacility(vehicle, vService, faService, rService);
+	    					backToFacility(vehicle, vService, faService, rService,fService, vehicleFireMap);
 	    				}
 	    	}			
 	    		for(Integer onWork : onWorkFire) {
@@ -120,7 +120,7 @@ public class EmergencyManager {
 			//checkVehiculeStatus(vehicle,fireCoord);
 			//System.out.println("Le vehicule : " + vehicle.getId() + " est sur le feu : " + fireId);
 			if(!vService.getMoving(vehicle.getId())) {
-				this.dRunnable=new DisplayRunnable(vehicle, fireCoord,vService,faService,rService);
+				this.dRunnable=new DisplayRunnable(vehicle, fireCoord,vService,faService,rService,fService, vehicleFireMap);
 				displayThread=new Thread(dRunnable);
 				displayThread.start();
 			}
@@ -146,7 +146,7 @@ public class EmergencyManager {
 		}
 	}
 	
-	private void backToFacility(VehicleDto vehicle,VehicleService vService,FacilityService faService,RouteService rService) {
+	private void backToFacility(VehicleDto vehicle,VehicleService vService,FacilityService faService,RouteService rService, FireService fService,Map<Integer, VehicleDto> vehicleFireMap) {
 		FacilityDto facility =  faService.getFacility(vehicle.getFacilityRefID());
 		Coord facilityCoord = new Coord(facility.getLon(),facility.getLat());
 		
@@ -154,21 +154,21 @@ public class EmergencyManager {
 		vehicle.setLon(4.88580151);
 		saveChanges(vehicle,vService);*/
 		
-		route(vehicle, facilityCoord,false, vService, rService);
+		route(vehicle, facilityCoord,false, vService, rService, fService, vehicleFireMap);
 	}
 	
 	
-	public void checkVehiculeStatus(VehicleDto vehicle,Coord fireCoord,VehicleService vService,FacilityService faService,RouteService rService) {
+	public void checkVehiculeStatus(VehicleDto vehicle,Coord fireCoord,VehicleService vService,FacilityService faService,RouteService rService, FireService fService, Map<Integer, VehicleDto> vehicleFireMap) {
 			//backToFacility(vehicle, vService, faService, rService);
 				float liquidQuantity = vehicle.getLiquidQuantity();
 				double distance = calculDistance(vehicle, fireCoord.getLat(),fireCoord.getLon());
 				//System.out.println("vehicle : " + vehicle.getId() + " liquide : " + vehicle.getLiquidQuantity()); //ad
-				if(liquidQuantity <= 0 || !checkFuelQuantity(vehicle, distance*2, vService, faService, rService)) {
+				if(liquidQuantity <= 0 || !checkFuelQuantity(vehicle, distance*2, vService, faService, rService, fService, vehicleFireMap)) {
 					//System.out.println("vehicle : " + vehicle.getId() + " rentre à la base" ); //ad
-					backToFacility(vehicle, vService, faService, rService);	
+					backToFacility(vehicle, vService, faService, rService, fService, vehicleFireMap);	
 				} else {
 					//System.out.println("vehicle : " + vehicle.getId() + " part affronter un feu" ); //ad
-					route(vehicle, fireCoord,true, vService, rService);
+					route(vehicle, fireCoord,true, vService, rService, fService, vehicleFireMap);
 					
 				}
 			
@@ -182,13 +182,17 @@ public class EmergencyManager {
     	return true;
 	}
 	
-	private void route(VehicleDto vehicle, Coord coordFinal, Boolean intervention,VehicleService vService,RouteService rService) {
+	private void route(VehicleDto vehicle, Coord coordFinal, Boolean intervention,VehicleService vService,RouteService rService, FireService fService, Map<Integer, VehicleDto> vehicleFireMap) {
 		int vehicleId = vehicle.getId();
 		ArrayList<ArrayList<Double>> route;
 
 		ArrayList<Double>lineEnd = null;
 		
 		lineEnd = vService.getLineEnd(vehicleId);
+		
+		
+		
+		
 		 
 		vService.setMoving(vehicleId, true);
 		
@@ -244,7 +248,7 @@ public class EmergencyManager {
 				//System.out.println("véhicule : " + vehicleId + " LineEnd : " + lineEnd);
 				vService.setLineEnd(vehicleId, lineEnd);
 			}
-			deplacement(vehicle,intervention,vService, rService);
+			deplacement(vehicle,intervention,vService, rService, fService,vehicleFireMap);
 			
 		}
 		else {
@@ -265,13 +269,13 @@ public class EmergencyManager {
 				}
 				//Date newdate = new Date();  
 			    //System.out.println(vehicleId + " temps 3 : " + formatter.format(newdate)); 
-				deplacement(vehicle,intervention, vService, rService);
+				deplacement(vehicle,intervention, vService, rService, fService,vehicleFireMap);
 			}
 			else {
 				if(vService.getLastLine(vehicleId)) {
 					//Date newdate = new Date();  
 				    //System.out.println(vehicleId + " temps 4 : " + formatter.format(newdate)); 
-					deplacement(vehicle,intervention, vService, rService);
+					deplacement(vehicle,intervention, vService, rService, fService,vehicleFireMap);
 				}
 				else {
 					route = rService.getRoute(vehicleId);
@@ -286,7 +290,7 @@ public class EmergencyManager {
 					vService.setLineEnd(vehicleId, lineEnd);
 					//Date newdate = new Date();  
 				    //System.out.println(vehicleId + " temps 5 : " + formatter.format(newdate)); 
-					deplacement(vehicle,intervention, vService, rService);
+					deplacement(vehicle,intervention, vService, rService, fService,vehicleFireMap);
 				}
 				
 			}
@@ -295,7 +299,7 @@ public class EmergencyManager {
 
 	}
 
-	private void deplacement(VehicleDto vehicle, Boolean intervention,VehicleService vService, RouteService rService) {
+	private void deplacement(VehicleDto vehicle, Boolean intervention,VehicleService vService, RouteService rService, FireService fService, Map<Integer, VehicleDto> vehicleFireMap) {
 		
 		ArrayList<Double> initCoord = vService.vehicleInitCoord.get(vehicle.getId());
 		double vlat = vehicle.getLat();
@@ -352,7 +356,19 @@ public class EmergencyManager {
 			else {
 				if(intervention) {
 					//vService.setLastLine(vehicle.getId(), true);
-					//System.out.println("Le véhicule : " + vehicle.getId() + " est sur un feu"); 
+					for(final Entry<Integer,VehicleDto> entry : vehicleFireMap.entrySet()) {
+						VehicleDto vehicle2 =  entry.getValue();
+						if(vehicle2.getId() == vehicle.getId()) {
+							  int fireId =  entry.getKey();
+							  FireDto fire = fService.getFire(fireId);
+							  if(fire != null) {
+								  vehicle.setLat(fire.getLat());
+								  vehicle.setLon(fire.getLon());
+								  saveChanges(vehicle,vService);
+							  }
+						}
+					}
+				
 					intervention(vehicle,vService,rService);
 				}
 				else {
@@ -410,11 +426,11 @@ public class EmergencyManager {
 	
 	}
 	
-	private boolean checkFuelQuantity(VehicleDto vehicle, double distanceTotal,VehicleService vService,FacilityService faService,RouteService rService) {
+	private boolean checkFuelQuantity(VehicleDto vehicle, double distanceTotal,VehicleService vService,FacilityService faService,RouteService rService, FireService fService, Map<Integer, VehicleDto> vehicleFireMap) {
 		float consumptionTotal = (float) ((distanceTotal*vehicle.getType().getFuelConsumption())/1000F);
 		boolean ret = true;
 		if(vehicle.getFuel() < consumptionTotal) {
-			backToFacility(vehicle, vService, faService,rService);
+			backToFacility(vehicle, vService, faService,rService, fService, vehicleFireMap);
 			ret = false;
 		}
 		return ret;	

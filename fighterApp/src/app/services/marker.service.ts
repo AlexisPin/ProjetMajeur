@@ -126,14 +126,16 @@ export class MarkerService {
         } 
 
       }
+      /*
       for(let i = 0; i<this.markers.length;i++){
         if(this.markers[i] != undefined){
           if(fireListId.indexOf(i) == -1){
             this.removeSingleMarker(i);
         }
       }
+    
       }
-       
+        */ 
       this.setMap(map);
       this.updatePopUp(response,map);
   }

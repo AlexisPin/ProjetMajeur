@@ -86,14 +86,16 @@ export class TruckMarkerService {
         if (lat != markerLat && lon != markerLon) {
           var newLatLng = new L.LatLng(lat, lon);
           marker.setLatLng(newLatLng);
-          marker.bindPopup(`<h2>
+          var myPopup = L.DomUtil.create('div', 'info-popup');
+          myPopup.innerHTML = `<h2>
           ${response[id].type} ${response[id].id}
           </h2>
           <h5> LiquidType : ${response[id].liquidType}</h5>
           <h5> Qty : ${response[id].liquidQuantity}</h5>
           <h5> Fuel : ${response[id].fuel}</h5>
           <h5> CrewMember : ${response[id].crewMember}</h5>
-          <h5> FaciltyID : ${response[id].facilityRefID}</h5>`);
+          <h5> FaciltyID : ${response[id].facilityRefID}</h5>`;
+          marker.setPopupContent(myPopup)
         }
       }
     }

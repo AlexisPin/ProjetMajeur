@@ -1,5 +1,7 @@
 package com.sp.service;
 
+import java.util.Map;
+
 import com.project.model.dto.Coord;
 import com.project.model.dto.VehicleDto;
 
@@ -14,16 +16,18 @@ public class DisplayRunnable implements Runnable {
 	 private VehicleService vService; 
 	 private FacilityService faService; 
 	 private RouteService rService;
-	 
+	 private FireService fService;
+	 private Map<Integer, VehicleDto> vehicleFireMap;
 
-	public DisplayRunnable(VehicleDto vehicle, Coord fireCoord,VehicleService vService,FacilityService faService,RouteService rService) {
+	public DisplayRunnable(VehicleDto vehicle, Coord fireCoord,VehicleService vService,FacilityService faService,RouteService rService, FireService fService, Map<Integer, VehicleDto> vehicleFireMap) {
 		
 		this.vehicle = vehicle;
 		this.fireCoord = fireCoord;
 		this.vService = vService;
 		this.faService = faService;
 		this.rService = rService;
-
+		this.fService = fService;
+		this.vehicleFireMap = vehicleFireMap;
 	}
 
 	@Override
@@ -31,7 +35,7 @@ public class DisplayRunnable implements Runnable {
 		while (!this.isEnd) {
 			try {
 				Thread.sleep(10000);
-				emManager.checkVehiculeStatus(vehicle, fireCoord,vService,faService,rService);
+				emManager.checkVehiculeStatus(vehicle, fireCoord,vService,faService,rService,fService,vehicleFireMap);
 				stop();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
