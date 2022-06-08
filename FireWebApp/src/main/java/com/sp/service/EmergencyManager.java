@@ -1,8 +1,6 @@
 package com.sp.service;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +17,6 @@ import com.project.model.dto.FireDto;
 import com.project.model.dto.VehicleDto;
 import com.project.tools.GisTools;
 
-import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
 
 @EnableAsync
 @Component
@@ -90,8 +87,8 @@ public class EmergencyManager {
 	    				if((vehicle.getFuel() < 0 || vehicle.getLiquidQuantity() <0 ) &&  !onWorkVehicle.contains(vehicle.getId())) {
 	    					backToFacility(vehicle, vService, faService, rService,fService, vehicleFireMap);
 	    				}
-	    	}			
-	    		for(Integer onWork : onWorkFire) {
+	    	}	List<Integer> onWorkFireCopy = new ArrayList<>(onWorkFire); 
+	    		for(Integer onWork : onWorkFireCopy) {
     				if(!fService.getFiresId().contains(onWork)) { 					
     					int vehicleId = vehicleFireMap.get(onWork).getId();
 
@@ -135,7 +132,7 @@ public class EmergencyManager {
 		if(liquidQuantity > 0) {
 			vehicle.setLiquidQuantity(Math.nextDown(liquidQuantity - vehicle.getType().getLiquidConsumption()));
 			if(vehicle.getLiquidQuantity() <= 0) {
-				System.out.println("vehicle : " + vehicle.getId() + " plus de liquide" );
+				//System.out.println("vehicle : " + vehicle.getId() + " plus de liquide" );
 				vService.setWorkingVehicle(vehicle.getId(), false);
 			}
 			timer = false;
@@ -368,7 +365,6 @@ public class EmergencyManager {
 							  }
 						}
 					}
-				
 					intervention(vehicle,vService,rService);
 				}
 				else {
@@ -427,7 +423,7 @@ public class EmergencyManager {
 	}
 	
 	private boolean checkFuelQuantity(VehicleDto vehicle, double distanceTotal,VehicleService vService,FacilityService faService,RouteService rService, FireService fService, Map<Integer, VehicleDto> vehicleFireMap) {
-		float consumptionTotal = (float) ((distanceTotal*vehicle.getType().getFuelConsumption())/1000F);
+		float consumptionTotal = (float) ((distanceTotal*vehicle.getType().getFuelConsumption())/100000F);
 		boolean ret = true;
 		if(vehicle.getFuel() < consumptionTotal) {
 			backToFacility(vehicle, vService, faService,rService, fService, vehicleFireMap);
