@@ -124,6 +124,9 @@ export class TruckMarkerService {
   }
 
   callback(response: any, map: L.Map, filter: any) {
+    if (map.hasLayer(this.marker_layer)) {
+      this.marker_layer.clearLayers();
+  }
     const ourVehicle = response[0];
     const vehicle = response[1];
 
@@ -150,13 +153,13 @@ export class TruckMarkerService {
       const lon = vehicle[id].lon;
       const type = vehicle[id].type;
       const liqtype = vehicle[id].liquidType;
-      this.markers[truckId] = L.marker([lat, lon], { icon: facilityIcon }).on(
-        'click',
-        (e) => {
-          this.showRoute(truckId);
-        }
-      );
       if (filter[type] && filter[liqtype]) {
+        this.markers[truckId] = L.marker([lat, lon], { icon: facilityIcon }).on(
+          'click',
+          (e) => {
+            this.showRoute(truckId);
+          }
+        );
         this.marker_layer.addLayer(this.markers[truckId]);
         this.markers[truckId].bindPopup(
           `<h2>
@@ -169,8 +172,13 @@ export class TruckMarkerService {
             <h5> FaciltyID : ${vehicle[id].facilityRefID}</h5>`
         );
       }
+      this.marker_layer.addTo(map);
     }
-    this.marker_layer.addTo(map);
+   
+  }
+
+  createSingleMarker(truck : any){
+
   }
 
   getRoute(map: any) {

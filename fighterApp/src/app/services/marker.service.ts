@@ -117,7 +117,6 @@ export class MarkerService {
   updateCallback(response: any, map: L.Map){
     if (map.hasLayer(this.marker_layer)) {
       let fireListId =[];
-      //regarder si l'id des feux dans la réponse est dans la liste marker si c'est pas le cas on le rajoute 
       for(let id in response){
         let fireId = response[id].id;
         fireListId.push(fireId);
@@ -126,16 +125,6 @@ export class MarkerService {
         } 
 
       }
-      /*
-      for(let i = 0; i<this.markers.length;i++){
-        if(this.markers[i] != undefined){
-          if(fireListId.indexOf(i) == -1){
-            this.removeSingleMarker(i);
-        }
-      }
-    
-      }
-        */ 
       this.setMap(map);
       this.updatePopUp(response,map);
   }
